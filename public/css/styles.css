@@ -6,7 +6,7 @@ body {
     font-family: 'Montserrat', sans-serif;
     margin: 0;
     padding: 0;
-    background: linear-gradient(to bottom right, #007BFF, #6610f2); /* Blue gradient background */
+    background: #007BFF; /* Blue gradient background */
     color: #ffffff; /* Default text color set to white */
 }
 
@@ -315,3 +315,42 @@ a:hover {
         grid-template-columns: 1fr;
     }
 }
+
+
+
+.main-header {
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    border-bottom: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .logo img {
+    max-height: 70px;
+  }
+  
+  .main-nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+  }
+  
+  .main-nav ul li {
+    display: inline-block;
+  }
+  
+  .main-nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 10px;
+    transition: color 0.3s ease;
+  }
+  
+  .main-nav ul li a:hover {
+    color: #007BFF;
+  }

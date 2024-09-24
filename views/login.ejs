@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
+    <%- include('header-login') %>
     <div class="container">
         <h1>Login to Your Account</h1>
         <form action="/login" method="POST">
@@ -16,7 +17,8 @@
             <button type="submit">Login</button>
         </form>
         <p>Or</p>
-        <a href="/auth/google">Sign Up with Google</a>
+        <p><a href="/auth/google">Sign Up with Google</a></p>
+        </p>
         <p>Don't have a password? <a href="/signup">Sign up here</a></p>
     </div>
 </body>
