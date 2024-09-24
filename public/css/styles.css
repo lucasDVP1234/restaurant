@@ -97,6 +97,7 @@ a:hover {
     font-size: 0.9em;
 }
 
+
 .filters select {
     width: 100%;
     padding: 8px;
@@ -161,6 +162,11 @@ a:hover {
     font-size: 1em;
 }
 
+.campaign-form label{
+    color: #333333;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
 
 
 /* Logout Button */

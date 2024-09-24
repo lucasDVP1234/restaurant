@@ -31,9 +31,10 @@ exports.postSignup = async (req, res) => {
     });
 
     const savedUser = await newUser.save();
+    // req.session.userId = savedUser._id.toString();
 
     // Authenticate the user after successful signup
-    req.login(savedUser, function (err) {
+    req.logIn(savedUser, function (err) {
       if (err) {
         console.error(err);
         return res.redirect('/');
@@ -74,6 +75,11 @@ exports.setPassword = async (req, res) => {
 // Render Account Page
 exports.getAccount = async (req, res) => {
     try {
+      const user = await User.findById(req.user._id);
+      if (!user.name || !user.job) {
+      // Redirect to the campaign details form if user info is incomplete
+        return res.redirect('/creators');
+      }
       // Find all campaigns for the logged-in user and populate the creator names
       const campaigns = await Campaign.find({ userId: req.user._id })
         .populate('creatorIds', 'name'); // Populate creators' names
@@ -102,6 +108,8 @@ exports.getAccount = async (req, res) => {
         return {
           creators: creators.join(', '),
           creatorCount,
+          budget: campaign.budget,
+          date: campaign.date ? campaign.date.toDateString() : 'N/A',
           status: campaign.status,
         };
       });

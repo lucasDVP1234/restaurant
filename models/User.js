@@ -8,9 +8,16 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true, // Enforce uniqueness
     },
-    companyName: String,
+    name: String,
+    companyName: {
+        type: String,
+        required: true,
+        unique: true, // Enforce uniqueness
+    },
     googleId: String,
     password: String,
+    job:String,
+    
 });
 
 userSchema.plugin(findOrCreate);

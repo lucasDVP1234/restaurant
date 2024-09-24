@@ -6,6 +6,10 @@ const router = express.Router();
 
 // Book Creator Route
 //router.post('/book', ensureAuthenticated, campaignController.bookCreator);
-router.post('/campaigns/create', ensureAuthenticated, campaignController.createCampaign);
+//router.post('/campaigns/create', ensureAuthenticated, campaignController.createCampaign);
+
+router.post('/campaigns/select', ensureAuthenticated, campaignController.postSelectCreators);
+
+router.post('/campaigns/create', ensureAuthenticated, campaignController.postCreateCampaign);
 
 module.exports = router;

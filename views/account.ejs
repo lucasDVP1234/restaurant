@@ -11,6 +11,7 @@
     <%- include('header') %>
     <div class="container">
         <h1>Welcome, <%= user.companyName %></h1>
+        <h2>Compte : <%= user.email %></h1>
         <!-- Campaigns Section -->
         <div class="card">
             <h3>Your Campaigns</h3>
@@ -20,6 +21,8 @@
                   <tr>
                     <th>Creators</th>
                     <th>Number of Creators</th>
+                    <th>Budget</th>
+                    <th>Campaign Date</th>
                     <th>Status</th>
                   </tr>
                 </thead>
@@ -28,6 +31,8 @@
                     <tr>
                       <td><%= campaign.creators %></td>
                       <td><%= campaign.creatorCount %></td>
+                      <td><%= campaign.budget %></td>
+                      <td><%= campaign.date %></td>
                       <td><%= campaign.status %></td>
                     </tr>
                   <% }); %>

@@ -51,7 +51,7 @@
             <!-- Creators Grid -->
             <section class="creators-section">
                 <!-- Add a form around the creators grid -->
-                <form class="choose-creator" action="/campaigns/create" method="POST">
+                <form class="choose-creator" action="/campaigns/select" method="POST">
                   <div class="creators-grid">
                     <% creators.forEach(function(creator) { %>
                       <div class="creator-card">
@@ -70,7 +70,7 @@
                     <% }); %>
                   </div>
                   <!-- Add the Book button -->
-                  <button type="submit" class="button primary-button">Book Selected Creators</button>
+                  <button type="submit" class="button primary-button">Séléctionner ces créateurs</button>
                 </form>
               </section>
             </div>

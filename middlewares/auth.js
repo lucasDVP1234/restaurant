@@ -7,4 +7,14 @@ function ensureAuthenticated(req, res, next) {
   res.redirect('/');
 }
 
-module.exports = { ensureAuthenticated };
+function ensureProfileComplete(req, res, next) {
+  const user = req.user;
+  if (user && user.name && user.job) {
+    return next();
+  } else {
+    res.redirect('/creators');
+  }
+}
+
+
+module.exports = { ensureAuthenticated, ensureProfileComplete };
