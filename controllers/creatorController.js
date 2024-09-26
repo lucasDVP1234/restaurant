@@ -33,11 +33,13 @@ exports.getCreators = async (req, res) => {
         // Fetch categories and videoTypes for filters
         const categoriesList = await Creator.distinct('category');
         const videoTypesList = await Creator.distinct('videoTypes');
+        const countriesList = await Creator.distinct('country');
 
         res.render('creators', {
             creators,
             categories: categoriesList,
             videoTypes: videoTypesList,
+            countries: countriesList,
         });
     } catch (err) {
         console.error('Error fetching creators:', err.message);

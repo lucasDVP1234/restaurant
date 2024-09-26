@@ -1,6 +1,6 @@
 // public/js/creatorSelection.js
 
-
+console.log('filters.js loaded');
 document.addEventListener('DOMContentLoaded', () => {
   const creatorCards = document.querySelectorAll('.creator-card');
   const finalizeButton = document.getElementById('finalize-campaign-button');
