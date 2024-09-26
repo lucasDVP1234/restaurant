@@ -99,16 +99,11 @@
             <form action="/campaigns/select" method="POST" class="relative">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <% creators.forEach(function(creator) { %>
-                        <div class="creator-card bg-white rounded-lg shadow-md overflow-hidden relative" data-creator-id="<%= creator._id %>">
-                            <!-- Selection Checkbox -->
-                            <label class="absolute top-2 right-2">
-                                <input type="checkbox" name="creatorIds" value="<%= creator._id %>" class="creator-select h-5 w-5 text-blue-600">
-                            </label>
+                        <div class="creator-card bg-white rounded-lg shadow-md overflow-hidden relative cursor-pointer" data-creator-id="<%= creator._id %>">
                             <!-- Creator Image -->
                             <img src="<%= creator.profileImage %>" alt="<%= creator.name %>" class="w-full h-48 object-cover">
                             <!-- Portfolio Bubbles -->
                             <div class="flex justify-center -mt-6">
-                                <!-- Assuming creator has a 'portfolioImages' array -->
                                 <% creator.portfolioImages.slice(0, 2).forEach(function(image) { %>
                                     <div class="bg-white p-1 rounded-full mx-1 shadow-lg">
                                         <img src="<%= image %>" alt="Portfolio Image" class="h-12 w-12 rounded-full object-cover">

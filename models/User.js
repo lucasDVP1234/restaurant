@@ -12,7 +12,6 @@ const userSchema = new mongoose.Schema({
     companyName: {
         type: String,
         required: true,
-        unique: true, // Enforce uniqueness
     },
     googleId: String,
     password: String,

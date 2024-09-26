@@ -1,33 +1,47 @@
 // public/js/creatorSelection.js
 
+
 document.addEventListener('DOMContentLoaded', () => {
-    const creatorCheckboxes = document.querySelectorAll('.creator-select');
-    const finalizeButton = document.getElementById('finalize-campaign-button');
-  
-    let selectedCreators = new Set();
-  
-    creatorCheckboxes.forEach((checkbox) => {
-      checkbox.addEventListener('change', () => {
-        const creatorCard = checkbox.closest('.creator-card');
-        const creatorId = creatorCard.getAttribute('data-creator-id');
-  
-        if (checkbox.checked) {
-          selectedCreators.add(creatorId);
-          // Highlight selected card
-          creatorCard.classList.add('border-2', 'border-blue-500');
-        } else {
-          selectedCreators.delete(creatorId);
-          creatorCard.classList.remove('border-2', 'border-blue-500');
-        }
-  
-        // Show or hide the finalize button
-        if (selectedCreators.size > 0) {
-          finalizeButton.classList.remove('hidden');
-        } else {
-          finalizeButton.classList.add('hidden');
-        }
+  const creatorCards = document.querySelectorAll('.creator-card');
+  const finalizeButton = document.getElementById('finalize-campaign-button');
+  const form = document.querySelector('form[action="/campaigns/select"]');
+
+  let selectedCreators = new Set();
+
+  creatorCards.forEach((card) => {
+      card.addEventListener('click', () => {
+          const creatorId = card.getAttribute('data-creator-id');
+
+          if (selectedCreators.has(creatorId)) {
+              // Deselect creator
+              selectedCreators.delete(creatorId);
+              card.classList.remove('ring-2', 'ring-blue-500');
+              // Remove hidden input
+              const input = form.querySelector(`input[type="hidden"][value="${creatorId}"]`);
+              if (input) {
+                  input.remove();
+              }
+          } else {
+              // Select creator
+              selectedCreators.add(creatorId);
+              card.classList.add('ring-2', 'ring-blue-500');
+              // Add hidden input
+              const input = document.createElement('input');
+              input.type = 'hidden';
+              input.name = 'creatorIds';
+              input.value = creatorId;
+              form.appendChild(input);
+          }
+
+          // Show or hide the finalize button
+          if (selectedCreators.size > 0) {
+              finalizeButton.classList.remove('hidden');
+          } else {
+              finalizeButton.classList.add('hidden');
+          }
       });
-    });
+  });
+
   
     // Handle click on the finalize button
     finalizeButton.addEventListener('click', () => {
@@ -37,5 +51,5 @@ document.addEventListener('DOMContentLoaded', () => {
       // Redirect to a new page with selected IDs as query parameters (example)
       window.location.href = `/finalize?creators=${selectedIds.join(',')}`;
     });
-  });
+});
   

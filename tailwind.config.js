@@ -28,4 +28,9 @@ module.exports = {
   plugins: [
     require('@tailwindcss/forms'),
   ],
+  safelist: [
+    'ring-2',
+    'ring-blue-500',
+    // Add other dynamic classes if needed
+  ],
 };
