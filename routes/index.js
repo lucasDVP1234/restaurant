@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
   if (req.isAuthenticated()) {
     return res.redirect('/account');
   }
-  res.render('signup');
+  res.render('index');
 });
 
 // Use other routers

@@ -7,7 +7,9 @@ const creatorSchema = new mongoose.Schema({
     category: String,
     videoTypes: [String],
     profileImage: String,
+    portfolioImages: [String],
     description: String,
+    country : String,
 });
 
 module.exports = mongoose.model('Creator', creatorSchema);
