@@ -16,14 +16,23 @@ router.get('/add', ensureRestaurant, creatorController.getAddCreator);
 // Route to handle form submission and add the new creator to the database (POST request)
 router.post('/add', ensureRestaurant, creatorController.postAddCreator);
 
-router.get('/creators/edit', creatorController.getEditCreator);
+router.get('/creators/edit',ensureRestaurant, creatorController.getEditCreator);
 
-router.post('/creators/edit', creatorController.postEditCreator);
+router.post('/creators/edit', ensureRestaurant, creatorController.postEditCreator);
 
 router.get('/creators', ensureAuthenticated, ensureStudent, creatorController.getCreators);
 
 router.get('/creators/:id', ensureAuthenticated, ensureStudent, creatorController.getCreatorsById);
 
+// Route for applying to a job
+router.post('/apply/:id', ensureAuthenticated, ensureStudent, creatorController.applyToJob);
+
+// Route to view applicants for a job
+router.get('/applicants/:id', ensureAuthenticated, ensureRestaurant, creatorController.getApplicantsForJob);
+
+router.post('/select-applicant/:jobId/:applicantId', ensureAuthenticated, ensureRestaurant, creatorController.selectApplicant);
+
+module.exports = router;
 
 
 module.exports = router;

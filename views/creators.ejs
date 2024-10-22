@@ -184,12 +184,16 @@
                         <h3 class="text-lg font-semibold text-blue-950"><%= creator.name %></h3>
                     
                         <!-- Add to Basket Button -->
-                        <form action="/add-to-campaign" method="POST">
+                        <% if (!creator.selectedApplicant) { %>
+                        <form action="/creators/apply/<%= creator._id %>" method="POST">
                           <input type="hidden" name="creatorId" value="<%= creator._id %>">
-                          <button type="submit" class="flex items-center font-semibold px-2 py-1 font-medium transition duration-200 text-blue-950 focus:outline-none">Postuler
+                          <button type="submit" class="flex transform hover:scale-105 hover:rotate-3 items-center font-semibold px-2 py-1 font-medium transition duration-200 text-blue-950 focus:outline-none">Postuler
                             
                           </button>
                         </form>
+                        <% } else { %>
+                            <button class="bg-red-500 text-white px-2 py-1 rounded cursor-not-allowed" disabled>Pas dispo</button>
+                          <% } %>
                       </div>
                     
                       <!-- Creator Age -->
@@ -210,7 +214,7 @@
                       
                         <!-- "Voir" Button -->
                         <div class="flex">
-                          <a href="/creators/<%= creator._id %>" class="flex-inline bg-white shadow-md hover:bg-blue-950 text-blue-950 hover:text-white font-bold py-1 px-4 rounded">
+                          <a href="/creators/<%= creator._id %>" class="flex-inline transform hover:scale-105 hover:rotate-3 bg-white shadow-md hover:bg-blue-950 text-blue-950 hover:text-white font-bold py-1 px-4 rounded">
                             Voir +
                           </a>
                         </div>

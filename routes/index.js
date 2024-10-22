@@ -5,7 +5,7 @@ const router = express.Router();
 const authRoutes = require('./auth');
 const userRoutes = require('./users');
 const creatorRoutes = require('./creators');
-const campaignRoutes = require('./campaigns');
+
 
 
 // Home Route
@@ -42,6 +42,6 @@ router.get('/case_study3', (req, res) => {
 router.use('/', authRoutes);
 router.use('/', userRoutes);
 router.use('/', creatorRoutes);
-router.use('/', campaignRoutes);
+
 
 module.exports = router;

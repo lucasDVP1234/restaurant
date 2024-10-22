@@ -80,7 +80,7 @@
                 </div>
                 <!-- Ajouter à ma campagne Button -->
                 <div class="flex justify-center mt-6">
-                    <form action="/add-to-campaign" method="POST">
+                    <form action="/creators/apply/<%= creator._id %>" method="POST">
                       <input type="hidden" name="creatorId" value="<%= creator._id %>">
                       <button type="submit" class="shadow bg-blue-950 hover:bg-blue-800 text-white font-semibold px-6 py-2 rounded-full transition duration-300">
                         Ajouter à ma campagne
@@ -98,121 +98,17 @@
                   
                   <!-- Text span positioned above the background -->
                   <span class="relative font-semibold text-l text-white z-10">
-                  100% des vidéos présentées</span>
+                  100% des avis </span>
                   
               </span>
               
-                ont été produites par Scalevision
+                sont vérifiés par l'équipe de Job'ster
               
               </h2>
         </div>
-        <div class="bg-white rounded-2xl shadow-md overflow-hidden mt-6">
-            <!-- Section Title -->
-            <div class="px-6 pt-6">
-                <h2 class="text-2xl font-semibold text-blue-950 mb-4">Portfolio Vidéos</h2>
-            </div>
-            <!-- Video Grid -->
-            <div class="px-6 pb-6">
-                <div id="video-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
-                    <% 
-                        // Determine how many videos to show initially
-                        const initialVideos = 6;
-                        const totalVideos = creator.videos.length;
-                        const videosToShow = creator.videos.slice(0, initialVideos); // Assuming first image is cover
-                    %>
-                    <% videosToShow.forEach(function(videoUrl, index) { %>
-                        <div class="bg-gray-100 rounded-lg overflow-hidden shadow">
-                            <div class="relative">
-                                <video id="video-<%= index %>" class="w-full h-auto" controls muted autoplay>
-                                    <source src="<%= videoUrl %>" type="video/mp4">
-                                    Votre navigateur ne supporte pas la lecture de vidéos.
-                                </video>
-                                <button 
-                                    class="inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white opacity-0 hover:opacity-100 transition-opacity duration-300"
-                                    onclick="startVideo('video-<%= index %>')">
-                                    
-                                </button>
-                            </div>
-                        </div>
-                    <% }); %>
-                </div>
-                <!-- Show More Button -->
-                <% if (totalVideos > initialVideos) { %>
-                    <div class="flex justify-center mt-6">
-                        <button id="show-more-button" class="shadow bg-blue-950 hover:bg-blue-800 text-white font-semibold px-6 py-2 rounded-full transition duration-300">
-                            Afficher Plus
-                        </button>
-                    </div>
-                <% } %>
-            </div>
-        </div>
+        
+        
     </div>
 
-    <!-- Optional Footer -->
-    <!-- Include any necessary scripts -->
-    <script>
-        const creator = <%- JSON.stringify(creator) %>;
-        const initialVideos = 6; 
-        // Function to start/play the video
-        function startVideo(videoId) {
-            const video = document.getElementById(videoId);
-            if (video.paused) {
-                video.play();
-            } else {
-                video.pause();
-            }
-        }
-
-        // Show More Functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const showMoreButton = document.getElementById('show-more-button');
-            if (showMoreButton) {
-                showMoreButton.addEventListener('click', function() {
-                    // Fetch all video URLs except the ones already displayed
-                    const allVideos = creator.videos.slice(0, initialVideos+1);
-                    const videoGrid = document.getElementById('video-grid');
-                    const currentCount = videoGrid.children.length;
-                    const nextVideos = allVideos.slice(currentCount, currentCount + initialVideos);
-
-                    nextVideos.forEach(function(videoUrl, index) {
-                        const videoIndex = currentCount + index;
-                        const videoContainer = document.createElement('div');
-                        videoContainer.className = 'bg-gray-100 rounded-lg overflow-hidden shadow';
-
-                        const videoElement = document.createElement('video');
-                        videoElement.id = `video-${videoIndex}`;
-                        videoElement.className = 'w-full h-auto';
-                        videoElement.controls = true;
-                        videoElement.preload = 'none';
-
-                        const sourceElement = document.createElement('source');
-                        sourceElement.src = videoUrl;
-                        sourceElement.type = 'video/mp4';
-
-                        videoElement.appendChild(sourceElement);
-                        videoElement.innerHTML += 'Votre navigateur ne supporte pas la lecture de vidéos.';
-
-                        const button = document.createElement('button');
-                        button.className = 'absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white opacity-0 hover:opacity-100 transition-opacity duration-300';
-                        button.textContent = 'Start';
-                        button.onclick = function() { startVideo(`video-${videoIndex}`); };
-
-                        const relativeDiv = document.createElement('div');
-                        relativeDiv.className = 'relative';
-                        relativeDiv.appendChild(videoElement);
-                        relativeDiv.appendChild(button);
-
-                        videoContainer.appendChild(relativeDiv);
-                        videoGrid.appendChild(videoContainer);
-                    });
-
-                    // Hide the Show More button if no more videos to show
-                    if (currentCount + nextVideos.length >= allVideos.length) {
-                        showMoreButton.style.display = 'none';
-                    }
-                });
-            }
-        });
-    </script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 // controllers/userController.js
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
-const Campaign = require('../models/Campaign'); // Import Campaign
+
 const Creator = require('../models/Creator'); // Import Creator if needed
 
 
@@ -92,55 +92,32 @@ exports.setPassword = async (req, res) => {
 
 // Render Account Page
 exports.getAccount = async (req, res) => {
-    try {
-      const user = await User.findById(req.user._id);
-      if (!user.password) {
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user.password) {
       // Redirect to the campaign details form if user info is incomplete
-        return res.redirect('/');
-      }
-      // Find all campaigns for the logged-in user and populate the creator names
-      const campaigns = await Campaign.find({ userId: req.user._id })
-        .populate('creatorIds', 'name profileImage'); // Populate creators' names
-  
-      
-  
-      // Map campaigns to include the creators' names and count of creators
-      const campaignsWithCreators = campaigns.map((campaign) => {
-        let creators = [];
-        if (Array.isArray(campaign.creatorIds)) {
-          // campaign.creatorIds is an array
-          creators = campaign.creatorIds.map((creator) => ({
-            name : creator.name, 
-            photo : creator.profileImage
-          }));
-
-        } else if (campaign.creatorIds) {
-          // campaign.creatorIds is a single object
-          creators = [{
-            name: campaign.creatorIds.name,
-            photo: campaign.creatorIds.profileImage,
-          }];
-        } else {
-          // campaign.creatorIds is undefined or null
-          creators = [];
-        }
-  
-        const creatorCount = creators.length;
-  
-        return {
-          creators,
-          creatorCount,
-          budget: campaign.budget,
-          date: campaign.date ? campaign.date.toDateString() : 'N/A',
-          status: campaign.status,
-        };
-      });
-      
-  
-      // Render the account page with the campaigns and the user info
-      res.render('account', { campaigns: campaignsWithCreators, user: req.user });
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Error fetching campaigns.');
+      return res.redirect('/');
     }
-  };
+
+    
+
+    // Fetch jobs created by the logged-in restaurant
+    let jobs = [];
+    if (user.userType === 'restaurant') {
+      jobs = await Creator.find({ createdBy: user._id })
+        .populate('applicants', 'name email')
+        .populate('selectedApplicant', '_id');
+    } else if (user.userType === 'student') {
+      // Find jobs where the user has applied
+      jobs = await Creator.find({ applicants: user._id })
+        .populate('createdBy', 'companyName')
+        .populate('selectedApplicant', '_id');
+    }
+
+    // Render the account page with the campaigns, jobs, and the user info
+    res.render('account', { user: req.user, jobs });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error fetching campaigns.');
+  }
+};
