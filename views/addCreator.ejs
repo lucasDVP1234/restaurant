@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Ajouter un créateur</title>
+  <title>Ajouter un Job</title>
 </head>
 <body class="bg-gray-50 min-h-screen">
     <!-- Header -->
@@ -20,55 +20,61 @@
         </a>
         <div class="w-full max-w-lg bg-white shadow-xl rounded-2xl p-8">
             <!-- Page Title -->
-            <h1 class="text-3xl font-semibold text-blue-950 mb-6 text-center">Ajouter un créateur</h1>
+            <h1 data-aos="fade-up" class="relative text-3xl text-center font-bold mb-2 text-transparent bg-clip-text bg-blue-950 drop-shadow-lg"
+        >Créer un  
+        <span class="relative inline-block px-4 py-2">
+            <span class="absolute inset-0 bg-orange-500 rounded-lg transform -rotate-2 z-0 drop-shadow-lg"></span>
+            <span class="relative font-semibold text-3xl text-white z-10">Job</span>
+        </span>
+        </h1>
 
             <form action="/creators/add" method="POST" class="space-y-4">
             <!-- Name -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Nom</label>
+                    <label class="block text-sm font-medium text-gray-700">Nom du Job</label>
                     <input type="text" name="name" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out" required>
                 </div>
 
                 <!-- Age -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Âge</label>
+                    <label class="block text-sm font-medium text-gray-700">Âge Requis</label>
                     <input type="number" name="age" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out" required>
                 </div>
 
                 <!-- Country -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Pays</label>
+                    <label class="block text-sm font-medium text-gray-700">Lieux</label>
                     <input type="text" name="country" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out" required>
                 </div>
                 <!-- Langue -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Langue</label>
+                    <label class="block text-sm font-medium text-gray-700">Langue nécessaire</label>
                     <input type="text" name="langue" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out" required>
                 </div>
                 <!-- Genre -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Genre</label>
+                    <label class="block text-sm font-medium text-gray-700">Date et Heure</label>
                     <input type="text" name="genre" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out" required>
                 </div>
                 <!-- Atout -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Atout</label>
+                    <label class="block text-sm font-medium text-gray-700">Expérience requise</label>
                     <input type="text" name="atout" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Caméra</label>
-                    <input type="text" name="category" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out" required>
+                    <label class="block text-sm font-medium text-gray-700">Détails</label>
+                    <input type="text" name="category" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out">
                 </div>
                 <!-- Video Types -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Types de vidéos (séparés par des virgules)</label>
+                    <label class="block text-sm font-medium text-gray-700">Ce qu'il faut savoir faire</label>
                     <input type="text" name="videoTypes" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out">
                 </div>
 
                 <!-- Profile Image URL -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">URL de l'image de profil</label>
-                    <input type="text" name="profileImage" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out" required>
+                    <input type="text" name="profileImage" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out">
                 </div>
 
                 <!-- Portfolio Images URLs -->
@@ -86,8 +92,8 @@
 
                 <!-- Submit Button -->
                 <div>
-                    <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-white bg-blue-950 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
-                    Ajouter le créateur
+                    <button type="submit" class="w-full text-lg font-semibold flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-white bg-blue-950 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                    Ajouter le Job
                     </button>
                 </div>
             </form>

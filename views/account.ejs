@@ -26,19 +26,22 @@
     <%- include('header-login') %>
     <div class="container mx-auto px-4 py-12">
         <div class="bg-gray-50 p-10 ">
-            <h1 class="text-4xl font-bold text-gray-800 mb-2">Bienvenue, <span class="text-blue-600"><%= user.name %></span></h1>
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">Bienvenue, <span class="text-orange-500"><%= user.name %></span></h1>
             <h2 class="text-lg text-gray-600 mb-4">Compte : <%= user.email %></h2>
             <% if (user && user.userType === 'restaurant') { %>
-                <h2 class="text-lg text-gray-600">Restaurant</h2>
-              <% } %>
+                <h2 class="text-2xl font-bold text-orange-500">Restaurant : <%= user.companyName %> </h2>
+              
+              <% } else { %>
+                <h2 class="text-lg text-gray-600">Étudiant</h2>
+            <% } %>
             <% if (user && user.userType === 'restaurant') { %>
                 <div class="mb-4 mt-4">
-                  <a href="/creators/add" class="inline-flex items-center mr-2 px-6 py-2 text-sm font-medium rounded-lg transition duration-200 shadow-sm
-                    bg-white text-blue-950"><img src="/images/plus.png" alt="Mes créateurs favoris" class="w-6 h-6 mr-1">
+                  <a href="/creators/add" class="inline-flex items-center mr-2 px-6 py-2 text-sm hover:bg-orange-700 font-medium rounded-lg transition duration-200 shadow-sm
+                    bg-orange-500 text-white"><img src="/images/plus.png" alt="Mes créateurs favoris" class="w-5 h-5 mr-2">
                     Ajouter un Job
                   </a>
-                  <a href="/creators/edit" class="inline-flex items-center px-6 py-2 text-sm font-medium rounded-lg transition duration-200 shadow-sm
-                    bg-white text-blue-950"><img src="/images/11.png" alt="Mes créateurs favoris" class="w-6 h-6 mr-1">
+                  <a href="/creators/edit" class="inline-flex items-center px-6 py-2 text-sm hover:bg-orange-700 font-medium rounded-lg transition duration-200 shadow-sm
+                    bg-orange-500 text-white"><img src="/images/11_1.png" alt="Mes créateurs favoris" class="w-5 h-5 mr-2">
                     Modifier un Job
                   </a>
                 
@@ -309,8 +312,8 @@
             </div>
 
             <!-- Set Password Form -->
-            <div class="bg-white p-8 rounded-2xl shadow-md">
-                <h2 class="text-2xl font-semibold text-gray-700 mb-6">Ajouter un mot de passe</h2>
+            <div class="bg-white p-8 max-w-md rounded-2xl shadow-md">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-6">Modifier votre mot de passe</h2>
                 <form action="/set-password" method="POST" class="space-y-6">
                     <div>
                         <input type="password" name="password" placeholder="Nouveau mot de passe" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300" />
@@ -318,7 +321,7 @@
                     <div>
                         <input type="password" name="confirmPassword" placeholder="Confirmer le mot de passe" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300" />
                     </div>
-                    <button type="submit" class="w-full bg-orange-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg shadow-md transition duration-300">
+                    <button type="submit" class="w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 rounded-lg shadow-md transition duration-300">
                         Ajouter un mot de passe
                     </button>
                 </form>

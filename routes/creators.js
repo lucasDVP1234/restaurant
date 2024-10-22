@@ -3,6 +3,7 @@ const express = require('express');
 const creatorController = require('../controllers/creatorController');
 const { ensureAuthenticated } = require('../middlewares/auth');
 const { ensureStudent } = require('../middlewares/auth');
+const { ensureRestaurant } = require('../middlewares/auth');
 const { isAdmin } = require('../middlewares/auth');
 const router = express.Router();
 
@@ -10,10 +11,10 @@ const router = express.Router();
 
 
 // Route to display the form to add a new creator (GET request)
-router.get('/add', isAdmin, creatorController.getAddCreator);
+router.get('/add', ensureRestaurant, creatorController.getAddCreator);
 
 // Route to handle form submission and add the new creator to the database (POST request)
-router.post('/add', isAdmin, creatorController.postAddCreator);
+router.post('/add', ensureRestaurant, creatorController.postAddCreator);
 
 router.get('/creators/edit', creatorController.getEditCreator);
 

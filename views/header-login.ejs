@@ -23,9 +23,9 @@
       <!-- Desktop Navigation -->
       <nav class="hidden md:flex space-x-4">
       
-      
+        <% if (user && user.userType === 'restaurant') { %>
         <!-- Mes créateurs favoris -->
-        <a href="#" class="flex items-center px-4 py-2 text-sm font-medium text-white bg-orange-500 hover:ring-2 hover:ring-blue-950 rounded-lg transition duration-200 shadow-sm" onclick="Calendly.initPopupWidget({url: 'https://calendly.com/scalevision/planifier-une-demonstration?hide_event_type_details=0&hide_gdpr_banner=1&text_color=092f6a&primary_color=092f6a'});return false;">
+        <a href="#" class="flex items-center px-4 py-2 text-sm font-medium text-white bg-orange-500 hover:bg-orange-700 rounded-lg transition duration-200 shadow-sm" onclick="Calendly.initPopupWidget({url: 'https://calendly.com/scalevision/planifier-une-demonstration?hide_event_type_details=0&hide_gdpr_banner=1&text_color=092f6a&primary_color=092f6a'});return false;">
         
           
         
@@ -33,7 +33,7 @@
           <img src="/images/demobl.png" alt="Mes créateurs favoris" class="w-6 h-6 mr-1">
           Démo
         </a>
-
+        <% } %>
         <% if (user && user.userType === 'student') { %>
           
         
@@ -44,13 +44,13 @@
         <% } else { %>
           text-blue-950 bg-white hover:ring-2 hover:ring-orange-500
         <% } %>">
-          <img src="/images/15.png" alt="Créer une campagne" class="w-6 h-6 mr-1">
+          <img src="/images/loupe.png" alt="Créer une campagne" class="w-6 h-6 mr-1">
           Trouver un job
         </a>
         
         <!-- Basket Icon -->
         <button id="basket-button" class="relative flex items-center px-4 py-2 text-sm font-medium rounded-lg transition duration-200 shadow-sm text-blue-950 bg-white hover:ring-2 hover:ring-orange-500 focus:outline-none">
-          <img src="/images/panier.png" alt="Panier" class="w-6 h-6">
+          <img src="/images/toc.png" alt="Panier" class="w-6 h-6 mr-1">Mes demandes
           <% if (basketCreators.length > 0) { %>
             <!-- Badge showing the number of items -->
             <span class="absolute top-0 right-0 -mt-1 -mr-1 bg-red-500 text-white rounded-full h-5 w-5 flex items-center justify-center text-xs">
