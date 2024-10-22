@@ -28,18 +28,18 @@
         <div class="bg-gray-50 p-10 ">
             <h1 class="text-4xl font-bold text-gray-800 mb-2">Bienvenue, <span class="text-blue-600"><%= user.name %></span></h1>
             <h2 class="text-lg text-gray-600 mb-4">Compte : <%= user.email %></h2>
-            <% if (user && user.role === 'admin') { %>
-                <h2 class="text-lg text-gray-600">Administrateur</h2>
+            <% if (user && user.userType === 'restaurant') { %>
+                <h2 class="text-lg text-gray-600">Restaurant</h2>
               <% } %>
-            <% if (user && user.role === 'admin') { %>
+            <% if (user && user.userType === 'restaurant') { %>
                 <div class="mb-4 mt-4">
                   <a href="/creators/add" class="inline-flex items-center mr-2 px-6 py-2 text-sm font-medium rounded-lg transition duration-200 shadow-sm
                     bg-white text-blue-950"><img src="/images/plus.png" alt="Mes créateurs favoris" class="w-6 h-6 mr-1">
-                    Ajouter un créateur
+                    Ajouter un Job
                   </a>
                   <a href="/creators/edit" class="inline-flex items-center px-6 py-2 text-sm font-medium rounded-lg transition duration-200 shadow-sm
                     bg-white text-blue-950"><img src="/images/11.png" alt="Mes créateurs favoris" class="w-6 h-6 mr-1">
-                    Modifier un créateur
+                    Modifier un Job
                   </a>
                 
                   
@@ -112,7 +112,7 @@
 
             <!-- Campaign Status Section -->
             <div class="mb-16">
-                <h3 class="text-2xl font-semibold text-center text-gray-700 mb-8">État de la dernière campagne</h3>
+                <h3 class="text-2xl font-semibold text-center text-gray-700 mb-8">État du dernier Job proposé</h3>
                 <% if (campaigns.length > 0) { %>
                     <% let lastCampaign = campaigns[campaigns.length - 1]; %>
                     <% 
@@ -251,7 +251,7 @@
             </div>
 
             <div class="mb-16">
-                <h3 class="text-2xl font-semibold text-center text-gray-700 mb-8">Vos campagnes</h3>
+                <h3 class="text-2xl font-semibold text-center text-gray-700 mb-8">Vos Jobs créés</h3>
                 <% if (campaigns.length > 0) { %>
                     <div class="overflow-x-auto rounded-2xl shadow-md">
                         <table class="min-w-full bg-white rounded-2xl shadow-md">
@@ -318,7 +318,7 @@
                     <div>
                         <input type="password" name="confirmPassword" placeholder="Confirmer le mot de passe" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300" />
                     </div>
-                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg shadow-md transition duration-300">
+                    <button type="submit" class="w-full bg-orange-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg shadow-md transition duration-300">
                         Ajouter un mot de passe
                     </button>
                 </form>

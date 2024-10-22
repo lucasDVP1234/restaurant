@@ -46,4 +46,26 @@ router.post('/signup', (req, res, next) => {
     next();
 }, userController.postSignup);
 
+router.get('/set-role', (req, res) => {
+    res.render('set-role');
+  });
+
+router.get('/signup/:userType', userController.getSignup);
+router.post('/signup/:userType', userController.postSignup);
+
+// Login Routes
+router.get('/login/:userType', authController.getLogin);
+router.post('/login/:userType', authController.postLogin);
+
+
+router.post('/set-role', async (req, res) => {
+const userType = req.body.userType;
+if (['student', 'restaurant'].includes(userType)) {
+    await User.findByIdAndUpdate(req.user._id, { userType: userType });
+    res.redirect('/account');
+} else {
+    res.status(400).send('Invalid user type.');
+}
+});
+
 module.exports = router;

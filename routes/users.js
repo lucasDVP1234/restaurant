@@ -1,7 +1,7 @@
 // routes/users.js
 const express = require('express');
 const userController = require('../controllers/userController');
-const { ensureAuthenticated, ensureProfileComplete } = require('../middlewares/auth');
+const { ensureAuthenticated } = require('../middlewares/auth');
 const router = express.Router();
 
 
@@ -9,6 +9,6 @@ const router = express.Router();
 router.post('/set-password', ensureAuthenticated, userController.setPassword);
 
 // Account Page
-router.get('/account', ensureAuthenticated,ensureProfileComplete, userController.getAccount);
+router.get('/account', ensureAuthenticated, userController.getAccount);
 
 module.exports = router;

@@ -3,16 +3,18 @@ const passport = require('passport');
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 
-// Render Login Page
 exports.getLogin = (req, res) => {
+  const userType = req.params.userType;
   if (req.isAuthenticated()) {
     return res.redirect('/account');
   }
-  res.render('login');
+  res.render('login', { userType });
 };
 
 // Handle Local Login
 exports.postLogin = (req, res, next) => {
+  const userType = req.params.userType;
+  req.body.userType = userType; // Add userType to the request body for passport
   passport.authenticate('local', (err, user, info) => {
     if (err) {
       console.error('Authentication error:', err);
@@ -31,7 +33,6 @@ exports.postLogin = (req, res, next) => {
     });
   })(req, res, next);
 };
-
 // Handle Logout
 exports.logout = (req, res, next) => {
   req.logout(function (err) {
@@ -44,6 +45,10 @@ exports.logout = (req, res, next) => {
 };
 
 // Google OAuth Callback
-exports.googleCallback = (req, res) => {
-  res.redirect('/creators');
+exports.googleCallback = async (req, res) => {
+  if (!req.user.userType) {
+    // Redirect to a page where the user can select their role
+    return res.redirect('/set-role');
+  }
+  res.redirect('/account');
 };

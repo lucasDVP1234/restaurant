@@ -7,17 +7,20 @@ const Creator = require('../models/Creator'); // Import Creator if needed
 
 // Render Signup Page
 exports.getSignup = (req, res) => {
+  const userType = req.params.userType;
   if (req.isAuthenticated()) {
     return res.redirect('/account');
   }
-  res.render('signup');
+  res.render('signup', { userType });
 };
 
 // Handle Signup
 exports.postSignup = async (req, res) => {
+  const userType = req.params.userType;
   try {
     const email = req.body.email.toLowerCase().trim();
-    const companyName = req.body.companyName;
+    const password = req.body.password; // Assuming you're collecting password
+    let newUser;
 
     // Check if the email already exists
     const existingUser = await User.findOne({ email: email });
@@ -25,13 +28,27 @@ exports.postSignup = async (req, res) => {
       return res.send('An account with this email already exists. Please log in or use a different email.');
     }
 
-    const newUser = new User({
-      email: email,
-      companyName: companyName,
-    });
+    if (userType === 'restaurant') {
+      const companyName = req.body.companyName;
+      newUser = new User({
+        email: email,
+        companyName: companyName,
+        userType: 'restaurant',
+        password: await bcrypt.hash(password, 10), // Hash the password
+      });
+    } else if (userType === 'student') {
+      const name = req.body.name;
+      newUser = new User({
+        email: email,
+        name: name,
+        userType: 'student',
+        password: await bcrypt.hash(password, 10), // Hash the password
+      });
+    } else {
+      return res.status(400).send('Invalid user type.');
+    }
 
     const savedUser = await newUser.save();
-    // req.session.userId = savedUser._id.toString();
 
     // Authenticate the user after successful signup
     req.logIn(savedUser, function (err) {
@@ -39,7 +56,7 @@ exports.postSignup = async (req, res) => {
         console.error(err);
         return res.redirect('/');
       }
-      return res.redirect('/creators');
+      return res.redirect('/account');
     });
   } catch (err) {
     console.error('Error during signup:', err);
@@ -77,9 +94,9 @@ exports.setPassword = async (req, res) => {
 exports.getAccount = async (req, res) => {
     try {
       const user = await User.findById(req.user._id);
-      if (!user.name || !user.job) {
+      if (!user.password) {
       // Redirect to the campaign details form if user info is incomplete
-        return res.redirect('/creators');
+        return res.redirect('/');
       }
       // Find all campaigns for the logged-in user and populate the creator names
       const campaigns = await Campaign.find({ userId: req.user._id })

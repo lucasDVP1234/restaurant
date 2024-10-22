@@ -2,6 +2,7 @@
 const express = require('express');
 const creatorController = require('../controllers/creatorController');
 const { ensureAuthenticated } = require('../middlewares/auth');
+const { ensureStudent } = require('../middlewares/auth');
 const { isAdmin } = require('../middlewares/auth');
 const router = express.Router();
 
@@ -18,9 +19,9 @@ router.get('/creators/edit', creatorController.getEditCreator);
 
 router.post('/creators/edit', creatorController.postEditCreator);
 
-router.get('/creators', ensureAuthenticated, creatorController.getCreators);
+router.get('/creators', ensureAuthenticated, ensureStudent, creatorController.getCreators);
 
-router.get('/creators/:id', ensureAuthenticated, creatorController.getCreatorsById);
+router.get('/creators/:id', ensureAuthenticated, ensureStudent, creatorController.getCreatorsById);
 
 
 

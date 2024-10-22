@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
     // Fetch all case studies (limit to 3 if necessary)
     
     
-    res.render('index'); // Pass 'case_study' to EJS
+    res.render('set-role'); // Pass 'case_study' to EJS
   } catch (error) {
     console.error('Error loading the LP', error);
     res.status(500).send('Server Error');

@@ -33,20 +33,23 @@ module.exports = function(passport) {
   ));
 
   // Local Strategy
-  passport.use(new LocalStrategy({
+  passport.use(new LocalStrategy(
+    {
       usernameField: 'email',
       passwordField: 'password',
+      passReqToCallback: true, // Allow us to access req in the callback
     },
-    async (email, password, done) => {
+    async (req, email, password, done) => {
       try {
+        const userType = req.body.userType;
         email = email.toLowerCase().trim();
-        console.log('Authenticating user:', email);
+        console.log('Authenticating user:', email, 'UserType:', userType);
 
-        // Find the user by email
-        const user = await User.findOne({ email: email });
+        // Find the user by email and userType
+        const user = await User.findOne({ email: email, userType: userType });
         if (!user) {
-          console.log('User not foun');
-          return done(null, false, { message: 'Incorrect email.' });
+          console.log('User not found');
+          return done(null, false, { message: 'Incorrect email or user type.' });
         }
 
         // Check if the user has a password set
