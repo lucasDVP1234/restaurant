@@ -40,7 +40,7 @@
                 <div id="filters" class="space-y-6">
                     <!-- Category Filter -->
                     <div>
-                        <h3 class="font-semibold mb-2 text-blue-950">Genre</h3>
+                        <h3 class="font-semibold mb-2 text-blue-950">Ville</h3>
                         <div class="flex flex-wrap gap-2">
                             <% genres.forEach(function(genre) { %>
                                 <button type="button" class="filter-button shadow-md px-3 py-1 bg-white text-blue-950 rounded-full hover:text-white hover:bg-blue-950 text-sm focus:outline-none" data-filter="<%= genre %>" data-filter-type="Genre">
@@ -51,7 +51,7 @@
                     </div>
                     <!-- Category Filter -->
                     <div>
-                        <h3 class="font-semibold mb-2 text-blue-950">Caméra</h3>
+                        <h3 class="font-semibold mb-2 text-blue-950">Type de job</h3>
                         <div class="flex flex-wrap gap-1">
                             <% categories.forEach(function(category) { %>
                                 <button type="button" class="filter-button shadow-md px-3 py-1 bg-white text-blue-950 rounded-full hover:text-white hover:bg-blue-950 text-sm focus:outline-none" data-filter="<%= category %>" data-filter-type="Category">
@@ -63,7 +63,7 @@
                     
                     <!-- Video Type Filter Buttons -->
                     <div>
-                        <h3 class="font-semibold mb-2 flex text-blue-950">Type de vidéo</h3>
+                        <h3 class="font-semibold mb-2 flex text-blue-950">Magasins</h3>
                         <div class="flex flex-wrap gap-1">
                             <% videoTypes.forEach(function(type) { %>
                                 <button type="button" class="filter-button shadow-md px-3 py-1 bg-white text-blue-950 rounded-full text-sm hover:text-white hover:bg-blue-950 focus:outline-none" data-filter="<%= type %>" data-filter-type="Type of Videos">
@@ -75,7 +75,7 @@
         
                     <!-- Age Selector -->
                     <div>
-                        <h3 class="font-semibold mb-2 text-blue-950">Age</h3>
+                        <h3 class="font-semibold mb-2 text-blue-950">Age Requis</h3>
                         <!-- Age Inputs -->
                         <div class="flex items-center space-x-2">
                             <input type="number" name="ageMin2" id="age-min" class="w-20 px-2 py-1 border rounded" placeholder="Min" min="0" max="100" value="0" />
@@ -86,7 +86,7 @@
         
                     <!-- Country Filter -->
                     <div>
-                        <h3 class="font-semibold text-blue-950 mb-2">Pays</h3>
+                        <h3 class="font-semibold text-blue-950 mb-2">Distance</h3>
                         <div class="flex flex-wrap gap-1">
                             <% countries.forEach(function(country) { %>
                                 <button type="button" class="filter-button shadow-md px-3 py-1 bg-white text-blue-950 rounded-full hover:text-white hover:bg-blue-950 text-sm focus:outline-none" data-filter="<%= country %>" data-filter-type="Country">
@@ -96,7 +96,7 @@
                         </div>
                     </div>
                     <div>
-                        <h3 class="font-semibold text-blue-950 mb-2">Langue</h3>
+                        <h3 class="font-semibold text-blue-950 mb-2">Langue parlé</h3>
                         <div class="flex flex-wrap gap-2">
                             <% langues.forEach(function(langue) { %>
                                 <button type="button" class="filter-button shadow-md px-3 py-1 bg-white text-blue-950 rounded-full hover:text-white hover:bg-blue-950 text-sm focus:outline-none" data-filter="<%= langue %>" data-filter-type="Langue">
@@ -106,7 +106,7 @@
                         </div>
                     </div>
                     <div>
-                        <h3 class="font-semibold text-blue-950 mb-2">Spécial</h3>
+                        <h3 class="font-semibold text-blue-950 mb-2">Type de cuisine</h3>
                         <div class="flex flex-wrap gap-2">
                             <% atouts.forEach(function(atout) { %>
                                 <button type="button" class="filter-button shadow-md px-3 py-1 bg-white text-blue-950 rounded-full hover:text-white hover:bg-blue-950 text-sm focus:outline-none" data-filter="<%= atout %>" data-filter-type="Atout">
@@ -139,7 +139,7 @@
                   <span class="relative inline-block px-4 py-1 mr-2">
                     
                     <!-- Background span with white color, rounded corners, and rotation -->
-                    <span class="absolute inset-0 bg-blue-500 rounded-lg transform -rotate-2 z-0 drop-shadow-lg"></span>
+                    <span class="absolute inset-0 bg-orange-500 rounded-lg z-0 drop-shadow-lg"></span>
                     
                     <!-- Text span positioned above the background -->
                     <span class="relative font-semibold text-l text-white z-10">
@@ -186,8 +186,8 @@
                         <!-- Add to Basket Button -->
                         <form action="/add-to-campaign" method="POST">
                           <input type="hidden" name="creatorId" value="<%= creator._id %>">
-                          <button type="submit" class="flex items-center text-sm px-2 py-1 font-medium transition duration-200 text-blue-950 focus:outline-none">
-                            <img src="/images/panier.png" alt="Ajouter au panier" class="w-6 h-6">
+                          <button type="submit" class="flex items-center font-semibold px-2 py-1 font-medium transition duration-200 text-blue-950 focus:outline-none">Postuler
+                            
                           </button>
                         </form>
                       </div>
@@ -211,7 +211,7 @@
                         <!-- "Voir" Button -->
                         <div class="flex">
                           <a href="/creators/<%= creator._id %>" class="flex-inline bg-white shadow-md hover:bg-blue-950 text-blue-950 hover:text-white font-bold py-1 px-4 rounded">
-                            Voir
+                            Voir +
                           </a>
                         </div>
                       </div>

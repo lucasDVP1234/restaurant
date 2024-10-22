@@ -41,16 +41,16 @@
         <!-- Créer une campagne -->
         <a href="/creators" class="flex items-center px-4 py-2 text-sm font-medium rounded-lg transition duration-200 shadow-sm
         <% if (currentUrl === '/creators') { %>
-          bg-white text-blue-950 ring-2 ring-blue-500
+          bg-white text-blue-950 ring-2 ring-orange-500
         <% } else { %>
-          text-blue-950 bg-white hover:ring-2 hover:ring-blue-500
+          text-blue-950 bg-white hover:ring-2 hover:ring-orange-500
         <% } %>">
           <img src="/images/15.png" alt="Créer une campagne" class="w-6 h-6 mr-1">
           Trouver un job
         </a>
 
         <!-- Basket Icon -->
-      <button id="basket-button" class="relative flex items-center px-4 py-2 text-sm font-medium rounded-lg transition duration-200 shadow-sm text-blue-950 bg-white hover:ring-2 hover:ring-blue-500 focus:outline-none">
+      <button id="basket-button" class="relative flex items-center px-4 py-2 text-sm font-medium rounded-lg transition duration-200 shadow-sm text-blue-950 bg-white hover:ring-2 hover:ring-orange-500 focus:outline-none">
         <img src="/images/panier.png" alt="Panier" class="w-6 h-6">
         <% if (basketCreators.length > 0) { %>
           <!-- Badge showing the number of items -->
@@ -63,9 +63,9 @@
         <!-- Mon compte -->
         <a href="/account" class="flex items-center px-4 py-2 text-sm font-medium rounded-lg transition duration-200 shadow-sm
         <% if (currentUrl === '/account') { %>
-          bg-white text-blue-950 ring-2 ring-blue-500
+          bg-white text-orange-950 ring-2 ring-orange-500
         <% } else { %>
-          text-blue-950 bg-white hover:ring-2 hover:ring-blue-500
+          text-blue-950 bg-white hover:ring-2 hover:ring-orange-500
         <% } %>">
           <img src="/images/11.png" alt="Mon compte" class="w-6 h-6">
       
@@ -76,7 +76,7 @@
         <% if (currentUrl === '/logout') { %>
           text-blue-950 text-white ring-2 ring-blue-500
         <% } else { %>
-          text-blue-950 bg-white hover:ring-2 hover:ring-blue-500
+          text-blue-950 bg-white hover:ring-2 hover:ring-orange-500
         <% } %>">
           <img src="/images/10.png" alt="Déconnexion" class="w-6 h-6">
           
@@ -95,7 +95,7 @@
   
       <!-- Mobile Menu Button -->
       <div class="md:hidden">
-        <button id="mobile-menu-button" class="text-gray-700 hover:text-blue-500 focus:outline-none">
+        <button id="mobile-menu-button" class="text-gray-700 hover:text-orange-500 focus:outline-none">
           <!-- Menu Icon -->
           <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
