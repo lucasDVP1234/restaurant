@@ -1,70 +1,9 @@
 // controllers/userController.js
 const bcrypt = require('bcrypt');
-const User = require('../models/User');
+const Student = require('../models/Student');
+const Restaurant = require('../models/Restaurant');
+const Job = require('../models/Job');
 
-const Job = require('../models/Job'); // Import Job if needed
-
-
-// Render Signup Page
-exports.getSignup = (req, res) => {
-  const userType = req.params.userType;
-  if (req.isAuthenticated()) {
-    return res.redirect('/account');
-  }
-  res.render('signup', { userType });
-};
-
-// Handle Signup
-exports.postSignup = async (req, res) => {
-  const userType = req.params.userType;
-  try {
-    const email = req.body.email.toLowerCase().trim();
-    const password = req.body.password; // Assuming you're collecting password
-    let newUser;
-
-    // Check if the email already exists
-    const existingUser = await User.findOne({ email: email });
-    if (existingUser) {
-      return res.send('An account with this email already exists. Please log in or use a different email.');
-    }
-
-    if (userType === 'restaurant') {
-      const companyName = req.body.companyName;
-      newUser = new User({
-        email: email,
-        companyName: companyName,
-        userType: 'restaurant',
-        password: await bcrypt.hash(password, 10), // Hash the password
-      });
-    } else if (userType === 'student') {
-      const name = req.body.name;
-      newUser = new User({
-        email: email,
-        name: name,
-        userType: 'student',
-        password: await bcrypt.hash(password, 10), // Hash the password
-      });
-    } else {
-      return res.status(400).send('Invalid user type.');
-    }
-
-    const savedUser = await newUser.save();
-
-    // Authenticate the user after successful signup
-    req.logIn(savedUser, function (err) {
-      if (err) {
-        console.error(err);
-        return res.redirect('/');
-      }
-      return res.redirect('/account');
-    });
-  } catch (err) {
-    console.error('Error during signup:', err);
-    res.send('An error occurred during signup. Please try again.');
-  }
-};
-
-// Set Password
 exports.setPassword = async (req, res) => {
   try {
     const { password, confirmPassword } = req.body;
@@ -75,14 +14,16 @@ exports.setPassword = async (req, res) => {
     }
 
     // Hash the password
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     // Update the user's password in the database
-    await User.findByIdAndUpdate(req.user._id, { password: hashedPassword });
-    console.log('Password updated for user:', req.user._id);
+    if (req.user.userType === 'student') {
+      await Student.findByIdAndUpdate(req.user._id, { password: hashedPassword });
+    } else if (req.user.userType === 'restaurant') {
+      await Restaurant.findByIdAndUpdate(req.user._id, { password: hashedPassword });
+    }
 
-    console.log('Password set successfully. You can now log in with your email and password.');
+    console.log('Password updated for user:', req.user._id);
     res.redirect('/account');
   } catch (err) {
     console.error('Error setting password:', err);
@@ -90,34 +31,29 @@ exports.setPassword = async (req, res) => {
   }
 };
 
-// Render Account Page
 exports.getAccount = async (req, res) => {
   try {
-    const user = await User.findById(req.user._id);
-    if (!user.password) {
-      // Redirect to the campaign details form if user info is incomplete
-      return res.redirect('/');
-    }
+    const user = req.user;
 
-    
-
-    // Fetch jobs created by the logged-in restaurant
+    // Fetch jobs based on user type
     let jobs = [];
     if (user.userType === 'restaurant') {
       jobs = await Job.find({ createdBy: user._id })
-        .populate('applicants', 'name email')
+        .populate('applicants', 'firstName lastName email')
         .populate('selectedApplicant', '_id');
-    } else if (user.userType === 'student') {
-      // Find jobs where the user has applied
-      jobs = await Job.find({ applicants: user._id })
-        .populate('createdBy', 'companyName')
-        .populate('selectedApplicant', '_id');
-    }
 
-    // Render the account page with the campaigns, jobs, and the user info
-    res.render('account', { user: req.user, jobs });
+      res.render('account-restaurant', { user, jobs });
+    } else if (user.userType === 'student') {
+      jobs = await Job.find({ applicants: user._id })
+        .populate('createdBy', 'name')
+        .populate('selectedApplicant', '_id');
+
+      res.render('account-student', { user, jobs });
+    } else {
+      res.status(400).send('Invalid user type.');
+    }
   } catch (err) {
-    console.error(err);
-    res.status(500).send('Error fetching campaigns.');
+    console.error('Error fetching account data:', err);
+    res.status(500).send('Error fetching account data.');
   }
 };

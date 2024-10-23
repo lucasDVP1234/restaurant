@@ -18,54 +18,26 @@ router.get('/auth/google/callback', (req, res, next) => {
     next();
 }, passport.authenticate('google', { failureRedirect: '/' }), authController.googleCallback);
 
-// Local Authentication Routes
-router.get('/login', (req, res, next) => {
-    console.log('GET /login');
-    next();
-}, authController.getLogin);
 
-router.post('/login', (req, res, next) => {
-    console.log('POST /login with body:', req.body);
-    next();
-}, authController.postLogin);
+// Google OAuth Routes (Need adjustment for separate models)
 
-// Logout Route
-router.get('/logout', (req, res, next) => {
-    console.log('GET /logout');
-    next();
-}, authController.logout);
+// Student Signup
+router.get('/signup/student', authController.getSignupStudent);
+router.post('/signup/student', authController.postSignupStudent);
 
-// Signup Routes
-router.get('/signup', (req, res, next) => {
-    console.log('GET /signup');
-    next();
-}, userController.getSignup);
+// Restaurant Signup
+router.get('/signup/restaurant', authController.getSignupRestaurant);
+router.post('/signup/restaurant', authController.postSignupRestaurant);
 
-router.post('/signup', (req, res, next) => {
-    console.log('POST /signup with body:', req.body);
-    next();
-}, userController.postSignup);
+// Student Login
+router.get('/login/student', authController.getLoginStudent);
+router.post('/login/student', authController.postLoginStudent);
 
-router.get('/set-role', (req, res) => {
-    res.render('set-role');
-  });
+// Restaurant Login
+router.get('/login/restaurant', authController.getLoginRestaurant);
+router.post('/login/restaurant', authController.postLoginRestaurant);
 
-router.get('/signup/:userType', userController.getSignup);
-router.post('/signup/:userType', userController.postSignup);
-
-// Login Routes
-router.get('/login/:userType', authController.getLogin);
-router.post('/login/:userType', authController.postLogin);
-
-
-router.post('/set-role', async (req, res) => {
-const userType = req.body.userType;
-if (['student', 'restaurant'].includes(userType)) {
-    await User.findByIdAndUpdate(req.user._id, { userType: userType });
-    res.redirect('/account');
-} else {
-    res.status(400).send('Invalid user type.');
-}
-});
+// Logout
+router.get('/logout', authController.logout);
 
 module.exports = router;

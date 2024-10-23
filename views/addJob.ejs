@@ -1,9 +1,11 @@
-<!-- addJob.ejs -->
-
+<!-- views/addJob.ejs -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <title>Ajouter un Job</title>
+  <!-- Include Montserrat Font and Tailwind CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/tailwind.css">
 </head>
 <body class="bg-gray-50 min-h-screen">
     <!-- Header -->
@@ -16,88 +18,87 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
-            
         </a>
         <div class="w-full max-w-lg bg-white shadow-xl rounded-2xl p-8">
             <!-- Page Title -->
-            <h1 data-aos="fade-up" class="relative text-3xl text-center font-bold mb-2 text-transparent bg-clip-text bg-blue-950 drop-shadow-lg"
-        >Créer un  
-        <span class="relative inline-block px-4 py-2">
-            <span class="absolute inset-0 bg-orange-500 rounded-lg transform -rotate-2 z-0 drop-shadow-lg"></span>
-            <span class="relative font-semibold text-3xl text-white z-10">Job</span>
-        </span>
-        </h1>
+            <h1 data-aos="fade-up" class="relative text-3xl text-center font-bold mb-2 text-transparent bg-clip-text bg-blue-950 drop-shadow-lg">
+                Créer un
+                <span class="relative inline-block px-4 py-2">
+                    <span class="absolute inset-0 bg-orange-500 rounded-lg transform -rotate-2 z-0 drop-shadow-lg"></span>
+                    <span class="relative font-semibold text-3xl text-white z-10">Job</span>
+                </span>
+            </h1>
 
             <form action="/jobs/add" method="POST" class="space-y-4">
-            <!-- Name -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Nom du Job</label>
-                    <input type="text" name="name" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out" required>
-                </div>
-
-                <!-- Age -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Âge Requis</label>
-                    <input type="number" name="age" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out" required>
-                </div>
-
-                <!-- Country -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Lieux</label>
-                    <input type="text" name="country" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out" required>
-                </div>
-                <!-- Langue -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Langue nécessaire</label>
-                    <input type="text" name="langue" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out" required>
-                </div>
-                <!-- Genre -->
+                <!-- Date and Time -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Date et Heure</label>
-                    <input type="text" name="genre" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out" required>
-                </div>
-                <!-- Atout -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Expérience requise</label>
-                    <input type="text" name="atout" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Détails</label>
-                    <input type="text" name="category" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out">
-                </div>
-                <!-- Video Types -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Ce qu'il faut savoir faire</label>
-                    <input type="text" name="videoTypes" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out">
+                    <input type="datetime-local" name="dateAndTime" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required>
                 </div>
 
-                <!-- Profile Image URL -->
+                <!-- Job Duration -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">URL de l'image de profil</label>
-                    <input type="text" name="profileImage" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out">
+                    <label class="block text-sm font-medium text-gray-700">Durée du Job (en heures)</label>
+                    <input type="number" name="jobDuration" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required>
                 </div>
 
-                <!-- Portfolio Images URLs -->
+                <!-- Description -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Image de Fond</label>
-                    <input type="text" name="portfolioImages" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out">
-                </div>
-                <!-- Videos URLs -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Videos</label>
-                    <input type="text" name="videos" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out">
+                    <label class="block text-sm font-medium text-gray-700">Description</label>
+                    <textarea name="description" rows="3" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required></textarea>
                 </div>
 
-                
+                <!-- Mission -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Mission</label>
+                    <select name="mission" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+                        <option value="ponctuel">Ponctuel</option>
+                        <option value="récurrent">Récurrent</option>
+                    </select>
+                </div>
+
+                <!-- Remuneration -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Rémunération (€)</label>
+                    <input type="number" name="remuneration" step="0.01" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required>
+                </div>
+
+                <!-- Contract Type -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Type de Contrat</label>
+                    <select name="contractType" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+                        <option value="extra">Extra</option>
+                        <option value="CDD">CDD</option>
+                        <option value="CDI">CDI</option>
+                    </select>
+                </div>
+
+                <!-- Attire Required -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Tenue Requise</label>
+                    <input type="text" name="attireRequired" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+                </div>
+
+                <!-- Minimum Age -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Âge Minimum</label>
+                    <input type="number" name="minAge" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+                </div>
+
+                <!-- Profile Type -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Type de Profil Recherché</label>
+                    <input type="text" name="profileType" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+                </div>
 
                 <!-- Submit Button -->
                 <div>
                     <button type="submit" class="w-full text-lg font-semibold flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-white bg-blue-950 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
-                    Ajouter le Job
+                        Ajouter le Job
                     </button>
                 </div>
             </form>
         </div>
-    
+    </div>
 </body>
 </html>

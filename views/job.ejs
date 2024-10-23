@@ -1,8 +1,9 @@
+<!-- views/job.ejs -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title><%= job.name %> - Profil</title>
+    <title><%= job.description %> - Détails du Job</title>
     <!-- Include Montserrat Font and Tailwind CSS -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/tailwind.css">
@@ -16,99 +17,28 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
-            
         </a>
-        <!-- Profile Card with Cover Image -->
+        <!-- Job Details Card -->
         <div class="bg-white rounded-2xl shadow-md overflow-hidden">
-            <!-- Cover Image Section -->
-            <div class="relative">
-                <% if (job.portfolioImages && job.portfolioImages.length > 0) { %>
-                    <img src="<%= job.portfolioImages[0] %>" alt="Cover Image" class="w-full h-48 object-cover">
-                <% } else { %>
-                    <!-- Default Cover Image if none provided -->
-                    <img src="/images/default-cover.jpg" alt="Default Cover Image" class="w-full h-48 object-cover">
-                <% } %>
-                <!-- Profile Image Positioned in the Center -->
-                <div class="absolute inset-x-0 bottom-0 transform translate-y-1/2 flex justify-center">
-                    <div class="w-32 h-32">
-                        <img src="<%= job.profileImage %>" alt="<%= job.name %>" class="w-full h-full rounded-full object-cover border-4 border-white shadow-md"
-                             loading="lazy"
-                             onerror="this.onerror=null; this.src='/images/default-profile.png'">
-                    </div>
-                </div>
-            </div>
-            <!-- Spacer to accommodate the overlapping profile image -->
-            <div class="mt-16 px-6 pb-6">
-                <!-- Job Name -->
-                <h1 class="text-3xl font-bold text-gray-800 mb-2 text-center"><%= job.name %></h1>
-                <!-- Age and Country -->
-                <div class="flex items-center justify-center space-x-4 mt-2">
-                    <p class="text-gray-600 text-lg flex items-center">
-                        <img src="/images/11.png" alt="Âge" class="w-5 h-5 mr-2">
-                        <%= job.age %> ans
-                    </p>
-                    <p class="text-gray-600 text-lg flex items-center">
-                        <img src="/images/monde.png" alt="Pays" class="w-5 h-5 mr-2">
-                        <%= job.country %>
-                    </p>
-                </div>
-                <div class="flex items-center justify-center space-x-4 mt-2">
-                    <% job.category.forEach(function(force) { %>
-                    <p class="text-gray-600 text-l sm:text-lg flex items-center">
-                        <img src="/images/demo.png" alt="Âge" class="w-5 h-5 mr-2">
-                        <%= force %>
-                    </p>
-                    <% }); %>
-                </div>
-               
-                <!-- Description -->
-                <p class="mt-2 text-gray-700 text-center leading-relaxed"><%= job.description %></p>
-                <div class="flex items-center justify-center space-x-4 mt-2">
-                    <% job.atout.forEach(function(force) { %>
-                    <p class="text-gray-600 text-l sm:text-lg flex items-center">
-                        <img src="/images/plus.png" alt="Âge" class="w-5 h-5 mr-2">
-                        <%= force %>
-                    </p>
-                    <% }); %>
-                </div>
-                
-                <!-- Video Types -->
-                <div class="flex flex-wrap justify-center gap-2 mt-6">
-                    <% job.videoTypes.forEach(function(type) { %>
-                        <span class="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full"><%= type %></span>
-                    <% }); %>
-                </div>
-                <!-- Ajouter à ma campagne Button -->
+            <div class="px-6 pb-6">
+                <!-- Job Description -->
+                <h1 class="text-3xl font-bold text-gray-800 mb-2 text-center"><%= job.description %></h1>
+                <!-- Date and Time -->
+                <p class="text-gray-600 text-lg text-center">Date: <%= job.dateAndTime.toLocaleString('fr-FR') %></p>
+                <!-- Remuneration -->
+                <p class="text-gray-600 text-lg text-center">Rémunération: €<%= job.remuneration %></p>
+                <!-- Other Details -->
+                <!-- ... Include other job details as needed -->
+                <!-- Apply Button -->
                 <div class="flex justify-center mt-6">
-                    <form action="/jobs/apply/<%= job._id %>" method="POST">
-                      <input type="hidden" name="jobId" value="<%= job._id %>">
-                      <button type="submit" class="shadow bg-blue-950 hover:bg-blue-800 text-white font-semibold px-6 py-2 rounded-full transition duration-300">
-                        Ajouter à ma campagne
-                      </button>
+                    <form action="/apply/<%= job._id %>" method="POST">
+                        <button type="submit" class="shadow bg-blue-950 hover:bg-blue-800 text-white font-semibold px-6 py-2 rounded-full transition duration-300">
+                            Postuler
+                        </button>
                     </form>
                 </div>
             </div>
         </div>
-        <div class="rounded-2xl space-y-6 mt-6">
-            <h2 class="relative text-center text-l text-blue-950 font-semibold">
-                <span class="relative inline-block px-2 py-1">
-                  
-                  <!-- Background span with white color, rounded corners, and rotation -->
-                  <span class="absolute inset-0 bg-blue-500 rounded-lg transform -rotate-2 z-0"></span>
-                  
-                  <!-- Text span positioned above the background -->
-                  <span class="relative font-semibold text-l text-white z-10">
-                  100% des avis </span>
-                  
-              </span>
-              
-                sont vérifiés par l'équipe de Job'ster
-              
-              </h2>
-        </div>
-        
-        
     </div>
-
 </body>
 </html>

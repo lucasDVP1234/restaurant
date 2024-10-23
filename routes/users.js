@@ -4,7 +4,6 @@ const userController = require('../controllers/userController');
 const { ensureAuthenticated } = require('../middlewares/auth');
 const router = express.Router();
 
-
 // Set Password Route
 router.post('/set-password', ensureAuthenticated, userController.setPassword);
 

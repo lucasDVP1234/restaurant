@@ -1,22 +1,19 @@
 // models/Job.js
 const mongoose = require('mongoose');
 
-const jobschema = new mongoose.Schema({
-  name: String,
-  genre: String,
-  age: Number,
-  category: [String],
-  videoTypes: [String],
-  profileImage: String,
-  portfolioImages: [String],
+const jobSchema = new mongoose.Schema({
+  dateAndTime: Date,
+  jobDuration: Number, // Duration in hours
   description: String,
-  country: String,
-  langue: [String],
-  atout: [String],
-  videos: [String],
-  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  applicants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], // New field
-  selectedApplicant: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  mission: String, // 'ponctuel' or 'récurrent'
+  remuneration: Number, // Salary amount
+  contractType: String, // 'extra', 'CDD', 'CDI'
+  attireRequired: String, // Tenue nécessaire
+  minAge: Number,
+  profileType: String, // Type de profil recherché
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant', required: true },
+  applicants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Student' }],
+  selectedApplicant: { type: mongoose.Schema.Types.ObjectId, ref: 'Student' },
 });
 
-module.exports = mongoose.model('Job', jobschema);
+module.exports = mongoose.model('Job', jobSchema);

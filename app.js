@@ -5,33 +5,27 @@ const session = require('express-session');
 const MongoStore = require("connect-mongo");
 const passport = require('passport');
 const path = require('path');
-const routes = require('./routes');
 const indexRoutes = require('./routes/index');
-const Job = require('./models/Job');
-const jobsRoutes = require('./routes/jobs');
+const app = express();
+const jobRoutes = require('./routes/jobs');
 
-//const connection = mongoose.createConnection(process.env.MONGODB_URI) 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
-const app = express();
-
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI);
 
-
 // Middleware
 app.use(express.urlencoded({ extended: true }));
-//app.use(express.static('public'));
-app.use(express.static(path.join(__dirname, 'public'))); 
-app.set('views', path.join(__dirname, 'views')); 
+app.use(express.static(path.join(__dirname, 'public')));
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 const sessionStore = MongoStore.create({
   client: mongoose.connection.getClient(),
   dbName: 'Plateforme'
-})
+});
 
 if (process.env.NODE_ENV === 'production') {
   app.set('trust proxy', 1);
@@ -44,10 +38,9 @@ app.use(session({
   saveUninitialized: false,
   store: sessionStore,
   cookie: {
-    maxAge: 24 * 60 * 60 * 1000, // 1 day
-    secure: process.env.NODE_ENV === 'production', // true if using HTTPS
+    maxAge: 24 * 60 * 60 * 1000,
+    secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
-    //sameSite : "none",
   },
 }));
 
@@ -67,24 +60,21 @@ app.use((req, res, next) => {
   next();
 });
 
-
-
-
 // Routes
-app.use('/jobs', jobsRoutes); 
 app.use('/', indexRoutes);
+app.use('/jobs', jobRoutes);
 
-// app.js
+
+// Error Handling
 app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something went wrong!');
+  console.error(err.stack);
+  res.status(500).send('Something went wrong!');
 });
-  
 
-//Start Server
+// Start Server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
 });
 
-module.exports = app
+module.exports = app;
