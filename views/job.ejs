@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title><%= creator.name %> - Profil</title>
+    <title><%= job.name %> - Profil</title>
     <!-- Include Montserrat Font and Tailwind CSS -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/tailwind.css">
@@ -11,7 +11,7 @@
     <%- include('header-login') %>
     <!-- Main Content Container -->
     <div class="max-w-xl mx-auto px-10 mt-2 py-12 relative">
-        <a href="/creators" class="absolute top-0 left-2 sm:left-0 bg-blue-950 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-800 transition-colors duration-200 flex items-center">
+        <a href="/jobs" class="absolute top-0 left-2 sm:left-0 bg-blue-950 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-800 transition-colors duration-200 flex items-center">
             <!-- Optional: Add an SVG Icon for the Back Arrow -->
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -22,8 +22,8 @@
         <div class="bg-white rounded-2xl shadow-md overflow-hidden">
             <!-- Cover Image Section -->
             <div class="relative">
-                <% if (creator.portfolioImages && creator.portfolioImages.length > 0) { %>
-                    <img src="<%= creator.portfolioImages[0] %>" alt="Cover Image" class="w-full h-48 object-cover">
+                <% if (job.portfolioImages && job.portfolioImages.length > 0) { %>
+                    <img src="<%= job.portfolioImages[0] %>" alt="Cover Image" class="w-full h-48 object-cover">
                 <% } else { %>
                     <!-- Default Cover Image if none provided -->
                     <img src="/images/default-cover.jpg" alt="Default Cover Image" class="w-full h-48 object-cover">
@@ -31,7 +31,7 @@
                 <!-- Profile Image Positioned in the Center -->
                 <div class="absolute inset-x-0 bottom-0 transform translate-y-1/2 flex justify-center">
                     <div class="w-32 h-32">
-                        <img src="<%= creator.profileImage %>" alt="<%= creator.name %>" class="w-full h-full rounded-full object-cover border-4 border-white shadow-md"
+                        <img src="<%= job.profileImage %>" alt="<%= job.name %>" class="w-full h-full rounded-full object-cover border-4 border-white shadow-md"
                              loading="lazy"
                              onerror="this.onerror=null; this.src='/images/default-profile.png'">
                     </div>
@@ -39,21 +39,21 @@
             </div>
             <!-- Spacer to accommodate the overlapping profile image -->
             <div class="mt-16 px-6 pb-6">
-                <!-- Creator Name -->
-                <h1 class="text-3xl font-bold text-gray-800 mb-2 text-center"><%= creator.name %></h1>
+                <!-- Job Name -->
+                <h1 class="text-3xl font-bold text-gray-800 mb-2 text-center"><%= job.name %></h1>
                 <!-- Age and Country -->
                 <div class="flex items-center justify-center space-x-4 mt-2">
                     <p class="text-gray-600 text-lg flex items-center">
                         <img src="/images/11.png" alt="Âge" class="w-5 h-5 mr-2">
-                        <%= creator.age %> ans
+                        <%= job.age %> ans
                     </p>
                     <p class="text-gray-600 text-lg flex items-center">
                         <img src="/images/monde.png" alt="Pays" class="w-5 h-5 mr-2">
-                        <%= creator.country %>
+                        <%= job.country %>
                     </p>
                 </div>
                 <div class="flex items-center justify-center space-x-4 mt-2">
-                    <% creator.category.forEach(function(force) { %>
+                    <% job.category.forEach(function(force) { %>
                     <p class="text-gray-600 text-l sm:text-lg flex items-center">
                         <img src="/images/demo.png" alt="Âge" class="w-5 h-5 mr-2">
                         <%= force %>
@@ -62,9 +62,9 @@
                 </div>
                
                 <!-- Description -->
-                <p class="mt-2 text-gray-700 text-center leading-relaxed"><%= creator.description %></p>
+                <p class="mt-2 text-gray-700 text-center leading-relaxed"><%= job.description %></p>
                 <div class="flex items-center justify-center space-x-4 mt-2">
-                    <% creator.atout.forEach(function(force) { %>
+                    <% job.atout.forEach(function(force) { %>
                     <p class="text-gray-600 text-l sm:text-lg flex items-center">
                         <img src="/images/plus.png" alt="Âge" class="w-5 h-5 mr-2">
                         <%= force %>
@@ -74,14 +74,14 @@
                 
                 <!-- Video Types -->
                 <div class="flex flex-wrap justify-center gap-2 mt-6">
-                    <% creator.videoTypes.forEach(function(type) { %>
+                    <% job.videoTypes.forEach(function(type) { %>
                         <span class="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full"><%= type %></span>
                     <% }); %>
                 </div>
                 <!-- Ajouter à ma campagne Button -->
                 <div class="flex justify-center mt-6">
-                    <form action="/creators/apply/<%= creator._id %>" method="POST">
-                      <input type="hidden" name="creatorId" value="<%= creator._id %>">
+                    <form action="/jobs/apply/<%= job._id %>" method="POST">
+                      <input type="hidden" name="jobId" value="<%= job._id %>">
                       <button type="submit" class="shadow bg-blue-950 hover:bg-blue-800 text-white font-semibold px-6 py-2 rounded-full transition duration-300">
                         Ajouter à ma campagne
                       </button>

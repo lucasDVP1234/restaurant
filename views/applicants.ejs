@@ -37,7 +37,7 @@
               </td>
               <td class="px-6 py-4 border-b text-sm text-gray-700">
                 <% if (!job.selectedApplicant) { %>
-                  <form action="/creators/select-applicant/<%= job._id %>/<%= applicant._id %>" method="POST">
+                  <form action="/jobs/select-applicant/<%= job._id %>/<%= applicant._id %>" method="POST">
                     <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Choisir</button>
                   </form>
                 <% } else if (job.selectedApplicant._id.toString() === applicant._id.toString()) { %>

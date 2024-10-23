@@ -2,7 +2,7 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 
-const Creator = require('../models/Creator'); // Import Creator if needed
+const Job = require('../models/Job'); // Import Job if needed
 
 
 // Render Signup Page
@@ -104,12 +104,12 @@ exports.getAccount = async (req, res) => {
     // Fetch jobs created by the logged-in restaurant
     let jobs = [];
     if (user.userType === 'restaurant') {
-      jobs = await Creator.find({ createdBy: user._id })
+      jobs = await Job.find({ createdBy: user._id })
         .populate('applicants', 'name email')
         .populate('selectedApplicant', '_id');
     } else if (user.userType === 'student') {
       // Find jobs where the user has applied
-      jobs = await Creator.find({ applicants: user._id })
+      jobs = await Job.find({ applicants: user._id })
         .populate('createdBy', 'companyName')
         .populate('selectedApplicant', '_id');
     }

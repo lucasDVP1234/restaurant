@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const ageMinInput = document.getElementById('age-min');
     const ageMaxInput = document.getElementById('age-max');
     const selectedFiltersContainer = document.getElementById('selected-filters-container');
-    const filterForm = document.querySelector('form[action="/creators"]');
+    const filterForm = document.querySelector('form[action="/jobs"]');
 
     let selectedAgeMin = '';
     let selectedAgeMax = '';

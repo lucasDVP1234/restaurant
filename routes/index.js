@@ -4,7 +4,7 @@ const router = express.Router();
 
 const authRoutes = require('./auth');
 const userRoutes = require('./users');
-const creatorRoutes = require('./creators');
+const jobRoutes = require('./jobs');
 
 
 
@@ -41,7 +41,7 @@ router.get('/case_study3', (req, res) => {
 // Use other routers
 router.use('/', authRoutes);
 router.use('/', userRoutes);
-router.use('/', creatorRoutes);
+router.use('/', jobRoutes);
 
 
 module.exports = router;

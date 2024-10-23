@@ -1,7 +1,7 @@
-// models/Creator.js
+// models/Job.js
 const mongoose = require('mongoose');
 
-const creatorSchema = new mongoose.Schema({
+const jobschema = new mongoose.Schema({
   name: String,
   genre: String,
   age: Number,
@@ -19,4 +19,4 @@ const creatorSchema = new mongoose.Schema({
   selectedApplicant: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 });
 
-module.exports = mongoose.model('Creator', creatorSchema);
+module.exports = mongoose.model('Job', jobschema);

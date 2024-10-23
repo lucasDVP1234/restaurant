@@ -18,8 +18,8 @@
   .animate-scroll {
     animation: scroll 20s linear infinite;
   }
-  .animate-scroll-creators {
-    animation: scroll-creators 30s linear infinite;
+  .animate-scroll-jobs {
+    animation: scroll-jobs 30s linear infinite;
   }
 
   /* Fade-Down Transition Classes */
@@ -91,7 +91,7 @@
   }
 }
 
-@keyframes scroll-creators {
+@keyframes scroll-jobs {
   0% {
     transform: translateX(0);
   }

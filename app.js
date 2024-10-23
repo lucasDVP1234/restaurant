@@ -7,8 +7,8 @@ const passport = require('passport');
 const path = require('path');
 const routes = require('./routes');
 const indexRoutes = require('./routes/index');
-const Creator = require('./models/Creator');
-const creatorsRoutes = require('./routes/creators');
+const Job = require('./models/Job');
+const jobsRoutes = require('./routes/jobs');
 
 //const connection = mongoose.createConnection(process.env.MONGODB_URI) 
 if (process.env.NODE_ENV !== 'production') {
@@ -71,7 +71,7 @@ app.use((req, res, next) => {
 
 
 // Routes
-app.use('/creators', creatorsRoutes); 
+app.use('/jobs', jobsRoutes); 
 app.use('/', indexRoutes);
 
 // app.js

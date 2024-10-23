@@ -1,4 +1,4 @@
-<!-- editCreator.ejs -->
+<!-- editJob.ejs -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -27,97 +27,97 @@
                   <span class="relative font-semibold text-3xl text-white z-10">Job</span>
               </span>
               </h1>
-            <!-- Creator Selection -->
-            <form action="/creators/edit" method="get" class="mb-4">
+            <!-- Job Selection -->
+            <form action="/jobs/edit" method="get" class="mb-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Sélectionnez un job à modifier</label>
-                    <select name="creatorId" onchange="this.form.submit()" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out">
+                    <select name="jobId" onchange="this.form.submit()" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out">
                         <option value="">-- Choisissez un Job --</option>
-                        <% creators.forEach(cr => { %>
-                            <option value="<%= cr._id %>" <%= creator && String(creator._id) === String(cr._id) ? 'selected' : '' %>><%= cr.name %></option>
+                        <% jobs.forEach(cr => { %>
+                            <option value="<%= cr._id %>" <%= job && String(job._id) === String(cr._id) ? 'selected' : '' %>><%= cr.name %></option>
                         <% }); %>
                     </select>
                 </div>
             </form>
 
-            <% if (creator) { %>
-            <form action="/creators/edit" method="POST" class="space-y-4">
-                <!-- Hidden field for creator ID -->
-                <input type="hidden" name="creatorId" value="<%= creator._id %>">
+            <% if (job) { %>
+            <form action="/jobs/edit" method="POST" class="space-y-4">
+                <!-- Hidden field for job ID -->
+                <input type="hidden" name="jobId" value="<%= job._id %>">
 
                 <!-- Name -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Nom</label>
-                    <input type="text" name="name" value="<%= creator.name %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required>
+                    <input type="text" name="name" value="<%= job.name %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required>
                 </div>
 
                 <!-- Age -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Âge</label>
-                    <input type="number" name="age" value="<%= creator.age %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required>
+                    <input type="number" name="age" value="<%= job.age %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required>
                 </div>
 
                 <!-- Country -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Pays</label>
-                    <input type="text" name="country" value="<%= creator.country %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+                    <input type="text" name="country" value="<%= job.country %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
                 </div>
 
                 <!-- Langue -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Langue</label>
-                    <input type="text" name="langue" value="<%= creator.langue %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+                    <input type="text" name="langue" value="<%= job.langue %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
                 </div>
 
                 <!-- Genre -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Genre</label>
-                    <input type="text" name="genre" value="<%= creator.genre %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+                    <input type="text" name="genre" value="<%= job.genre %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
                 </div>
 
                 <!-- Atout -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Atout</label>
-                    <input type="text" name="atout" value="<%= creator.atout.join(',') %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+                    <input type="text" name="atout" value="<%= job.atout.join(',') %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
                 </div>
 
                 <!-- Caméra -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Caméra</label>
-                    <input type="text" name="category" value="<%= creator.category.join(',') %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+                    <input type="text" name="category" value="<%= job.category.join(',') %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
                 </div>
 
                 <!-- Video Types -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Types de vidéos (séparés par des virgules)</label>
-                    <input type="text" name="videoTypes" value="<%= creator.videoTypes.join(',') %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+                    <input type="text" name="videoTypes" value="<%= job.videoTypes.join(',') %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
                 </div>
 
                 <!-- Profile Image URL -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">URL de l'image de profil</label>
-                    <input type="text" name="profileImage" value="<%= creator.profileImage %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+                    <input type="text" name="profileImage" value="<%= job.profileImage %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
                 </div>
 
                 <!-- Portfolio Images URLs -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Image de Fond</label>
-                    <input type="text" name="portfolioImages" value="<%= creator.portfolioImages.join(',') %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+                    <input type="text" name="portfolioImages" value="<%= job.portfolioImages.join(',') %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
                 </div>
                 <!-- Portfolio Images URLs -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Videos</label>
-                    <input type="text" name="videos" value="<%= creator.videos.join(',') %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+                    <input type="text" name="videos" value="<%= job.videos.join(',') %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
                 </div>
                 <!-- Portfolio Images URLs -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Etudiant</label>
-                    <input type="text" name="videos" value="<%= creator.applicants.join(',') %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+                    <input type="text" name="videos" value="<%= job.applicants.join(',') %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
                 </div>
                 <!-- Portfolio Images URLs -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Etudiant Séléctionné</label>
-                    <input type="text" name="videos" value="<%= creator.selectedApplicant %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+                    <input type="text" name="videos" value="<%= job.selectedApplicant %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
                 </div>
 
                 <!-- Submit Button -->

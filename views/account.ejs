@@ -36,11 +36,11 @@
             <% } %>
             <% if (user && user.userType === 'restaurant') { %>
                 <div class="mb-4 mt-4">
-                  <a href="/creators/add" class="inline-flex transform hover:scale-105 hover:rotate-3 items-center mr-2 px-6 py-2 text-sm hover:bg-orange-700 font-medium rounded-lg transition duration-200 shadow-sm
+                  <a href="/jobs/add" class="inline-flex transform hover:scale-105 hover:rotate-3 items-center mr-2 px-6 py-2 text-sm hover:bg-orange-700 font-medium rounded-lg transition duration-200 shadow-sm
                     bg-orange-500 text-white"><img src="/images/plus.png" alt="Mes créateurs favoris" class="w-5 h-5 mr-2">
                     Ajouter un Job
                   </a>
-                  <a href="/creators/edit" class="inline-flex transform hover:scale-105 hover:rotate-3 items-center px-6 py-2 text-sm hover:bg-orange-700 font-medium rounded-lg transition duration-200 shadow-sm
+                  <a href="/jobs/edit" class="inline-flex transform hover:scale-105 hover:rotate-3 items-center px-6 py-2 text-sm hover:bg-orange-700 font-medium rounded-lg transition duration-200 shadow-sm
                     bg-orange-500 text-white"><img src="/images/11_1.png" alt="Mes créateurs favoris" class="w-5 h-5 mr-2">
                     Modifier un Job
                   </a>
@@ -75,13 +75,13 @@
                             <td class="px-6 py-4 border-b text-sm text-gray-700"><%= job.applicants.length %></td>
                             <td class="px-6 py-4 border-b text-sm text-gray-700">
                               <% if (job.applicants.length > 0) { %>
-                                <a href="/creators/applicants/<%= job._id %>" class="text-blue-500 hover:underline">Voir les candidats</a>
+                                <a href="/jobs/applicants/<%= job._id %>" class="text-blue-500 hover:underline">Voir les candidats</a>
                               <% } else { %>
                                 Aucun candidat
                               <% } %>
                             </td>
                             <td class="px-6 py-4 border-b text-sm text-gray-700">
-                              <a href="/creators/edit?creatorId=<%= job._id %>" class="text-blue-500 hover:underline">Modifier</a>
+                              <a href="/jobs/edit?jobId=<%= job._id %>" class="text-blue-500 hover:underline">Modifier</a>
                             </td>
                           </tr>
                         <% }); %>

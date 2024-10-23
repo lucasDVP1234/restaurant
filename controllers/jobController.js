@@ -1,8 +1,8 @@
-// controllers/creatorController.js
+// controllers/jobController.js
 
-const Creator = require('../models/Creator'); // Ensure this import is present
+const Job = require('../models/Job'); // Ensure this import is present
 
-exports.getCreators = async (req, res) => {
+exports.getjobs = async (req, res) => {
     try {
         const { categories, videoTypes, ageMin, ageMax, countries, langues, atouts, genres } = req.query;
 
@@ -36,19 +36,19 @@ exports.getCreators = async (req, res) => {
             query.genre = { $in: genres.split(',') };
         }
 
-        // Fetch creators based on query
-        const creators = await Creator.find(query);
+        // Fetch jobs based on query
+        const jobs = await Job.find(query);
 
         // Fetch categories and videoTypes for filters
-        const categoriesList = await Creator.distinct('category');
-        const videoTypesList = await Creator.distinct('videoTypes');
-        const countriesList = await Creator.distinct('country');
-        const languesList = await Creator.distinct('langue');
-        const atoutsList = await Creator.distinct('atout');
-        const genresList = await Creator.distinct('genre');
+        const categoriesList = await Job.distinct('category');
+        const videoTypesList = await Job.distinct('videoTypes');
+        const countriesList = await Job.distinct('country');
+        const languesList = await Job.distinct('langue');
+        const atoutsList = await Job.distinct('atout');
+        const genresList = await Job.distinct('genre');
 
-        res.render('creators', {
-            creators,
+        res.render('jobs', {
+            jobs,
             categories: categoriesList,
             videoTypes: videoTypesList,
             countries: countriesList,
@@ -57,30 +57,30 @@ exports.getCreators = async (req, res) => {
             genres: genresList,
         });
     } catch (err) {
-        console.error('Error fetching creators:', err.message);
+        console.error('Error fetching jobs:', err.message);
         res.status(500).send('Server Error');
     }
 };
 
-exports.getCreatorsById = async (req, res) => {
+exports.getjobsById = async (req, res) => {
     try {
-        const creatorId = req.params.id;
-        const creator = await Creator.findById(creatorId);
+        const jobId = req.params.id;
+        const job = await Job.findById(jobId);
 
-        if (!creator) {
-            return res.status(404).send('Creator not found');
+        if (!job) {
+            return res.status(404).send('Job not found');
         }
 
-        res.render('creator', { creator });
+        res.render('job', { job });
     } catch (error) {
         console.error(error);
         res.status(500).send('Server Error');
     }
 };
 
-exports.getAddCreator = async (req, res) => {
+exports.getAddJob = async (req, res) => {
     try {
-        res.render('addCreator');
+        res.render('addJob');
     } catch (error) {
         console.error(error);
         res.status(500).send('Server Error');
@@ -88,7 +88,7 @@ exports.getAddCreator = async (req, res) => {
 };
 
   
-exports.postAddCreator = async (req, res) => {
+exports.postAddJob = async (req, res) => {
     try {
       const {
         name,
@@ -104,8 +104,8 @@ exports.postAddCreator = async (req, res) => {
         videos,
       } = req.body;
   
-      // Create a new Creator instance
-      const newCreator = new Creator({
+      // Create a new Job instance
+      const newJob = new Job({
         name,
         age,
         country,
@@ -120,40 +120,40 @@ exports.postAddCreator = async (req, res) => {
         createdBy: req.user._id, // Associate job with the logged-in restaurant
       });
   
-      await newCreator.save();
+      await newJob.save();
   
       res.redirect('/account'); // Redirect to the account page
     } catch (err) {
-      console.error('Error adding creator:', err.message);
-      res.status(500).send('Error adding creator.');
+      console.error('Error adding job:', err.message);
+      res.status(500).send('Error adding job.');
     }
   };
 
-  exports.getEditCreator = async (req, res) => {
+  exports.getEditJob = async (req, res) => {
     try {
       const user = req.user;
-      const creators = await Creator.find({ createdBy: user._id }, 'name _id');
+      const jobs = await Job.find({ createdBy: user._id }, 'name _id');
   
-      // If a creator ID is provided in the query, fetch that creator
-      let creator = null;
-      if (req.query.creatorId) {
-        creator = await Creator.findOne({ _id: req.query.creatorId, createdBy: user._id });
+      // If a job ID is provided in the query, fetch that job
+      let job = null;
+      if (req.query.jobId) {
+        job = await Job.findOne({ _id: req.query.jobId, createdBy: user._id });
       }
   
-      res.render('editCreator', {
-        creators,
-        creator,
+      res.render('editJob', {
+        jobs,
+        job,
       });
     } catch (error) {
-      console.error('Error fetching creator for edit:', error.message);
+      console.error('Error fetching job for edit:', error.message);
       res.status(500).send('Server Error');
     }
   };
 
-  exports.postEditCreator = async (req, res) => {
+  exports.postEditJob = async (req, res) => {
     try {
       const user = req.user;
-      const creatorId = req.body.creatorId;
+      const jobId = req.body.jobId;
       const {
         name,
         age,
@@ -183,12 +183,12 @@ exports.postAddCreator = async (req, res) => {
       };
   
       // Update only if the job belongs to the logged-in restaurant
-      await Creator.findOneAndUpdate({ _id: creatorId, createdBy: user._id }, updatedData);
+      await Job.findOneAndUpdate({ _id: jobId, createdBy: user._id }, updatedData);
   
       res.redirect('/account'); // Redirect to the account page
     } catch (error) {
-      console.error('Error updating creator:', error.message);
-      res.status(500).send('Error updating creator.');
+      console.error('Error updating job:', error.message);
+      res.status(500).send('Error updating job.');
     }
   };
 
@@ -198,7 +198,7 @@ exports.postAddCreator = async (req, res) => {
       const userId = req.user._id;
   
       // Find the job
-      const job = await Creator.findById(jobId);
+      const job = await Job.findById(jobId);
   
       if (!job) {
         return res.status(404).send('Job not found.');
@@ -207,7 +207,7 @@ exports.postAddCreator = async (req, res) => {
       // Check if the user has already applied
       if (job.applicants.includes(userId)) {
         // Optional: Flash message or inform the user they've already applied
-        return res.redirect('/creators'); // Or wherever appropriate
+        return res.redirect('/jobs'); // Or wherever appropriate
       }
   
       // Add the user to the applicants array
@@ -215,7 +215,7 @@ exports.postAddCreator = async (req, res) => {
       await job.save();
   
       // Optional: Flash message to inform the user of successful application
-      res.redirect('/creators'); // Or wherever appropriate
+      res.redirect('/jobs'); // Or wherever appropriate
     } catch (error) {
       console.error('Error applying to job:', error.message);
       res.status(500).send('Error applying to job.');
@@ -229,7 +229,7 @@ exports.postAddCreator = async (req, res) => {
       const userId = req.user._id;
   
       // Find the job, ensure it belongs to the logged-in restaurant
-      const job = await Creator.findOne({ _id: jobId, createdBy: userId })
+      const job = await Job.findOne({ _id: jobId, createdBy: userId })
         .populate('applicants', 'name email')
         .populate('selectedApplicant', '_id');
   
@@ -252,7 +252,7 @@ exports.postAddCreator = async (req, res) => {
       const userId = req.user._id;
   
       // Find the job, ensure it belongs to the logged-in restaurant
-      const job = await Creator.findOne({ _id: jobId, createdBy: userId });
+      const job = await Job.findOne({ _id: jobId, createdBy: userId });
   
       if (!job) {
         return res.status(404).send('Job not found or you are not authorized to select applicants.');
@@ -269,7 +269,7 @@ exports.postAddCreator = async (req, res) => {
   
       // Optional: Send notification to the applicant (not implemented here)
   
-      res.redirect('/creators/applicants/' + jobId);
+      res.redirect('/jobs/applicants/' + jobId);
     } catch (error) {
       console.error('Error selecting applicant:', error.message);
       res.status(500).send('Error selecting applicant.');

@@ -11,7 +11,7 @@
     <%- include('header-lp') %>
     <!-- Main Content Container -->
     <div class="max-w-lg mx-auto px-4 py-12 relative">
-        <a href="/creators" class="absolute top-0 left-2 sm:left-0 bg-blue-950 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-800 transition-colors duration-200 flex items-center">
+        <a href="/jobs" class="absolute top-0 left-2 sm:left-0 bg-blue-950 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-800 transition-colors duration-200 flex items-center">
             <!-- Optional: Add an SVG Icon for the Back Arrow -->
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -36,7 +36,7 @@
             </div>
             <!-- Spacer to accommodate the overlapping profile image -->
             <div class="mt-16 px-6 pb-6">
-                <!-- Creator Name -->
+                <!-- Job Name -->
                 
                 <!-- Age and Country -->
                 <div class="flex items-center justify-center space-x-4 mt-2">
@@ -61,7 +61,7 @@
                 <!-- Ajouter à ma campagne Button -->
                 <div class="flex justify-center mt-6">
                     <form action="/login" method="POST">
-                      <input type="hidden" name="creatorId" value="ok">
+                      <input type="hidden" name="jobId" value="ok">
                       <button type="submit" class="shadow bg-blue-950 hover:bg-blue-800 text-white font-semibold px-6 py-2 rounded-full transition duration-300">
                         Commencer ma campagne
                       </button>

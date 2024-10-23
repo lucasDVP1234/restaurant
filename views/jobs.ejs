@@ -1,4 +1,4 @@
-<!-- views/creators.ejs -->
+<!-- views/jobs.ejs -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -16,7 +16,7 @@
         <!-- Sidebar -->
         <aside class="sm:w-1/5 p-4 bg-white border-r border-gray-300 sticky top-[4rem] h-screen overflow-y-auto hidden sm:block">
             <!-- Form starts here -->
-            <form action="/creators" method="GET">
+            <form action="/jobs" method="GET">
                 <input type="hidden" name="categories" id="selected-categories" />
                 <input type="hidden" name="videoTypes" id="selected-video-types" />
                 <input type="hidden" name="countries" id="selected-countries-input" />
@@ -153,11 +153,11 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 p-3 overflow-y-auto">
-                <% creators.forEach(function(creator) { %>
-                  <div class="creator-card bg-white hover:bg-gray-50 rounded-lg shadow-md overflow-hidden relative" data-creator-id="<%= creator._id %>">
-                    <!-- Creator Image -->
-                    <a href="/creators/<%= creator._id %>"> 
-                        <img src="<%= creator.portfolioImages %>" alt="<%= creator.name %>" class="w-full h-48 object-cover">
+                <% jobs.forEach(function(job) { %>
+                  <div class="job-card bg-white hover:bg-gray-50 rounded-lg shadow-md overflow-hidden relative" data-job-id="<%= job._id %>">
+                    <!-- Job Image -->
+                    <a href="/jobs/<%= job._id %>"> 
+                        <img src="<%= job.portfolioImages %>" alt="<%= job.name %>" class="w-full h-48 object-cover">
                     </a>
               
                     <!-- Portfolio Bubbles -->
@@ -165,10 +165,10 @@
                       
                         <div class="bg-white p-1 rounded-full mx-1 shadow-lg">
                           <img
-                            src="<%= creator.profileImage %>"
+                            src="<%= job.profileImage %>"
                             alt="Portfolio Image"
                             class="h-16 w-16 rounded-full object-cover portfolio-image"
-                            data-image-url="<%= creator.profileImage %>"
+                            data-image-url="<%= job.profileImage %>"
                             tabindex="0"
                             loading="lazy"
                           >
@@ -176,17 +176,17 @@
                       
                     </div>
               
-                    <!-- Creator Info -->
+                    <!-- Job Info -->
                     <div class="p-2 -mt-8">
-                      <!-- Creator Name and Add to Basket Button -->
+                      <!-- Job Name and Add to Basket Button -->
                       <div class="flex items-center justify-between mb-2">
-                        <!-- Creator Name -->
-                        <h3 class="text-lg font-semibold text-blue-950"><%= creator.name %></h3>
+                        <!-- Job Name -->
+                        <h3 class="text-lg font-semibold text-blue-950"><%= job.name %></h3>
                     
                         <!-- Add to Basket Button -->
-                        <% if (!creator.selectedApplicant) { %>
-                        <form action="/creators/apply/<%= creator._id %>" method="POST">
-                          <input type="hidden" name="creatorId" value="<%= creator._id %>">
+                        <% if (!job.selectedApplicant) { %>
+                        <form action="/jobs/apply/<%= job._id %>" method="POST">
+                          <input type="hidden" name="jobId" value="<%= job._id %>">
                           <button type="submit" class="flex transform hover:scale-105 hover:rotate-3 items-center font-semibold px-2 py-1 font-medium transition duration-200 text-blue-950 focus:outline-none">Postuler
                             
                           </button>
@@ -196,25 +196,25 @@
                           <% } %>
                       </div>
                     
-                      <!-- Creator Age -->
-                      <p class="flex flex-wrap items-center mb-2 text-gray-600 text-sm"><img src="/images/11.png" alt="Âge" class="w-5 h-5 mr-2"><%= creator.age %> ans</p>
+                      <!-- Job Age -->
+                      <p class="flex flex-wrap items-center mb-2 text-gray-600 text-sm"><img src="/images/11.png" alt="Âge" class="w-5 h-5 mr-2"><%= job.age %> ans</p>
               
-                      <!-- Creator Country -->
+                      <!-- Job Country -->
                       <div class="flex flex-wrap items-center gap-2 mb-2"><img src="/images/mondeblue.png" alt="Âge" class="w-5 h-5 mt-1">
-                        <span class="px-2 py-1 bg-blue-100 text-blue-500 text-xs rounded-full"><%= creator.country %></span>
+                        <span class="px-2 py-1 bg-blue-100 text-blue-500 text-xs rounded-full"><%= job.country %></span>
                       </div>
               
                       <!-- Video Types and Add to Basket Button -->
                       <div class="flex items-center justify-between mb-2">
                         <div class="flex flex-wrap gap-2"><img src="/images/camvert.png" alt="Âge" class="w-5 h-5 mt-1">
-                          <% creator.videoTypes.forEach(function(type) { %>
+                          <% job.videoTypes.forEach(function(type) { %>
                             <span class="px-2 py-1 bg-green-100 text-green-500 text-xs rounded-full"><%= type %></span>
                           <% }); %>
                         </div>
                       
                         <!-- "Voir" Button -->
                         <div class="flex">
-                          <a href="/creators/<%= creator._id %>" class="flex-inline transform hover:scale-105 hover:rotate-3 bg-white shadow-md hover:bg-blue-950 text-blue-950 hover:text-white font-bold py-1 px-4 rounded">
+                          <a href="/jobs/<%= job._id %>" class="flex-inline transform hover:scale-105 hover:rotate-3 bg-white shadow-md hover:bg-blue-950 text-blue-950 hover:text-white font-bold py-1 px-4 rounded">
                             Voir +
                           </a>
                         </div>
