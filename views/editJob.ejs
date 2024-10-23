@@ -51,6 +51,60 @@
                     <label class="block text-sm font-medium text-gray-700">Date et Heure</label>
                     <input type="datetime-local" name="dateAndTime" value="<%= job.dateAndTime.toISOString().slice(0,16) %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required>
                 </div>
+                <!-- Job Duration -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Durée du Job (en heures)</label>
+                    <input type="number" name="jobDuration" value="<%= job.jobDuration %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required>
+                </div>
+
+                <!-- Description -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Description</label>
+                    <textarea name="description" rows="3" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required><%= job.description %></textarea>
+                </div>
+
+                <!-- Mission -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Mission</label>
+                    <select name="mission" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+                        <option value="ponctuel" <%= job.mission === 'ponctuel' ? 'selected' : '' %>>Ponctuel</option>
+                        <option value="récurrent" <%= job.mission === 'récurrent' ? 'selected' : '' %>>Récurrent</option>
+                    </select>
+                </div>
+
+                <!-- Remuneration -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Rémunération (€)</label>
+                    <input type="number" name="remuneration" step="0.01" value="<%= job.remuneration %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required>
+                </div>
+
+                <!-- Contract Type -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Type de Contrat</label>
+                    <select name="contractType" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+                        <option value="extra" <%= job.contractType === 'extra' ? 'selected' : '' %>>Extra</option>
+                        <option value="CDD" <%= job.contractType === 'CDD' ? 'selected' : '' %>>CDD</option>
+                        <option value="CDI" <%= job.contractType === 'CDI' ? 'selected' : '' %>>CDI</option>
+                    </select>
+                </div>
+
+                <!-- Attire Required -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Tenue Requise</label>
+                    <input type="text" name="attireRequired" value="<%= job.attireRequired %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+                </div>
+
+                <!-- Minimum Age -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Âge Minimum</label>
+                    <input type="number" name="minAge" value="<%= job.minAge %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+                </div>
+
+                <!-- Profile Type -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Type de Profil Recherché</label>
+                    <input type="text" name="profileType" value="<%= job.profileType %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+                </div>
 
                 <!-- Other fields... (similar to addJob.ejs) -->
 

@@ -3,6 +3,8 @@ const bcrypt = require('bcrypt');
 const Student = require('../models/Student');
 const Restaurant = require('../models/Restaurant');
 const Job = require('../models/Job');
+const path = require('path');
+const fs = require('fs');
 
 exports.setPassword = async (req, res) => {
   try {
@@ -55,5 +57,122 @@ exports.getAccount = async (req, res) => {
   } catch (err) {
     console.error('Error fetching account data:', err);
     res.status(500).send('Error fetching account data.');
+  }
+};
+// Render the profile edit page
+exports.getProfile = async (req, res) => {
+  try {
+    const student = await Student.findById(req.user._id);
+    res.render('editStudentProfile', { student });
+  } catch (error) {
+    console.error('Error fetching student profile:', error);
+    
+    res.redirect('/account');
+  }
+};
+
+exports.postProfile = async (req, res) => {
+  try {
+    const studentId = req.user._id;
+    const student = await Student.findById(studentId);
+
+    if (!student) {
+      
+      return res.redirect('/account');
+    }
+
+    // Update fields
+    student.firstName = req.body.firstName;
+    student.lastName = req.body.lastName;
+    student.age = req.body.age;
+    student.description = req.body.description;
+    student.currentSituation = req.body.currentSituation;
+    student.pastExperience = req.body.pastExperience
+      ? req.body.pastExperience.split('\n').map(s => s.trim()).filter(s => s)
+      : [];
+    student.availability = req.body.availability
+      ? req.body.availability.split('\n').map(s => s.trim()).filter(s => s)
+      : [];
+
+    // Handle uploaded files
+    if (req.files) {
+      // Profile Picture
+      if (req.files.profilePicture) {
+        // Save new profile picture URL
+        student.profilePictureUrl = req.files.profilePicture[0].location; // S3 file URL
+      }
+
+      // CV
+      if (req.files.cv) {
+        // Save new CV URL
+        student.cvUrl = req.files.cv[0].location; // S3 file URL
+      }
+    }
+
+    await student.save();
+
+    
+    res.redirect('/profile');
+  } catch (error) {
+    console.error('Error updating student profile:', error);
+    
+    res.redirect('/profile');
+  }
+};
+
+exports.getProfileRestau = async (req, res) => {
+  try {
+    const restaurant = await Restaurant.findById(req.user._id);
+    res.render('editRestaurantProfile', { restaurant });
+  } catch (error) {
+    console.error('Error fetching restaurant profile:', error);
+    
+    res.redirect('/account');
+  }
+};
+
+// Handle profile updates
+exports.postProfileRestau = async (req, res) => {
+  try {
+    const restaurantId = req.user._id;
+    const restaurant = await Restaurant.findById(restaurantId);
+
+    if (!restaurant) {
+      req.flash('error_msg', 'Restaurant non trouvé.');
+      return res.redirect('/account');
+    }
+
+    // Update fields
+    restaurant.name = req.body.name;
+    restaurant.managerName = req.body.managerName;
+    restaurant.emergencyPhone = req.body.emergencyPhone;
+    restaurant.siren = req.body.siren;
+    restaurant.addresses = req.body.addresses
+      ? req.body.addresses.split('\n').map(s => s.trim()).filter(s => s)
+      : [];
+
+    // Handle uploaded files
+    if (req.files) {
+      // Restaurant Picture
+      if (req.files.restaurantPicture) {
+        // Save new restaurant picture URL
+        restaurant.restaurantPictureUrl = req.files.restaurantPicture[0].location; // S3 file URL
+      }
+
+      // Logo
+      if (req.files.logo) {
+        // Save new logo URL
+        restaurant.logoUrl = req.files.logo[0].location; // S3 file URL
+      }
+    }
+
+    await restaurant.save();
+
+    
+    res.redirect('/profilerestau');
+  } catch (error) {
+    console.error('Error updating restaurant profile:', error);
+    
+    res.redirect('/profilerestau');
   }
 };

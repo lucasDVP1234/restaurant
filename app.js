@@ -8,6 +8,7 @@ const path = require('path');
 const indexRoutes = require('./routes/index');
 const app = express();
 const jobRoutes = require('./routes/jobs');
+const upload = require('./middlewares/upload');
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
@@ -15,6 +16,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI);
+
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
@@ -61,6 +63,7 @@ app.use((req, res, next) => {
 });
 
 // Routes
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/', indexRoutes);
 app.use('/jobs', jobRoutes);
 

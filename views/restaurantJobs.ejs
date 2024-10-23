@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <title>Vos Jobs</title>
+  <!-- Include Montserrat Font and Tailwind CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/tailwind.css">
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <%- include('header-login') %>
+
+    <!-- Main Container -->
+    <div class="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <!-- Page Title -->
+        <h1 class="text-3xl font-bold text-center text-blue-950 mb-8">Vos Jobs Créés</h1>
+
+        <!-- Jobs Grid -->
+        <% if (jobs.length > 0) { %>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <% jobs.forEach(function(job) { %>
+                    <div class="job-card bg-white hover:bg-gray-50 rounded-lg shadow-md overflow-hidden relative" data-job-id="<%= job._id %>">
+                        <!-- Job Info -->
+                        <div class="p-6">
+                            <!-- Job Title -->
+                            <h3 class="text-xl font-semibold text-blue-950 mb-4"><%= job.description %></h3>
+
+                            <!-- Job Date and Time -->
+                            <p class="text-gray-600 text-sm mb-1">
+                                <strong>Date :</strong> <%= job.dateAndTime.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) %> à <%= job.dateAndTime.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) %>
+                            </p>
+
+                            <!-- Job Duration -->
+                            <p class="text-gray-600 text-sm mb-1">
+                                <strong>Durée :</strong> <%= job.jobDuration %> heure(s)
+                            </p>
+
+                            <!-- Remuneration -->
+                            <p class="text-gray-600 text-sm mb-1">
+                                <strong>Rémunération :</strong> €<%= job.remuneration.toFixed(2) %>
+                            </p>
+
+                            <!-- Contract Type -->
+                            <p class="text-gray-600 text-sm mb-1">
+                                <strong>Type de Contrat :</strong> <%= job.contractType %>
+                            </p>
+
+                            <!-- Mission Type -->
+                            <p class="text-gray-600 text-sm mb-1">
+                                <strong>Mission :</strong> <%= job.mission %>
+                            </p>
+
+                            <!-- Minimum Age -->
+                            <p class="text-gray-600 text-sm mb-1">
+                                <strong>Âge Minimum :</strong> <%= job.minAge %> ans
+                            </p>
+
+                            <!-- Attire Required -->
+                            <% if (job.attireRequired) { %>
+                                <p class="text-gray-600 text-sm mb-1">
+                                    <strong>Tenue Requise :</strong> <%= job.attireRequired %>
+                                </p>
+                            <% } %>
+
+                            <!-- Profile Type -->
+                            <% if (job.profileType) { %>
+                                <p class="text-gray-600 text-sm mb-1">
+                                    <strong>Profil Recherché :</strong> <%= job.profileType %>
+                                </p>
+                            <% } %>
+
+                            <!-- Applicants Count -->
+                            <p class="text-gray-600 text-sm mb-1">
+                                <strong>Candidatures :</strong> <%= job.applicants.length %>
+                            </p>
+
+                            <!-- Action Buttons -->
+                            <div class="mt-4 flex justify-between items-center">
+                                <a href="/jobs/edit?jobId=<%= job._id %>" class="text-blue-500 hover:text-blue-700 font-semibold">Modifier</a>
+                                <a href="/jobs/applicants/<%= job._id %>" class="text-blue-500 hover:text-blue-700 font-semibold">Voir les candidats</a>
+                                <form action="/jobs/delete/<%= job._id %>" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce job ?');">
+                                    <button type="submit" class="text-red-500 hover:text-red-700 font-semibold">Supprimer</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        <% } else { %>
+            <p class="text-center text-gray-600">Vous n'avez pas encore créé de jobs.</p>
+        <% } %>
+    </div>
+</body>
+</html>

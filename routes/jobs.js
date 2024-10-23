@@ -28,4 +28,10 @@ router.post('/apply/:id', ensureAuthenticated, ensureStudent, jobController.appl
 // View a specific job
 router.get('/view/:id', ensureAuthenticated, ensureStudent, jobController.getjobsById);
 
+router.post('/delete/:id', ensureAuthenticated, ensureRestaurant, jobController.deleteJob);
+
+router.get('/my-jobs', ensureAuthenticated, ensureRestaurant, jobController.getRestaurantJobs);
+
+router.get('/my-applications', ensureAuthenticated, ensureStudent, jobController.getAppliedJobs);
+
 module.exports = router;

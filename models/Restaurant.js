@@ -9,6 +9,8 @@ const restaurantSchema = new mongoose.Schema({
   password: String,
   addresses: [String],
   siren: String,
+  restaurantPictureUrl: String,
+  logoUrl: String,
 });
 
 module.exports = mongoose.model('Restaurant', restaurantSchema);

@@ -114,6 +114,7 @@
                         <!-- Job Info -->
                         <div class="p-4">
                             <!-- Job Title -->
+                            <h3 class="text-xl font-semibold text-blue-950 mb-2"><%= job.createdBy.name %></h3>
                             <h3 class="text-xl font-semibold text-blue-950 mb-2"><%= job.description %></h3>
 
                             <!-- Job Date and Time -->
@@ -164,7 +165,7 @@
                             <div class="flex justify-end mt-4">
                                 <% if (!job.selectedApplicant) { %>
                                     <form action="/jobs/apply/<%= job._id %>" method="POST">
-                                        <button type="submit" class="bg-blue-950 text-white px-4 py-2 rounded hover:bg-blue-800 transition-colors duration-200">
+                                        <button type="submit" class="bg-blue-950 text-white px-4 py-2 rounded hover:bg-blue-800 transition-colors duration-200" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce job ?');">
                                             Postuler
                                         </button>
                                     </form>

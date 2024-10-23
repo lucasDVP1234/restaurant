@@ -48,7 +48,7 @@ exports.getJobs = async (req, res) => {
       }
     }
 
-    const jobs = await Job.find(filter).populate('createdBy');
+    const jobs = await Job.find(filter).populate('createdBy','name');
 
     res.render('jobs', { jobs });
   } catch (err) {
@@ -220,7 +220,7 @@ exports.getApplicantsForJob = async (req, res) => {
     }
 
     const job = await Job.findOne({ _id: jobId, createdBy: userId })
-      .populate('applicants', 'firstName lastName email')
+      .populate('applicants', 'firstName lastName age description cvUrl pastExperience currentSituation availability email profilePictureUrl')
       .populate('selectedApplicant', '_id');
 
     if (!job) {
@@ -267,5 +267,63 @@ exports.selectApplicant = async (req, res) => {
   } catch (error) {
     console.error('Error selecting applicant:', error.message);
     res.status(500).send('Error selecting applicant.');
+  }
+};
+
+exports.deleteJob = async (req, res) => {
+  try {
+    const jobId = req.params.id;
+    const job = await Job.findById(jobId);
+
+    if (!job) {
+      
+      return res.redirect('/account');
+    }
+
+    // Check if the logged-in restaurant is the creator of the job
+    if (String(job.createdBy) !== String(req.user._id)) {
+      
+      return res.redirect('/account');
+    }
+
+    await Job.findByIdAndDelete(jobId);
+
+    
+    res.redirect('/account');
+  } catch (err) {
+    console.error('Error deleting job:', err);
+    
+    res.redirect('/account');
+  }
+};
+
+exports.getRestaurantJobs = async (req, res) => {
+  try {
+    // Fetch jobs created by the logged-in restaurant
+    const jobs = await Job.find({ createdBy: req.user._id }).sort({ dateAndTime: -1 });
+
+    res.render('restaurantJobs', { jobs });
+  } catch (err) {
+    console.error('Error fetching restaurant jobs:', err);
+    req.flash('error_msg', 'Une erreur s\'est produite lors du chargement de vos jobs.');
+    res.redirect('/account');
+  }
+};
+
+
+exports.getAppliedJobs = async (req, res) => {
+  try {
+    const studentId = req.user._id;
+
+    // Find all jobs where the student is in the applicants array
+    const jobs = await Job.find({ applicants: studentId })
+      .populate('createdBy', 'name')
+      .populate('selectedApplicant', '_id');
+
+    res.render('studentJobs', { jobs, studentId });
+  } catch (error) {
+    console.error('Error fetching applied jobs:', error.message);
+    req.flash('error_msg', 'Une erreur s\'est produite lors du chargement de vos candidatures.');
+    res.redirect('/account');
   }
 };

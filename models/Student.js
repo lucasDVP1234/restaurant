@@ -1,4 +1,3 @@
-// models/Student.js
 const mongoose = require('mongoose');
 
 const studentSchema = new mongoose.Schema({
@@ -7,6 +6,7 @@ const studentSchema = new mongoose.Schema({
   age: Number,
   description: String,
   cvUrl: String,
+  profilePictureUrl: String,
   pastExperience: [String],
   currentSituation: String,
   availability: [String],

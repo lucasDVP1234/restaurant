@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <title>Modifier votre Profil</title>
+  <!-- Include Montserrat Font and Tailwind CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/tailwind.css">
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <!-- Header -->
+  <%- include('header-login') %>
+
+  <!-- Main Container -->
+  <div class="container flex flex-col items-center justify-center mx-auto px-4 py-12">
+    <h1 class="text-3xl font-bold mb-8 text-center">Modifier votre Profil</h1>
+    <div class="w-full max-w-lg bg-white shadow-xl rounded-2xl p-8">
+    <form action="/profile" method="POST" enctype="multipart/form-data" class="space-y-6">
+      <!-- First Name -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Prénom</label>
+        <input type="text" name="firstName" value="<%= student.firstName %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required>
+      </div>
+
+      <!-- Last Name -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Nom</label>
+        <input type="text" name="lastName" value="<%= student.lastName %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required>
+      </div>
+
+      <!-- Age -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Âge</label>
+        <input type="number" name="age" value="<%= student.age %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+      </div>
+
+      <!-- Description -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Description</label>
+        <textarea name="description" rows="3" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm"><%= student.description %></textarea>
+      </div>
+
+      <!-- Current Situation -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Situation Actuelle</label>
+        <input type="text" name="currentSituation" value="<%= student.currentSituation %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+      </div>
+
+      <!-- Past Experience -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Expérience(s) Passée(s)</label>
+        <textarea name="pastExperience" rows="3" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm"><%= student.pastExperience ? student.pastExperience.join('\n') : '' %></textarea>
+        <small class="text-gray-500">Séparez chaque expérience par une nouvelle ligne.</small>
+      </div>
+
+      <!-- Availability -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Disponibilités</label>
+        <textarea name="availability" rows="2" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm"><%= student.availability ? student.availability.join('\n') : '' %></textarea>
+        <small class="text-gray-500">Séparez chaque disponibilité par une nouvelle ligne.</small>
+      </div>
+
+      <!-- Email (Read-only) -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Email</label>
+        <input type="email" name="email" value="<%= student.email %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm bg-gray-100" readonly>
+      </div>
+
+      <!-- Profile Picture -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Photo de Profil</label>
+        <input type="file" name="profilePicture" accept="image/*" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+        <% if (student.profilePictureUrl) { %>
+          <img src="<%= student.profilePictureUrl %>" alt="Profile Picture" class="mt-4 h-32 w-32 object-cover rounded-full">
+        <% } %>
+      </div>
+
+      <!-- CV Upload -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">CV (PDF)</label>
+        <input type="file" name="cv" accept="application/pdf" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+        <% if (student.cvUrl) { %>
+          <a href="<%= student.cvUrl %>" target="_blank" class="text-blue-500 hover:underline mt-2 block">Voir le CV actuel</a>
+        <% } %>
+      </div>
+
+      <!-- Submit Button -->
+      <div>
+        <button type="submit" class="w-full text-lg font-semibold flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-white bg-blue-950 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+          Enregistrer les Modifications
+        </button>
+      </div>
+    </form>
+  </div>
+  </div>
+</body>
+</html>

@@ -27,6 +27,7 @@
     <%- include('header-login') %>
     <div class="container mx-auto px-4 py-12">
         <div class="bg-gray-50 p-10 ">
+            
             <h1 class="text-4xl font-bold text-gray-800 mb-2">Bienvenue, <span class="text-orange-500"><%= user.name %></span></h1>
             <h2 class="text-lg text-gray-600 mb-4">Compte : <%= user.email %></h2>
             <h2 class="text-2xl font-bold text-orange-500">Restaurant : <%= user.name %></h2>
@@ -36,9 +37,17 @@
                     <img src="/images/plus.png" alt="Ajouter un Job" class="w-5 h-5 mr-2">
                     Ajouter un Job
                 </a>
-                <a href="/jobs/edit" class="inline-flex transform hover:scale-105 hover:rotate-3 items-center px-6 py-2 text-sm hover:bg-orange-700 font-medium rounded-lg transition duration-200 shadow-sm bg-orange-500 text-white">
+                <a href="/jobs/edit" class="inline-flex transform hover:scale-105 hover:rotate-3 mr-2 items-center px-6 py-2 text-sm hover:bg-orange-700 font-medium rounded-lg transition duration-200 shadow-sm bg-orange-500 text-white">
                     <img src="/images/cray_blanc.png" alt="Modifier un Job" class="w-5 h-5 mr-2">
                     Modifier un Job
+                </a>
+                <a href="/jobs/my-jobs" class="inline-flex transform hover:scale-105 hover:rotate-3 mr-2 items-center px-6 py-2 text-sm hover:bg-orange-700 font-medium rounded-lg transition duration-200 shadow-sm bg-orange-500 text-white">
+                    <img src="/images/campagne.png" alt="Modifier un Job" class="w-5 h-5 mr-2">
+                    Voir mes jobs
+                </a>
+                <a href="/profilerestau" class="inline-flex transform hover:scale-105 hover:rotate-3 mr-2 items-center px-6 py-2 text-sm hover:bg-orange-700 font-medium rounded-lg transition duration-200 shadow-sm bg-orange-500 text-white">
+                    <img src="/images/plus.png" alt="Modifier un Job" class="w-5 h-5 mr-2">
+                    Compléter mon profil
                 </a>
             </div>
 
@@ -65,13 +74,17 @@
                                         <td class="px-6 py-4 border-b text-sm text-gray-700"><%= job.applicants.length %></td>
                                         <td class="px-6 py-4 border-b text-sm text-gray-700">
                                             <% if (job.applicants.length > 0) { %>
-                                                <a href="/applicants/<%= job._id %>" class="text-blue-500 hover:underline">Voir les candidats</a>
+                                                <a href="/jobs/applicants/<%= job._id %>" class="text-blue-500 hover:underline">Voir les candidats</a>
                                             <% } else { %>
                                                 Aucun candidat
                                             <% } %>
                                         </td>
                                         <td class="px-6 py-4 border-b text-sm text-gray-700">
                                             <a href="/jobs/edit?jobId=<%= job._id %>" class="text-blue-500 hover:underline">Modifier</a>
+                                            <!-- Add the Delete button -->
+                                            <form action="/jobs/delete/<%= job._id %>" method="POST" style="display:inline;">
+                                                <button type="submit" class="text-red-500 hover:underline ml-4" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce job ?');">Supprimer</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 <% }); %>
@@ -82,6 +95,7 @@
                     <p class="text-center text-gray-600">Vous n'avez pas encore créé de jobs.</p>
                 <% } %>
             </div>
+
 
             <!-- Set Password Form -->
             <div class="bg-white p-8 max-w-md rounded-2xl shadow-md">
