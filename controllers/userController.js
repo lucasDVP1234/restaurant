@@ -47,7 +47,7 @@ exports.getAccount = async (req, res) => {
       res.render('account-restaurant', { user, jobs });
     } else if (user.userType === 'student') {
       jobs = await Job.find({ applicants: user._id })
-        .populate('createdBy', 'name')
+        .populate('createdBy', 'name addresses emergencyPhone')
         .populate('selectedApplicant', '_id');
 
       res.render('account-student', { user, jobs });
@@ -84,15 +84,13 @@ exports.postProfile = async (req, res) => {
     // Update fields
     student.firstName = req.body.firstName;
     student.lastName = req.body.lastName;
+    student.number = req.body.number;
     student.age = req.body.age;
     student.description = req.body.description;
     student.currentSituation = req.body.currentSituation;
     student.pastExperience = req.body.pastExperience
-      ? req.body.pastExperience.split('\n').map(s => s.trim()).filter(s => s)
-      : [];
     student.availability = req.body.availability
-      ? req.body.availability.split('\n').map(s => s.trim()).filter(s => s)
-      : [];
+      
 
     // Handle uploaded files
     if (req.files) {
@@ -112,7 +110,7 @@ exports.postProfile = async (req, res) => {
     await student.save();
 
     
-    res.redirect('/profile');
+    res.redirect('/jobs');
   } catch (error) {
     console.error('Error updating student profile:', error);
     

@@ -19,68 +19,103 @@
         <% if (jobs.length > 0) { %>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <% jobs.forEach(function(job) { %>
-                    <div class="job-card bg-white hover:bg-gray-50 rounded-lg shadow-md overflow-hidden relative" data-job-id="<%= job._id %>">
+                    <div class="job-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <!-- Background Image -->
+                        <% if (job.createdBy.restaurantPictureUrl) { %>
+                            <div class="relative h-32">
+                                <img src="<%= job.createdBy.restaurantPictureUrl %>" alt="Restaurant Background" class="w-full h-full object-cover">
+                                <!-- Logo Bubble -->
+                                <% if (job.createdBy.logoUrl) { %>
+                                    <div class="absolute -bottom-8 left-1/2 transform -translate-x-1/2">
+                                        <img src="<%= job.createdBy.logoUrl %>" alt="Restaurant Logo" class="w-16 h-16 rounded-full border-4 border-white shadow-md">
+                                    </div>
+                                <% } %>
+                            </div>
+                        <% } else { %>
+                            <!-- Default Background -->
+                            <div class="relative h-16 bg-gray-200">
+                                <!-- Logo Bubble -->
+                                <% if (job.createdBy.logoUrl) { %>
+                                    <div class="absolute -bottom-8 left-1/2 transform -translate-x-1/2">
+                                        <img src="<%= job.createdBy.logoUrl %>" alt="Restaurant Logo" class="w-16 h-16 rounded-full border-4 border-white shadow-md">
+                                    </div>
+                                <% } %>
+                            </div>
+                        <% } %>
+
                         <!-- Job Info -->
-                        <div class="p-6">
+                        <div class="pt-12 pb-6 px-6">
                             <!-- Job Title -->
-                            <h3 class="text-xl font-semibold text-blue-950 mb-4"><%= job.description %></h3>
+                            <h3 class="text-xl font-semibold text-center text-blue-950 mb-2"><%= job.contractType %></h3>
 
-                            <!-- Job Date and Time -->
-                            <p class="text-gray-600 text-sm mb-1">
-                                <strong>Date :</strong> <%= job.dateAndTime.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) %> à <%= job.dateAndTime.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) %>
-                            </p>
-
-                            <!-- Job Duration -->
-                            <p class="text-gray-600 text-sm mb-1">
-                                <strong>Durée :</strong> <%= job.jobDuration %> heure(s)
-                            </p>
-
-                            <!-- Remuneration -->
-                            <p class="text-gray-600 text-sm mb-1">
-                                <strong>Rémunération :</strong> €<%= job.remuneration.toFixed(2) %>
-                            </p>
-
-                            <!-- Contract Type -->
-                            <p class="text-gray-600 text-sm mb-1">
-                                <strong>Type de Contrat :</strong> <%= job.contractType %>
-                            </p>
-
-                            <!-- Mission Type -->
-                            <p class="text-gray-600 text-sm mb-1">
-                                <strong>Mission :</strong> <%= job.mission %>
-                            </p>
-
-                            <!-- Minimum Age -->
-                            <p class="text-gray-600 text-sm mb-1">
-                                <strong>Âge Minimum :</strong> <%= job.minAge %> ans
-                            </p>
-
-                            <!-- Attire Required -->
-                            <% if (job.attireRequired) { %>
-                                <p class="text-gray-600 text-sm mb-1">
-                                    <strong>Tenue Requise :</strong> <%= job.attireRequired %>
-                                </p>
-                            <% } %>
-
-                            <!-- Profile Type -->
-                            <% if (job.profileType) { %>
-                                <p class="text-gray-600 text-sm mb-1">
-                                    <strong>Profil Recherché :</strong> <%= job.profileType %>
-                                </p>
-                            <% } %>
+                            <!-- Two Columns Layout -->
+                            <div class="grid grid-cols-2 gap-4">
+                                <!-- Left Column -->
+                                <div>
+                                    <!-- Date and Time -->
+                                    <p class="text-gray-600 text-sm mb-2">
+                                        <strong>Date :</strong> <%= job.dateAndTime.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) %>
+                                    </p>
+                                    <!-- Time -->
+                                    <p class="text-gray-600 text-sm mb-2">
+                                        <strong>Heure :</strong> <%= job.dateAndTime.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) %>
+                                    </p>
+                                    <!-- Duration -->
+                                    <p class="text-gray-600 text-sm mb-2">
+                                        <strong>Durée :</strong> <%= job.jobDuration %> heure(s)
+                                    </p>
+                                    <!-- Remuneration -->
+                                    <p class="text-gray-600 text-sm mb-2">
+                                        <strong>Rémunération :</strong> €<%= job.remuneration.toFixed(2) %>
+                                    </p>
+                                </div>
+                                <!-- Right Column -->
+                                <div>
+                                    <!-- Contract Type -->
+                                    <p class="text-gray-600 text-sm mb-2">
+                                        <strong>Description :</strong> <%= job.description %>
+                                    </p>
+                                    <!-- Mission -->
+                                    <p class="text-gray-600 text-sm mb-2">
+                                        <strong>Mission :</strong> <%= job.mission %>
+                                    </p>
+                                    <!-- Minimum Age -->
+                                    <p class="text-gray-600 text-sm mb-2">
+                                        <strong>Âge Minimum :</strong> <%= job.minAge %> ans
+                                    </p>
+                                    <!-- Attire Required -->
+                                    <% if (job.attireRequired) { %>
+                                        <p class="text-gray-600 text-sm mb-2">
+                                            <strong>Tenue Requise :</strong> <%= job.attireRequired %>
+                                        </p>
+                                    <% } %>
+                                </div>
+                            </div>
 
                             <!-- Applicants Count -->
-                            <p class="text-gray-600 text-sm mb-1">
+                            <p class="text-gray-600 text-sm mt-4">
                                 <strong>Candidatures :</strong> <%= job.applicants.length %>
+                            </p>
+                             <!-- Selection Status -->
+                            <p class="text-gray-600 text-sm mt-2 mb-4">
+                                <strong>Statut :</strong>
+                                <% if (job.selectedApplicant) { %>
+                                <span class="text-green-500 font-semibold">Sélectionné</span>
+                                <% } else { %>
+                                <span class="text-orange-500 font-semibold">En attente</span>
+                                <% } %>
                             </p>
 
                             <!-- Action Buttons -->
-                            <div class="mt-4 flex justify-between items-center">
+                            <div class="mt-6 flex justify-around items-center">
+                                <% if (!job.selectedApplicant) { %>
                                 <a href="/jobs/edit?jobId=<%= job._id %>" class="text-blue-500 hover:text-blue-700 font-semibold">Modifier</a>
-                                <a href="/jobs/applicants/<%= job._id %>" class="text-blue-500 hover:text-blue-700 font-semibold">Voir les candidats</a>
                                 <form action="/jobs/delete/<%= job._id %>" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce job ?');">
                                     <button type="submit" class="text-red-500 hover:text-red-700 font-semibold">Supprimer</button>
                                 </form>
+                                <% } %>
+                                <a href="/jobs/applicants/<%= job._id %>" class="text-blue-500 hover:text-blue-700 font-semibold">Voir les candidats</a>
+                                
                             </div>
                         </div>
                     </div>

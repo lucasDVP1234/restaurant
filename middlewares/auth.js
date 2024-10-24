@@ -15,6 +15,22 @@ function ensureStudent(req, res, next) {
     res.redirect('/account');
   }
 }
+function profileCompleteStudent(req, res, next) {
+  
+  if (req.user && req.user.number) {
+    return next();
+  } else {
+    res.redirect('/profile');
+  }
+}
+function profileCompleteRestau(req, res, next) {
+  
+  if (req.user && req.user.emergencyPhone) {
+    return next();
+  } else {
+    res.redirect('/profilerestau');
+  }
+}
 
 function ensureRestaurant(req, res, next) {
 
@@ -33,4 +49,4 @@ function isAdmin(req, res, next) {
   res.status(403).send('Access denied.');
 }
 
-module.exports = { ensureAuthenticated, ensureStudent, ensureRestaurant, isAdmin };
+module.exports = { ensureAuthenticated, ensureStudent, ensureRestaurant, isAdmin,profileCompleteStudent,profileCompleteRestau };

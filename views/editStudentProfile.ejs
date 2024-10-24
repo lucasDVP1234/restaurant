@@ -12,25 +12,41 @@
 
   <!-- Main Container -->
   <div class="container flex flex-col items-center justify-center mx-auto px-4 py-12">
-    <h1 class="text-3xl font-bold mb-8 text-center">Modifier votre Profil</h1>
+    <h1 class="text-3xl font-bold mb-8 text-center">Compléter votre Profil</h1>
     <div class="w-full max-w-lg bg-white shadow-xl rounded-2xl p-8">
     <form action="/profile" method="POST" enctype="multipart/form-data" class="space-y-6">
       <!-- First Name -->
       <div>
-        <label class="block text-sm font-medium text-gray-700">Prénom</label>
+        <label class="block text-sm font-medium text-gray-700">Prénom *</label>
         <input type="text" name="firstName" value="<%= student.firstName %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required>
       </div>
 
       <!-- Last Name -->
       <div>
-        <label class="block text-sm font-medium text-gray-700">Nom</label>
+        <label class="block text-sm font-medium text-gray-700">Nom *</label>
         <input type="text" name="lastName" value="<%= student.lastName %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required>
       </div>
+      <!-- Numéro de Téléphone -->
+      <div>
+        <label for="phoneNumber" class="block text-sm font-medium text-gray-700">Numéro de Téléphone *</label>
+        <input
+          type="tel"
+          id="phoneNumber"
+          name="number"
+          value="<%= student.number %>"
+          pattern="^\d{10}$"
+          title="Veuillez entrer un numéro de téléphone à 10 chiffres."
+          class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm"
+          required
+        >
+        <small class="text-gray-500">Entrez un numéro de téléphone à 10 chiffres</small>
+      </div>
+
 
       <!-- Age -->
       <div>
-        <label class="block text-sm font-medium text-gray-700">Âge</label>
-        <input type="number" name="age" value="<%= student.age %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+        <label class="block text-sm font-medium text-gray-700">Âge *</label>
+        <input type="number" name="age" value="<%= student.age %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required>
       </div>
 
       <!-- Description -->
@@ -41,22 +57,44 @@
 
       <!-- Current Situation -->
       <div>
-        <label class="block text-sm font-medium text-gray-700">Situation Actuelle</label>
-        <input type="text" name="currentSituation" value="<%= student.currentSituation %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
-      </div>
+        <label class="block text-sm font-medium text-gray-700">Situation Actuelle *</label>
+        
+        <select name="currentSituation" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+            <option value="Étudiant" <%= student.currentSituation === 'Étudiant' ? 'selected' : '' %>>Étudiant</option>
+            <option value="Salarié" <%= student.currentSituation === 'Salarié' ? 'selected' : '' %>>Salarié</option>
+            <option value="Autre" <%= student.currentSituation === 'Autre' ? 'selected' : '' %>>Autre</option>
+        </select>
+    </div>
 
+      
       <!-- Past Experience -->
       <div>
-        <label class="block text-sm font-medium text-gray-700">Expérience(s) Passée(s)</label>
-        <textarea name="pastExperience" rows="3" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm"><%= student.pastExperience ? student.pastExperience.join('\n') : '' %></textarea>
-        <small class="text-gray-500">Séparez chaque expérience par une nouvelle ligne.</small>
+        <label for="pastExperience" class="block text-sm font-medium text-gray-700">Expérience(s) Passée(s) *</label>
+        
+        <select id="pastExperience" name="pastExperience" required class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+          <option value="" disabled <%= !student.pastExperience ? 'selected' : '' %>>Veuillez sélectionner une option</option>
+          <option value="Pas expérience" <%= student.pastExperience === '0 expérience' ? 'selected' : '' %>>0 expérience</option>
+          <option value="A déjà travaillé dans un restaurant ou bar" <%= student.pastExperience === 'A déjà travaillé dans un restaurant ou bar' ? 'selected' : '' %>>A déjà travaillé dans un restaurant ou bar</option>
+          <option value="Autre" <%= student.pastExperience === 'Autre' ? 'selected' : '' %>>Autre</option>
+        </select>
+        
       </div>
 
       <!-- Availability -->
       <div>
-        <label class="block text-sm font-medium text-gray-700">Disponibilités</label>
-        <textarea name="availability" rows="2" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm"><%= student.availability ? student.availability.join('\n') : '' %></textarea>
-        <small class="text-gray-500">Séparez chaque disponibilité par une nouvelle ligne.</small>
+        <label for="availability" class="block text-sm font-medium text-gray-700">Disponibilités</label>
+        
+        <select id="availability" name="availability" required class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+          <option value="" disabled <%= !student.availability ? 'selected' : '' %>>Veuillez sélectionner une option</option>
+          <option value="Le week-end" <%= student.availability === 'Le week-end' ? 'selected' : '' %>>Le week-end</option>
+          <option value="La semaine" <%= student.availability === 'La semaine' ? 'selected' : '' %>>La semaine</option>
+          <option value="Le soir" <%= student.availability === 'Le soir' ? 'selected' : '' %>>Le soir</option>
+          <option value="La journée" <%= student.availability === 'La journée' ? 'selected' : '' %>>La journée</option>
+          <option value="Un peu tout le temps" <%= student.availability === 'Un peu tout le temps' ? 'selected' : '' %>>Un peu tout le temps</option>
+          <option value="Planning précis" <%= student.availability === 'Planning précis' ? 'selected' : '' %>>Planning précis</option>
+        </select>
+        
+        <small class="text-gray-500">Veuillez sélectionner une disponibilité</small>
       </div>
 
       <!-- Email (Read-only) -->
@@ -67,19 +105,25 @@
 
       <!-- Profile Picture -->
       <div>
-        <label class="block text-sm font-medium text-gray-700">Photo de Profil</label>
-        <input type="file" name="profilePicture" accept="image/*" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+        <label class="block text-sm font-medium text-gray-700">Photo de Profil*</label>
+        
         <% if (student.profilePictureUrl) { %>
+          <input type="file" name="profilePicture" accept="image/*" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" >
           <img src="<%= student.profilePictureUrl %>" alt="Profile Picture" class="mt-4 h-32 w-32 object-cover rounded-full">
-        <% } %>
+        <% } else { %>
+          <input type="file" name="profilePicture" accept="image/*" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required>
+          <% } %>
       </div>
 
       <!-- CV Upload -->
       <div>
         <label class="block text-sm font-medium text-gray-700">CV (PDF)</label>
-        <input type="file" name="cv" accept="application/pdf" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+        
         <% if (student.cvUrl) { %>
+          <input type="file" name="cv" accept="application/pdf" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
           <a href="<%= student.cvUrl %>" target="_blank" class="text-blue-500 hover:underline mt-2 block">Voir le CV actuel</a>
+          <% } else { %>
+          <input type="file" name="cv" accept="application/pdf" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
         <% } %>
       </div>
 

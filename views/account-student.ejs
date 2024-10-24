@@ -27,6 +27,9 @@
     <%- include('header-login') %>
     <div class="container mx-auto px-4 py-12">
         <div class="bg-gray-50 p-10 ">
+            <% if (user.profilePictureUrl) { %>
+            <img src="<%= user.profilePictureUrl %>" alt="Restaurant Logo" class="w-24 h-24 rounded-full shadow-sm mb-4">
+            <% } %>
             <h1 class="text-4xl font-bold text-gray-800 mb-2">Bienvenue, <span class="text-orange-500"><%= user.firstName %> <%= user.lastName %></span></h1>
             <h2 class="text-lg text-gray-600 mb-4">Compte : <%= user.email %></h2>
             <h2 class="text-lg text-gray-600">Étudiant</h2>
@@ -46,21 +49,45 @@
                         <table class="min-w-full bg-white rounded-2xl shadow-md">
                             <thead>
                                 <tr>
-                                    <th class="px-6 py-4 border-b text-left text-sm font-medium text-gray-500 uppercase">Nom du Job</th>
+                                    
                                     <th class="px-6 py-4 border-b text-left text-sm font-medium text-gray-500 uppercase">Restaurant</th>
+                                    <th class="px-6 py-4 border-b text-left text-sm font-medium text-gray-500 uppercase">Addresse</th>
+                                    <th class="px-6 py-4 border-b text-left text-sm font-medium text-gray-500 uppercase">Date</th>
+                                    <th class="px-6 py-4 border-b text-left text-sm font-medium text-gray-500 uppercase">Heure</th>
+                                    
                                     <th class="px-6 py-4 border-b text-left text-sm font-medium text-gray-500 uppercase">Statut</th>
+                                    <th class="px-6 py-4 border-b text-left text-sm font-medium text-gray-500 uppercase">Numéro de téléphone</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <% jobs.forEach(function(job) { %>
                                     <tr class="hover:bg-gray-50">
-                                        <td class="px-6 py-4 border-b text-sm text-gray-700"><%= job.description %></td>
+                                        
                                         <td class="px-6 py-4 border-b text-sm text-gray-700"><%= job.createdBy.name %></td>
                                         <td class="px-6 py-4 border-b text-sm text-gray-700">
+                                            <% if (job.createdBy.addresses && job.createdBy.addresses.length > 0) { %>
+                                              <% job.createdBy.addresses.forEach(function(address) { %>
+                                                <p><%= address %></p>
+                                              <% }) %>
+                                            <% } else { %>
+                                              <p>No addresses available</p>
+                                            <% } %>
+                                          </td>
+                                        <td class="px-6 py-4 border-b text-sm text-gray-700"><%= job.dateAndTime.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) %></td>
+                                        <td class="px-6 py-4 border-b text-sm text-gray-700"><%= job.dateAndTime.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) %></td>
+                                        
+                                        <td class="px-6 py-4 border-b text-sm font-semibold text-green-700">
                                             <% if (job.selectedApplicant && job.selectedApplicant._id.toString() === user._id.toString()) { %>
                                                 Sélectionné
                                             <% } else { %>
                                                 En attente
+                                            <% } %>
+                                        </td>
+                                        <td class="px-6 py-4 border-b text-sm text-gray-700">
+                                            <% if (job.selectedApplicant && job.selectedApplicant._id.toString() === user._id.toString()) { %>
+                                                <%= job.createdBy.emergencyPhone %>
+                                            <% } else { %>
+                                                Numéro caché
                                             <% } %>
                                         </td>
                                     </tr>

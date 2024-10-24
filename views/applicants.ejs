@@ -19,66 +19,74 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <% applicants.forEach(function(applicant) { %>
           <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <div class="p-6">
-              <!-- Applicant Name -->
-              <% if (applicant.profilePictureUrl) { %>
-                <img src="<%= applicant.profilePictureUrl %>" alt="Photo de Profil" class="mt-4 h-32 w-32 object-cover rounded-full">
-              <% } %>
+            <div class="p-6 flex flex-col items-center">
               
-              <h2 class="text-xl font-semibold text-blue-950 mb-2"><%= applicant.firstName %> <%= applicant.lastName %></h2>
-
-              <!-- Applicant Age -->
-              <% if (applicant.age) { %>
-                <p class="text-gray-600 text-sm mb-1">
-                  <strong>Âge :</strong> <%= applicant.age %> ans
-                </p>
+              <!-- Centered Applicant Picture -->
+              <% if (applicant.profilePictureUrl) { %>
+                <img src="<%= applicant.profilePictureUrl %>" alt="Photo de Profil" class="h-32 w-32 object-cover rounded-full mb-4">
               <% } %>
 
-              <!-- Email -->
-              <p class="text-gray-600 text-sm mb-1">
-                <strong>Email :</strong> <%= applicant.email %>
-              </p>
+              <!-- Applicant Name -->
+              <h2 class="text-xl font-semibold text-blue-950 mb-2 text-center"><%= applicant.firstName %> <%= applicant.lastName %></h2>
 
-              <!-- Current Situation -->
-              <% if (applicant.currentSituation) { %>
-                <p class="text-gray-600 text-sm mb-1">
-                  <strong>Situation actuelle :</strong> <%= applicant.currentSituation %>
-                </p>
-              <% } %>
+              <!-- Columns for Applicant Details -->
+              <div class="w-full flex flex-col sm:flex-row justify-between">
+                <div class="mb-4 sm:mb-0 sm:w-1/2 pr-2">
+                  <!-- Applicant Age -->
+                  <% if (applicant.age) { %>
+                    <p class="text-gray-600 text-sm mb-2">
+                      <strong>Âge :</strong> <%= applicant.age %> ans
+                    </p>
+                  <% } %>
 
-              <!-- Description -->
-              <% if (applicant.description) { %>
-                <p class="text-gray-600 text-sm mb-1">
-                  <strong>Description :</strong> <%= applicant.description %>
-                </p>
-              <% } %>
+                  <!-- Email -->
+                  <p class="text-gray-600 text-sm mb-2">
+                    <strong>Email :</strong> <%= applicant.email %>
+                  </p>
 
-              <!-- Past Experience -->
-              <% if (applicant.pastExperience && applicant.pastExperience.length > 0) { %>
-                <p class="text-gray-600 text-sm mb-1">
-                  <strong>Expérience(s) passée(s) :</strong>
-                  <ul class="list-disc list-inside">
-                    <% applicant.pastExperience.forEach(function(exp) { %>
-                      <li><%= exp %></li>
-                    <% }); %>
-                  </ul>
-                </p>
-              <% } %>
+                  <!-- Current Situation -->
+                  <% if (applicant.currentSituation) { %>
+                    <p class="text-gray-600 text-sm mb-2">
+                      <strong>Situation actuelle :</strong> <%= applicant.currentSituation %>
+                    </p>
+                  <% } %>
 
-              <!-- Availability -->
-              <% if (applicant.availability && applicant.availability.length > 0) { %>
-                <p class="text-gray-600 text-sm mb-1">
-                  <strong>Disponibilités :</strong> <%= applicant.availability.join(', ') %>
-                </p>
-              <% } %>
+                      <!-- CV URL -->
+                  <% if (applicant.cvUrl) { %>
+                    <p class="text-gray-600 text-sm mb-2">
+                      <strong>CV :</strong>
+                      <a href="<%= applicant.cvUrl %>" target="_blank" class="text-blue-500 hover:underline">Voir le CV</a>
+                    </p>
+                  <% } %>
+                </div>
 
-              <!-- CV URL -->
-              <% if (applicant.cvUrl) { %>
-                <p class="text-gray-600 text-sm mb-1">
-                  <strong>CV :</strong>
-                  <a href="<%= applicant.cvUrl %>" target="_blank" class="text-blue-500 hover:underline">Voir le CV</a>
-                </p>
-              <% } %>
+                <div class="sm:w-1/2 pl-2">
+                  <!-- Description -->
+                  <% if (applicant.description) { %>
+                    <p class="text-gray-600 text-sm mb-2">
+                      <strong>Description :</strong> <%= applicant.description %>
+                    </p>
+                  <% } %>
+
+                  <!-- Past Experience -->
+                  <% if (applicant.pastExperience && applicant.pastExperience.length > 0) { %>
+                    <p class="text-gray-600 text-sm mb-2">
+                      <strong>Expérience(s) passée(s) :</strong><% applicant.pastExperience %>
+                      
+                    </p>
+                  <% } %>
+
+                  <!-- Availability -->
+                  <% if (applicant.availability && applicant.availability.length > 0) { %>
+                    <p class="text-gray-600 text-sm mb-2">
+                      <strong>Disponibilités :</strong> <%= applicant.availability %>
+                    </p>
+                  <% } %>
+              
+                </div>
+              </div>
+
+              
 
               <!-- Selection Status -->
               <p class="text-gray-600 text-sm mb-4">
@@ -91,13 +99,12 @@
               </p>
 
               <!-- Action Buttons -->
-              <div class="flex justify-between items-center">
+              <div class="flex justify-between items-center w-full">
                 <% if (!job.selectedApplicant || job.selectedApplicant._id.toString() !== applicant._id.toString()) { %>
                   <form action="/jobs/select-applicant/<%= job._id %>/<%= applicant._id %>" method="POST">
                     <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded" onclick="return confirm('Êtes-vous sûr de vouloir sélectionner ce candidat ?');">Choisir</button>
                   </form>
                 <% } else { %>
-                  <!-- Optionally, you can add a button to deselect the applicant -->
                   <form action="/jobs/deselect-applicant/<%= job._id %>" method="POST">
                     <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded" onclick="return confirm('Êtes-vous sûr de vouloir désélectionner ce candidat ?');">Désélectionner</button>
                   </form>

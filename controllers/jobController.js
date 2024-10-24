@@ -48,7 +48,7 @@ exports.getJobs = async (req, res) => {
       }
     }
 
-    const jobs = await Job.find(filter).populate('createdBy','name');
+    const jobs = await Job.find(filter).populate('createdBy','name logoUrl restaurantPictureUrl addresses emergencyPhone');
 
     res.render('jobs', { jobs });
   } catch (err) {
@@ -220,7 +220,7 @@ exports.getApplicantsForJob = async (req, res) => {
     }
 
     const job = await Job.findOne({ _id: jobId, createdBy: userId })
-      .populate('applicants', 'firstName lastName age description cvUrl pastExperience currentSituation availability email profilePictureUrl')
+      .populate('applicants', 'firstName lastName number age description cvUrl pastExperience currentSituation availability email profilePictureUrl')
       .populate('selectedApplicant', '_id');
 
     if (!job) {
@@ -300,7 +300,9 @@ exports.deleteJob = async (req, res) => {
 exports.getRestaurantJobs = async (req, res) => {
   try {
     // Fetch jobs created by the logged-in restaurant
-    const jobs = await Job.find({ createdBy: req.user._id }).sort({ dateAndTime: -1 });
+    const jobs = await Job.find({ createdBy: req.user._id }).sort({ dateAndTime: -1 })
+    .populate('createdBy', 'name restaurantPictureUrl logoUrl addresses emergencyPhone');
+
 
     res.render('restaurantJobs', { jobs });
   } catch (err) {
@@ -317,7 +319,7 @@ exports.getAppliedJobs = async (req, res) => {
 
     // Find all jobs where the student is in the applicants array
     const jobs = await Job.find({ applicants: studentId })
-      .populate('createdBy', 'name')
+      .populate('createdBy', 'name logoUrl restaurantPictureUrl addresses emergencyPhone')
       .populate('selectedApplicant', '_id');
 
     res.render('studentJobs', { jobs, studentId });
@@ -325,5 +327,76 @@ exports.getAppliedJobs = async (req, res) => {
     console.error('Error fetching applied jobs:', error.message);
     req.flash('error_msg', 'Une erreur s\'est produite lors du chargement de vos candidatures.');
     res.redirect('/account');
+  }
+};
+
+exports.withdrawApplication = async (req, res) => {
+  try {
+    const jobId = req.params.jobId;
+    const studentId = req.user._id.toString();
+
+    // Find the job
+    const job = await Job.findById(jobId);
+
+    if (!job) {
+      
+      return res.redirect('/jobs/my-applications');
+    }
+
+    // Check if the student has applied
+    if (!job.applicants.includes(studentId)) {
+      
+      return res.redirect('/jobs/my-applications');
+    }
+
+    // Check if the student has been selected
+    if (job.selectedApplicant && job.selectedApplicant.toString() === studentId) {
+      
+      return res.redirect('/jobs/my-applications');
+    }
+
+    // Remove the student from the applicants array
+    job.applicants.pull(studentId);
+    await job.save();
+
+    
+    res.redirect('/jobs/my-applications');
+  } catch (error) {
+    console.error('Error withdrawing application:', error.message);
+    
+    res.redirect('/jobs/my-applications');
+  }
+};
+
+exports.deselectApplicant = async (req, res) => {
+  try {
+    const { jobId } = req.params;
+    const userId = req.user._id;
+
+    // Ensure only restaurants can deselect applicants
+    if (req.user.userType !== 'restaurant') {
+      return res.status(403).send('Access denied.');
+    }
+
+    // Find the job
+    const job = await Job.findOne({ _id: jobId, createdBy: userId });
+
+    if (!job) {
+      return res.status(404).send('Job not found or you are not authorized to deselect applicants.');
+    }
+
+    // Check if there is a selected applicant
+    if (!job.selectedApplicant) {
+      return res.status(400).send('No applicant has been selected for this job.');
+    }
+
+    // Deselect the applicant
+    job.selectedApplicant = null;
+    await job.save();
+
+    res.redirect('/applicants/' + jobId);
+  } catch (error) {
+    console.error('Error deselecting applicant:', error.message);
+    res.status(500).send('Error deselecting applicant.');
   }
 };
