@@ -37,28 +37,28 @@
             <form action="/signup/student" method="POST" class="space-y-6">
                 <!-- First Name Field -->
                 <div>
-                    <label for="firstName" class="block text-gray-700 font-medium mb-2">Prénom :</label>
+                    <label for="firstName" class="block text-gray-700 font-medium mb-2">Prénom *</label>
                     <input type="text" name="firstName" id="firstName" placeholder="Votre prénom" required
                         class="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
                 </div>
 
                 <!-- Last Name Field -->
                 <div>
-                    <label for="lastName" class="block text-gray-700 font-medium mb-2">Nom :</label>
+                    <label for="lastName" class="block text-gray-700 font-medium mb-2">Nom *</label>
                     <input type="text" name="lastName" id="lastName" placeholder="Votre nom" required
                         class="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
                 </div>
 
                 <!-- Email Field -->
                 <div>
-                    <label for="email" class="block text-gray-700 font-medium mb-2">Email :</label>
+                    <label for="email" class="block text-gray-700 font-medium mb-2">Email *</label>
                     <input type="email" name="email" id="email" placeholder="exemple@gmail.com" required
                         class="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
                 </div>
 
                 <!-- Password Field -->
                 <div>
-                    <label for="password" class="block text-gray-700 font-medium mb-2">Créer un Mot de Passe :</label>
+                    <label for="password" class="block text-gray-700 font-medium mb-2">Créer un Mot de Passe *</label>
                     <input type="password" name="password" id="password" placeholder="Votre mot de passe" required
                         class="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
                 </div>
@@ -71,23 +71,23 @@
             </form>
 
             <!-- Divider -->
-            <div class="mt-6 flex items-center">
-                <div class="flex-grow border-t border-gray-300"></div>
-                <span class="mx-4 text-gray-500">Ou</span>
-                <div class="flex-grow border-t border-gray-300"></div>
-            </div>
+            <!-- <div class="mt-6 flex items-center"> -->
+               <!--  <div class="flex-grow border-t border-gray-300"></div> -->
+               <!--  <span class="mx-4 text-gray-500">Ou</span> -->
+               <!--  <div class="flex-grow border-t border-gray-300"></div> -->
+            <!-- </div> -->
 
             <!-- Google Authentication -->
-            <div class="mt-6">
-                <a href="/auth/google"
-                    class="w-full transform hover:scale-105 hover:-rotate-1 flex items-center justify-center bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-md shadow-sm transition duration-200 ease-in-out">
-                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 488 512">
-                        <path d="M488 261.8C488 403.3 391.1 504 248 504C110.8 504 0 393.2 0 256C0 118.8 110.8 8 248 8C314.2 8 371 32.5 414.3 72.9L343.7 143.5C306.5 113.3 271.3 96 248 96C155.7 96 80 171.7 80 264C80 356.3 155.7 432 248 432C338.6 432 386.6 372.6 391.4 323.6H248V238.3H484C486.3 251.2 487.6 264.2 487.6 277.6C487.6 351.1 446.3 413.7 382 452.6C317.7 491.4 248 504 248 504C110.8 504 0 393.2 0 256C0 118.8 110.8 8 248 8C385.2 8 496 118.8 496 256C496 293.4 489.4 329.4 478.4 362.4L488 362.4L488 261.8Z"/>
-                    </svg>
-                    S'inscrire avec Google
-                </a>
-            </div>
-
+            <!-- <div class="mt-6"> -->
+                <!-- <a href="/auth/google" -->
+                  <!--   class="w-full transform hover:scale-105 hover:-rotate-1 flex items-center justify-center bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-md shadow-sm transition duration-200 ease-in-out"> -->
+                 <!--    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 488 512"> -->
+                 <!--        <path d="M488 261.8C488 403.3 391.1 504 248 504C110.8 504 0 393.2 0 256C0 118.8 110.8 8 248 8C314.2 8 371 32.5 414.3 72.9L343.7 143.5C306.5 113.3 271.3 96 248 96C155.7 96 80 171.7 80 264C80 356.3 155.7 432 248 432C338.6 432 386.6 372.6 391.4 323.6H248V238.3H484C486.3 251.2 487.6 264.2 487.6 277.6C487.6 351.1 446.3 413.7 382 452.6C317.7 491.4 248 504 248 504C110.8 504 0 393.2 0 256C0 118.8 110.8 8 248 8C385.2 8 496 118.8 496 256C496 293.4 489.4 329.4 478.4 362.4L488 362.4L488 261.8Z"/> -->
+                 <!--    </svg> -->
+                <!--     S'inscrire avec Google -->
+               <!--  </a> -->
+           <!--  </div> -->
+            
             <!-- Login Link -->
             <div class="mt-6 text-center">
                 <p class="text-gray-600">
