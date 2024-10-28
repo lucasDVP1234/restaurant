@@ -28,13 +28,13 @@
 <body class="bg-gray-50 font-montserrat">
     <%- include('header-login') %>
     <div class="container mx-auto px-4 py-12">
-        <div class="bg-gray-50 p-10 ">
+        <div class="bg-gray-50 md:p-8 p-4">
             <% if (user.profilePictureUrl) { %>
             <img src="<%= user.profilePictureUrl %>" alt="Restaurant Logo" class="w-24 h-24 rounded-full shadow-sm mb-4">
             <% } %>
             <h1 class="text-4xl font-bold text-gray-800 mb-2">Bienvenue, <span class="text-orange-500"><%= user.firstName %> <%= user.lastName %></span></h1>
             <p class="text-xl font-semibold text-gray-800">
-                Note moyenne:
+                Note :
                 <% for (let i = 1; i <= 5; i++) { %>
                   <% if (i <= Math.round(averageRating)) { %>
                     <i class="fas fa-star text-yellow-500"></i> <!-- Filled star for rating -->
@@ -43,9 +43,9 @@
                   <% } %>
                 <% } %>
               </p>
-              <h2 class="text-lg font-semibold text-blue-950">Avis(<%= user.ratings.length %>)</h2>
+              <h2 class="text-lg font-semibold text-blue-950">Avis (<%= user.ratings.length %>)</h2>
             <h2 class="text-lg text-gray-600 mt-4">Compte : <%= user.email %></h2>
-            <h2 class="text-lg text-gray-600">Étudiant</h2>
+            
             
             
             
