@@ -99,9 +99,18 @@
   <nav id="mobile-menu" class="md:hidden hidden bg-white shadow-sm">
       <div class="px-4 pt-4 pb-3 space-y-1">
           <% if (user && user.userType === 'restaurant') { %>
+              <a href="/jobs/my-jobs" class="flex items-center px-4 py-2 text-gray-700 text-sm font-medium hover:bg-blue-50 rounded-lg transition duration-200">
+                <img src="/images/loupe.png" alt="Ajouter un Job" class="w-5 h-5 mr-2">
+                Voir mes jobs
+              </a>
               <a href="/jobs/add" class="flex items-center px-4 py-2 text-gray-700 text-sm font-medium hover:bg-blue-50 rounded-lg transition duration-200">
                   <img src="/images/plus.png" alt="Ajouter un Job" class="w-5 h-5 mr-2">
                   Ajouter un Job
+              </a>
+              
+              <a href="/jobs/edit" class="flex items-center px-4 py-2 text-gray-700 text-sm font-medium hover:bg-blue-50 rounded-lg transition duration-200">
+                  <img src="/images/cray_bleu.png" alt="Ajouter un Job" class="w-5 h-5 mr-2">
+                  Modifier un Job
               </a>
               <a href="/account" class="flex items-center px-4 py-2 text-gray-700 text-sm font-medium hover:bg-blue-50 rounded-lg transition duration-200">
                   <img src="/images/11.png" alt="Mon compte" class="w-5 h-5 mr-2">
@@ -111,6 +120,14 @@
               <a href="/jobs" class="flex items-center px-4 py-2 text-gray-700 text-sm font-medium hover:bg-blue-50 rounded-lg transition duration-200">
                   <img src="/images/loupe.png" alt="Trouver un Job" class="w-5 h-5 mr-2">
                   Trouver un Job
+              </a>
+              <a href="/favorite-jobs" class="flex items-center px-4 py-2 text-gray-700 text-sm font-medium hover:bg-blue-50 rounded-lg transition duration-200">
+                  <img src="/images/12.png" alt="Trouver un Job" class="w-5 h-5 mr-2">
+                  Mes Restaurants Favoris
+              </a>
+              <a href="/my-applications" class="flex items-center px-4 py-2 text-gray-700 text-sm font-medium hover:bg-blue-50 rounded-lg transition duration-200">
+                  <img src="/images/l5.png" alt="Trouver un Job" class="w-5 h-5 mr-2">
+                  Mes demandes
               </a>
               <a href="/account" class="flex items-center px-4 py-2 text-gray-700 text-sm font-medium hover:bg-blue-50 rounded-lg transition duration-200">
                   <img src="/images/11.png" alt="Mon compte" class="w-5 h-5 mr-2">
