@@ -15,7 +15,7 @@ exports.getJobs = async (req, res) => {
       dateEnd,
       cities
     } = req.query;
-    const studentId = req.user._id;
+    const studentId = req.user._id.toString();
     let filter = {};
 
     // Mission Type Filter
@@ -71,16 +71,24 @@ exports.getJobs = async (req, res) => {
 
     // Fetch jobs with populated 'createdBy' including ratings
     const jobs = await Job.find(filter)
+      .sort({ _id: -1 })
       .populate('createdBy', 'name logoUrl restaurantPictureUrl addresses city emergencyPhone ratings')
-      .populate('selectedApplicant', '_id');
+      .populate('selectedApplicant', '_id')
+      .populate('applicants', '_id'); // Populate applicants
 
-    // Compute average rating for each restaurant and attach to jobs
+    // Compute average rating and prepare job data for rendering
     const jobsWithRatings = jobs.map(job => {
       const restaurant = job.createdBy;
       const averageRating = restaurant.calculateAverageRating();
 
+      // Convert applicants and selectedApplicant to strings for consistent comparison
+      const applicantIds = job.applicants.map(applicant => applicant._id.toString());
+      const selectedApplicantId = job.selectedApplicant ? job.selectedApplicant._id.toString() : null;
+
       return {
         ...job.toObject(),
+        applicants: applicantIds, // Store applicants as string IDs
+        selectedApplicant: selectedApplicantId, // Store selectedApplicant as string ID
         createdBy: {
           ...restaurant.toObject(),
           averageRating: averageRating.toFixed(2) // Round to two decimals
@@ -238,7 +246,7 @@ exports.applyToJob = async (req, res) => {
 
     // Check if the user has already applied
     if (job.applicants.includes(userId)) {
-      return res.redirect('/jobs');
+      return res.redirect('/my-applications');
     }
 
     // Add the user to the applicants array
@@ -373,6 +381,7 @@ exports.getAppliedJobs = async (req, res) => {
 
     // Find all jobs where the student is in the applicants array
     const jobs = await Job.find({ applicants: studentId })
+      .sort({ _id: -1 })
       .populate('createdBy', 'name logoUrl restaurantPictureUrl addresses emergencyPhone ratings')
       .populate('selectedApplicant', '_id');
     
@@ -472,7 +481,7 @@ exports.deselectApplicant = async (req, res) => {
 
 exports.getFavoriteRestaurantJobs = async (req, res) => {
   try {
-    const studentId = req.user._id; // Assuming you have the student's ID from the session or JWT
+    const studentId = req.user._id.toString(); // Convert to string
 
     // Step 1: Find all jobs where the student has been selected
     const pastJobs = await Job.find({ selectedApplicant: studentId }).populate('createdBy');
@@ -485,15 +494,24 @@ exports.getFavoriteRestaurantJobs = async (req, res) => {
     const favoriteJobs = await Job.find({
       createdBy: { $in: favoriteRestaurantIds },
       dateAndTime: { $gte: now }, // Only upcoming jobs
-    }).populate('createdBy', 'name logoUrl restaurantPictureUrl addresses city emergencyPhone ratings');
+    })
+      .populate('selectedApplicant', '_id')
+      .populate('applicants', '_id')
+      .populate('createdBy', 'name logoUrl restaurantPictureUrl addresses city emergencyPhone ratings');
 
-    // Step 4: Calculate average rating for each restaurant and attach to favoriteJobs
+    // Step 4: Format the applicants and selectedApplicant fields
     const jobsWithRatings = favoriteJobs.map(job => {
       const restaurant = job.createdBy;
       const averageRating = restaurant.calculateAverageRating();
-      
+
+      // Convert applicants and selectedApplicant to strings for consistent comparison
+      const applicantIds = job.applicants.map(applicant => applicant._id.toString());
+      const selectedApplicantId = job.selectedApplicant ? job.selectedApplicant._id.toString() : null;
+
       return {
         ...job.toObject(),
+        applicants: applicantIds, // Use string IDs for applicants
+        selectedApplicant: selectedApplicantId, // Use string ID for selectedApplicant
         createdBy: {
           ...restaurant.toObject(),
           averageRating: averageRating.toFixed(2) // Round to two decimals

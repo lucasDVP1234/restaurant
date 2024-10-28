@@ -41,6 +41,7 @@ exports.getAccount = async (req, res) => {
     let jobs = [];
     if (user.userType === 'restaurant') {
       jobs = await Job.find({ createdBy: user._id })
+        .sort({ _id: -1 })
         .populate('applicants', 'firstName lastName email ratings')
         .populate('selectedApplicant', '_id');
       
@@ -51,6 +52,7 @@ exports.getAccount = async (req, res) => {
       res.render('account-restaurant', { user, jobs, averageRating });
     } else if (user.userType === 'student') {
       jobs = await Job.find({ applicants: user._id })
+        .sort({ _id: -1 })
         .populate('createdBy', 'name addresses city emergencyPhone ratings')
         .populate('selectedApplicant', '_id');
       

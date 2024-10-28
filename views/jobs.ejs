@@ -228,26 +228,22 @@
                                 <!-- Apply Button -->
                                  <!-- Action Buttons -->
                                 <div class="flex justify-end mt-2">
-                                    <% if (!job.applicants.includes(studentId) && (!job.selectedApplicant || job.selectedApplicant.toString() !== studentId.toString())) { %>
-                                        <!-- Apply Button -->
-                                        <form action="/jobs/apply/<%= job._id %>" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir postuler ?');">
-                                            <button type="submit" class="bg-blue-950 hover:bg-blue-700 text-white px-2 py-1 rounded">Postuler</button>
-                                        </form>
-                                    <% } else if (job.applicants.includes(studentId) && (!job.selectedApplicant || job.selectedApplicant.toString() !== studentId.toString())) { %>
-                                        <!-- Withdraw Application Button -->
-                                        <form action="/jobs/withdraw/<%= job._id %>" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir retirer votre candidature ?');">
-                                            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white px-2 py-1 rounded">Retirer Candidature</button>
-                                            
-                                        </form>
-                                    <% } else if (job.selectedApplicant && job.selectedApplicant.toString() === studentId.toString()) { %>
-                                        <!-- Contact Info -->
-                                        <p class="text-gray-600 text-sm mt-2 text-center">
-                                            <strong>En cas de problème :</strong>
-                                            <span class="text-red-500 font-semibold"><%= job.createdBy.emergencyPhone %></span>
-                                        </p>
-                                
-                                    <% } else { %>
-                                        <button class="bg-gray-400 text-white px-6 py-2 rounded cursor-not-allowed" disabled>Poste pourvu</button>
+                                    <% if (!job.applicants.includes(studentId) && (!job.selectedApplicant || job.selectedApplicant !== studentId)) { %>
+                                    <!-- Apply Button -->
+                                    <form action="/jobs/apply/<%= job._id %>" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir postuler ?');">
+                                        <button type="submit" class="bg-blue-950 hover:bg-blue-700 text-white px-2 py-1 rounded">Postuler</button>
+                                    </form>
+                                    <% } else if (job.applicants.includes(studentId) && (!job.selectedApplicant || job.selectedApplicant !== studentId)) { %>
+                                    <!-- Withdraw Application Button -->
+                                    <form action="/jobs/withdraw/<%= job._id %>" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir retirer votre candidature ?');">
+                                        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white px-2 py-1 rounded">Retirer Candidature</button>
+                                    </form>
+                                    <% } else if (job.selectedApplicant === studentId) { %>
+                                    <!-- Contact Info -->
+                                    <p class="text-gray-600 text-sm">
+                                        <strong>En cas de problème :</strong>
+                                        <span class="text-red-500 font-semibold"><%= job.createdBy.emergencyPhone %></span>
+                                    </p>
                                     <% } %>
                                 </div>
                             </div>

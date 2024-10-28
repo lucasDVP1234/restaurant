@@ -128,7 +128,7 @@
                                 <!-- Application Status -->
                                 <p class="text-gray-600 text-sm mt-4 text-center">
                                     <strong>Statut de la Candidature :</strong>
-                                    <% if (job.selectedApplicant && job.selectedApplicant.toString() === studentId.toString()) { %>
+                                    <% if (job.selectedApplicant === studentId) { %>
                                         <span class="text-green-500 font-semibold">Sélectionné</span>
                                     <% } else if (job.applicants.includes(studentId)) { %>
                                         <span class="text-orange-500 font-semibold">En attente</span>
@@ -139,22 +139,22 @@
 
                                 <!-- Action Buttons -->
                                 <div class="flex justify-center mt-4">
-                                    <% if (!job.applicants.includes(studentId) && (!job.selectedApplicant || job.selectedApplicant.toString() !== studentId.toString())) { %>
-                                        <!-- Apply Button -->
-                                        <form action="/jobs/apply/<%= job._id %>" method="POST">
-                                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded">Postuler</button>
-                                        </form>
-                                    <% } else if (job.applicants.includes(studentId) && (!job.selectedApplicant || job.selectedApplicant.toString() !== studentId.toString())) { %>
-                                        <!-- Withdraw Application Button -->
-                                        <form action="/jobs/withdraw/<%= job._id %>" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir retirer votre candidature ?');">
-                                            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded">Retirer Candidature</button>
-                                        </form>
-                                    <% } else if (job.selectedApplicant && job.selectedApplicant.toString() === studentId.toString()) { %>
-                                        <!-- Contact Info -->
-                                        <p class="text-gray-600 text-sm mt-4 text-center">
-                                            <strong>En cas de problème :</strong>
-                                            <span class="text-red-500 font-semibold"><%= job.createdBy.emergencyPhone %></span>
-                                        </p>
+                                    <% if (!job.applicants.includes(studentId) && job.selectedApplicant !== studentId) { %>
+                                    <!-- Apply Button -->
+                                    <form action="/jobs/apply/<%= job._id %>" method="POST">
+                                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded">Postuler</button>
+                                    </form>
+                                    <% } else if (job.applicants.includes(studentId) && job.selectedApplicant !== studentId) { %>
+                                    <!-- Withdraw Application Button -->
+                                    <form action="/jobs/withdraw/<%= job._id %>" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir retirer votre candidature ?');">
+                                        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded">Retirer Candidature</button>
+                                    </form>
+                                    <% } else if (job.selectedApplicant === studentId) { %>
+                                    <!-- Contact Info -->
+                                    <p class="text-gray-600 text-sm mt-4 text-center">
+                                        <strong>En cas de problème :</strong>
+                                        <span class="text-red-500 font-semibold"><%= job.createdBy.emergencyPhone %></span>
+                                    </p>
                                     <% } %>
                                 </div>
                             </div>

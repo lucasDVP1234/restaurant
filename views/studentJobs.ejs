@@ -117,7 +117,7 @@
                             </p>
                             
 
-                            <% if (!job.selectedApplicant || (job.selectedApplicant && job.selectedApplicant.id !== studentId)) { %>
+                            <% if (!job.selectedApplicant || (job.selectedApplicant && job.selectedApplicant._id.toString() !== studentId.toString())) { %>
 
                             <div class="flex justify-center mt-4">
                                 <form action="/jobs/withdraw/<%= job._id %>" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir retirer votre candidature ?');">

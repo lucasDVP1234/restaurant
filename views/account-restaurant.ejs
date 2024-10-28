@@ -87,6 +87,7 @@
                                         <td class="px-6 py-4 border-b text-sm text-gray-700"><%= job.description %></td>
                                         <td class="px-6 py-4 border-b text-sm text-gray-700"><%= job.dateAndTime.toLocaleDateString('fr-FR') %></td>
                                         <td class="px-6 py-4 border-b text-sm text-gray-700"><%= job.applicants.length %></td>
+                                        
                                         <td class="px-6 py-4 border-b text-sm text-gray-700">
                                             <% if (job.applicants.length > 0) { %>
                                                 <a href="/jobs/applicants/<%= job._id %>" class="text-blue-500 hover:underline">Voir les candidats</a>
@@ -94,6 +95,8 @@
                                                 Aucun candidat
                                             <% } %>
                                         </td>
+
+
                                         <td class="px-6 py-4 border-b text-sm text-gray-700">
                                             <a href="/jobs/edit?jobId=<%= job._id %>" class="text-blue-500 hover:underline">Modifier</a>
                                             <!-- Add the Delete button -->

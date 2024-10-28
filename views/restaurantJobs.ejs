@@ -24,7 +24,7 @@
                     <% const jobTime = new Date(job.dateAndTime); %>
                         <% const timeDifference = jobTime - now; %>
                         <% const isUrgent = timeDifference <= 48 * 60 * 60 * 1000 && timeDifference > 0; %>
-                    <% if (!job.selectedApplicant && timeDifference > 0) { %>
+                    <% if (timeDifference > 0) { %>
                     <div class="job-card bg-white rounded-lg shadow-md overflow-hidden">
                         <!-- Background Image -->
                         <% if (job.createdBy.restaurantPictureUrl) { %>
