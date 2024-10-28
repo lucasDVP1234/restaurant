@@ -27,13 +27,13 @@
 <body class="bg-gray-50 font-montserrat">
     <%- include('header-login') %>
     <div class="container mx-auto px-4 py-12">
-        <div class="bg-gray-50 p-10 ">
+        <div class="bg-gray-50 md:p-10 p-4 ">
             <% if (user.profilePictureUrl) { %>
             <img src="<%= user.logoUrl %>" alt="Restaurant Logo" class="w-24 h-24 rounded-full shadow-sm mb-4">
             <% } %>
             <h1 class="text-4xl font-bold text-gray-800 mb-2">Bienvenue, <span class="text-orange-500"><%= user.name %></span></h1>
             <p class="text-xl font-semibold text-gray-800 mb-2">
-                Note moyenne:
+                Note :
                 <% for (let i = 1; i <= 5; i++) { %>
                   <% if (i <= Math.round(averageRating)) { %>
                     <i class="fas fa-star text-yellow-500"></i> <!-- Filled star for rating -->
