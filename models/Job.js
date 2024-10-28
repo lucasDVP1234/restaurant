@@ -14,6 +14,8 @@ const jobSchema = new mongoose.Schema({
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant', required: true },
   applicants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Student' }],
   selectedApplicant: { type: mongoose.Schema.Types.ObjectId, ref: 'Student' },
+  ratingByRestaurant: { type: Number, min: 0, max: 5 }, // Rating given to student
+  ratingByStudent: { type: Number, min: 0, max: 5 },    
 });
 
 module.exports = mongoose.model('Job', jobSchema);

@@ -169,6 +169,17 @@
                                 <!-- Job Title -->
                                 <h4 class="text-lg font-medium text-center text-gray-700 mb-2"><%= job.contractType %></h4>
                                 </div>
+
+                                <p class="text-sm font-semibold text-center text-gray-800 mb-2">
+                                
+                                    <% for (let i = 1; i <= 5; i++) { %>
+                                      <% if (i <= Math.round(job.createdBy.averageRating)) { %>
+                                        <i class="fas fa-star text-yellow-500"></i> <!-- Filled star for rating -->
+                                      <% } else { %>
+                                        <i class="far fa-star text-gray-400"></i> <!-- Outline star for remaining -->
+                                      <% } %>
+                                    <% } %>
+                                  </p>
                                 <h3 class="text-lg font-medium text-center text-blue-950 mb-2"><%= job.createdBy.addresses %></h3>
                                 <!-- Two Columns Layout -->
                                 <div class="grid grid-cols-2 gap-4">
@@ -208,7 +219,7 @@
                                         <!-- Attire Required -->
                                         <% if (job.attireRequired) { %>
                                             <p class="text-gray-600 text-sm mb-2">
-                                                <strong>Tenue Requise:</strong> <%= job.attireRequired %>
+                                                <strong>Tenue :</strong> <%= job.attireRequired %>
                                             </p>
                                         <% } %>
                                     </div>
@@ -216,7 +227,7 @@
     
                                 <!-- Apply Button -->
                                  <!-- Action Buttons -->
-                                <div class="flex justify-end mt-4">
+                                <div class="flex justify-end mt-2">
                                     <% if (!job.applicants.includes(studentId) && (!job.selectedApplicant || job.selectedApplicant.toString() !== studentId.toString())) { %>
                                         <!-- Apply Button -->
                                         <form action="/jobs/apply/<%= job._id %>" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir postuler ?');">
@@ -230,7 +241,7 @@
                                         </form>
                                     <% } else if (job.selectedApplicant && job.selectedApplicant.toString() === studentId.toString()) { %>
                                         <!-- Contact Info -->
-                                        <p class="text-gray-600 text-sm mt-4 text-center">
+                                        <p class="text-gray-600 text-sm mt-2 text-center">
                                             <strong>En cas de problème :</strong>
                                             <span class="text-red-500 font-semibold"><%= job.createdBy.emergencyPhone %></span>
                                         </p>

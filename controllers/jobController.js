@@ -5,7 +5,16 @@ const Restaurant = require('../models/Restaurant');
 
 exports.getJobs = async (req, res) => {
   try {
-    const { missionTypes, contractTypes, minAge, remunerationMin, remunerationMax, dateStart, dateEnd, cities } = req.query;
+    const {
+      missionTypes,
+      contractTypes,
+      minAge,
+      remunerationMin,
+      remunerationMax,
+      dateStart,
+      dateEnd,
+      cities
+    } = req.query;
     const studentId = req.user._id;
     let filter = {};
 
@@ -14,6 +23,7 @@ exports.getJobs = async (req, res) => {
       const missionTypeArray = missionTypes.split(',');
       filter.mission = { $in: missionTypeArray };
     }
+
     // City Type Filter
     if (cities) {
       const cityArray = cities.split(',');
@@ -59,10 +69,29 @@ exports.getJobs = async (req, res) => {
       }
     }
 
-    const jobs = await Job.find(filter).populate('createdBy','name logoUrl restaurantPictureUrl addresses city emergencyPhone');
+    // Fetch jobs with populated 'createdBy' including ratings
+    const jobs = await Job.find(filter)
+      .populate('createdBy', 'name logoUrl restaurantPictureUrl addresses city emergencyPhone ratings')
+      .populate('selectedApplicant', '_id');
+
+    // Compute average rating for each restaurant and attach to jobs
+    const jobsWithRatings = jobs.map(job => {
+      const restaurant = job.createdBy;
+      const averageRating = restaurant.calculateAverageRating();
+
+      return {
+        ...job.toObject(),
+        createdBy: {
+          ...restaurant.toObject(),
+          averageRating: averageRating.toFixed(2) // Round to two decimals
+        }
+      };
+    });
+
+    // Fetch distinct cities from the restaurants for dynamic filter buttons
     const citiesList = await Restaurant.distinct('city');
 
-    res.render('jobs', { jobs, cities: citiesList, studentId });
+    res.render('jobs', { jobs: jobsWithRatings, cities: citiesList, studentId });
   } catch (err) {
     console.error('Error fetching jobs:', err);
     res.status(500).send('Server Error');
@@ -234,16 +263,27 @@ exports.getApplicantsForJob = async (req, res) => {
     }
 
     const job = await Job.findOne({ _id: jobId, createdBy: userId })
-      .populate('applicants', 'firstName lastName number age description cvUrl pastExperience currentSituation availability email profilePictureUrl')
+      .populate('applicants', 'firstName lastName number age description cvUrl pastExperience currentSituation availability email profilePictureUrl ratings')
       .populate('selectedApplicant', '_id');
 
     if (!job) {
       return res.status(404).send('Job not found or you are not authorized to view applicants.');
     }
+    const applicantsWithRatings = await Promise.all(
+      job.applicants.map(async (applicant) => {
+        const student = await Student.findById(applicant._id);
+        const averageRating = student.calculateAverageRating();
+        return {
+          ...applicant.toObject(),
+          averageRating
+        };
+      })
+    );
+
 
     const applicants = job.applicants;
 
-    res.render('applicants', { job, applicants });
+    res.render('applicants', { job, applicants: applicantsWithRatings });
   } catch (error) {
     console.error('Error fetching applicants:', error.message);
     res.status(500).send('Error fetching applicants.');
@@ -315,13 +355,13 @@ exports.getRestaurantJobs = async (req, res) => {
   try {
     // Fetch jobs created by the logged-in restaurant
     const jobs = await Job.find({ createdBy: req.user._id }).sort({ dateAndTime: -1 })
-    .populate('createdBy', 'name restaurantPictureUrl logoUrl addresses emergencyPhone');
+    .populate('createdBy', 'name restaurantPictureUrl logoUrl addresses emergencyPhone ratings');
 
 
     res.render('restaurantJobs', { jobs });
   } catch (err) {
     console.error('Error fetching restaurant jobs:', err);
-    req.flash('error_msg', 'Une erreur s\'est produite lors du chargement de vos jobs.');
+    
     res.redirect('/account');
   }
 };
@@ -333,13 +373,28 @@ exports.getAppliedJobs = async (req, res) => {
 
     // Find all jobs where the student is in the applicants array
     const jobs = await Job.find({ applicants: studentId })
-      .populate('createdBy', 'name logoUrl restaurantPictureUrl addresses emergencyPhone')
+      .populate('createdBy', 'name logoUrl restaurantPictureUrl addresses emergencyPhone ratings')
       .populate('selectedApplicant', '_id');
+    
+    const jobsWithRatings = jobs.map(job => {
+      const restaurant = job.createdBy;
+      const averageRating = restaurant.calculateAverageRating();
+      
+      return {
+        ...job.toObject(),
+        createdBy: {
+          ...restaurant.toObject(),
+          averageRating: averageRating.toFixed(2) // Round to two decimals
+        }
+      };
+    });
 
-    res.render('studentJobs', { jobs, studentId });
+
+
+    res.render('studentJobs', { jobs : jobsWithRatings, studentId });
   } catch (error) {
     console.error('Error fetching applied jobs:', error.message);
-    req.flash('error_msg', 'Une erreur s\'est produite lors du chargement de vos candidatures.');
+    
     res.redirect('/account');
   }
 };
@@ -430,12 +485,110 @@ exports.getFavoriteRestaurantJobs = async (req, res) => {
     const favoriteJobs = await Job.find({
       createdBy: { $in: favoriteRestaurantIds },
       dateAndTime: { $gte: now }, // Only upcoming jobs
-    }).populate('createdBy');
+    }).populate('createdBy', 'name logoUrl restaurantPictureUrl addresses city emergencyPhone ratings');
 
-    // Render the view with favoriteJobs
-    res.render('favorite-jobs', { jobs: favoriteJobs, studentId });
+    // Step 4: Calculate average rating for each restaurant and attach to favoriteJobs
+    const jobsWithRatings = favoriteJobs.map(job => {
+      const restaurant = job.createdBy;
+      const averageRating = restaurant.calculateAverageRating();
+      
+      return {
+        ...job.toObject(),
+        createdBy: {
+          ...restaurant.toObject(),
+          averageRating: averageRating.toFixed(2) // Round to two decimals
+        }
+      };
+    });
+
+    // Render the view with favoriteJobs including averageRating
+    res.render('favorite-jobs', { jobs: jobsWithRatings, studentId });
   } catch (err) {
-    console.error(err);
+    console.error('Error fetching favorite restaurant jobs:', err);
     res.status(500).send('Internal Server Error');
+  }
+};
+
+exports.rateStudent = async (req, res) => {
+  try {
+    const jobId = req.params.jobId;
+    const { rating } = req.body;
+
+    // Authorization check
+    if (req.user.userType !== 'restaurant') {
+      return res.status(403).send('Only restaurants can rate students.');
+    }
+
+    const job = await Job.findById(jobId).populate('selectedApplicant');
+    if (!job) return res.status(404).send('Job not found.');
+
+    // Ensure the job is completed
+    const now = new Date();
+    if (job.dateAndTime > now) {
+      return res.status(400).send('Cannot rate before job completion.');
+    }
+
+    // Check if rating already exists
+    if (job.ratingByRestaurant != null) {
+      return res.status(400).send('You have already rated this student.');
+    }
+
+    // Update job and student rating
+    job.ratingByRestaurant = rating;
+    await job.save();
+
+    const student = await Student.findById(job.selectedApplicant._id);
+    student.ratings.push(rating);
+    await student.save();
+
+    res.redirect('/account');
+  } catch (error) {
+    console.error('Error rating student:', error);
+    res.status(500).send('Error rating student.');
+  }
+};
+
+// Student rates Restaurant
+exports.rateRestaurant = async (req, res) => {
+  try {
+    const jobId = req.params.jobId;
+    const { rating } = req.body;
+
+    // Authorization check
+    if (req.user.userType !== 'student') {
+      return res.status(403).send('Only students can rate restaurants.');
+    }
+
+    const job = await Job.findById(jobId).populate('createdBy');
+    if (!job) return res.status(404).send('Job not found.');
+
+    // Ensure the student is the selected applicant
+    if (String(job.selectedApplicant) !== String(req.user._id)) {
+      return res.status(403).send('You cannot rate this restaurant.');
+    }
+
+    // Ensure the job is completed
+    const now = new Date();
+    if (job.dateAndTime > now) {
+      return res.status(400).send('Cannot rate before job completion.');
+    }
+
+    // Check if rating already exists
+    if (job.ratingByStudent != null) {
+      return res.status(400).send('You have already rated this restaurant.');
+    }
+
+    // Update job and restaurant rating
+    job.ratingByStudent = rating;
+    await job.save();
+
+    const restaurant = await Restaurant.findById(job.createdBy._id);
+    restaurant.ratings.push(rating);
+    await restaurant.save();
+
+    res.redirect('/account');
+  } catch (error) {
+    console.error('Error rating restaurant:', error);
+    res.status(500).send('Error rating restaurant.');
   }
 };

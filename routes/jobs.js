@@ -30,6 +30,9 @@ router.post('/apply/:id', ensureAuthenticated, ensureStudent,profileCompleteStud
 
 router.post('/withdraw/:jobId', ensureAuthenticated, ensureStudent, profileCompleteStudent, jobController.withdrawApplication);
 
+router.post('/jobs/:jobId/rate-student', jobController.rateStudent);
+router.post('/jobs/:jobId/rate-restaurant', jobController.rateRestaurant);
+
 
 // View a specific job
 router.get('/view/:id', ensureAuthenticated, ensureStudent, jobController.getjobsById);

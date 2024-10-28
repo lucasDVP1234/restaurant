@@ -16,9 +16,15 @@
         <h1 class="text-3xl font-bold text-center text-blue-950 mb-8">Vos Jobs Créés</h1>
 
         <!-- Jobs Grid -->
+        
         <% if (jobs.length > 0) { %>
+            <% const now = new Date(); %>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <% jobs.forEach(function(job) { %>
+                    <% const jobTime = new Date(job.dateAndTime); %>
+                        <% const timeDifference = jobTime - now; %>
+                        <% const isUrgent = timeDifference <= 48 * 60 * 60 * 1000 && timeDifference > 0; %>
+                    <% if (!job.selectedApplicant && timeDifference > 0) { %>
                     <div class="job-card bg-white rounded-lg shadow-md overflow-hidden">
                         <!-- Background Image -->
                         <% if (job.createdBy.restaurantPictureUrl) { %>
@@ -47,6 +53,15 @@
                         <div class="pt-12 pb-6 px-6">
                             <!-- Job Title -->
                             <h3 class="text-xl font-semibold text-center text-blue-950 mb-2"><%= job.contractType %></h3>
+                            <% if (isUrgent) { %>
+                                <div class="flex justify-end">
+                                  <span class="bg-red-500 mb-4 text-white px-2 py-1 rounded-full text-xs font-bold">Moins de -48H</span>
+                                </div>
+                            <% } else { %>
+                                <div class="flex justify-end">
+                                    <span class="bg-green-500 text-white px-2 py-1 rounded-full text-xs font-bold">Disponible</span>
+                                  </div>
+                            <% } %>
 
                             <!-- Two Columns Layout -->
                             <div class="grid grid-cols-2 gap-4">
@@ -119,11 +134,12 @@
                             </div>
                         </div>
                     </div>
+                    <% } %>
                 <% }); %>
             </div>
         <% } else { %>
             <p class="text-center text-gray-600">Vous n'avez pas encore créé de jobs.</p>
-        <% } %>
+            <% } %>
     </div>
 </body>
 </html>

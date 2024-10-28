@@ -4,6 +4,7 @@
 <head>
   <title>Vos Candidatures</title>
   <!-- Include Montserrat Font and Tailwind CSS -->
+  
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/tailwind.css">
 </head>
@@ -19,9 +20,14 @@
             <h1 class="text-3xl font-bold text-center text-blue-950 mb-8">Jobs de vos Restaurants Favoris</h1>
 
             <!-- Jobs Grid -->
+            <% const now = new Date(); %>
             <% if (jobs.length > 0) { %>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <% jobs.forEach(function(job) { %>
+                        <% const jobTime = new Date(job.dateAndTime); %>
+                        <% const timeDifference = jobTime - now; %>
+                        <% const isUrgent = timeDifference <= 48 * 60 * 60 * 1000 && timeDifference > 0; %>
+                        <% if (!job.selectedApplicant && timeDifference > 0) { %>
                         <div class="job-card bg-white rounded-lg shadow-md overflow-hidden transform hover:scale-102 hover:rotate-1">
                             <!-- Background Image -->
                             <% if (job.createdBy.restaurantPictureUrl) { %>
@@ -48,12 +54,32 @@
 
                             <!-- Job Info -->
                             <div class="pt-2 pb-6 px-6">
+                                <% if (isUrgent) { %>
+                                    <div class="flex justify-end">
+                                      <span class="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold">Moins de -48H</span>
+                                    </div>
+                                <% } else { %>
+                                    <div class="flex justify-end">
+                                        <span class="bg-green-500 text-white px-2 py-1 rounded-full text-xs font-bold">Disponible</span>
+                                      </div>
+                                <% } %>
                                 <!-- Restaurant Name -->
                                 <div class="grid grid-cols-2 gap-4">
                                     <h3 class="text-xl font-semibold text-center text-blue-950 mb-2"><%= job.createdBy.name %></h3>
                                     <!-- Job Title -->
                                     <h4 class="text-lg font-medium text-center text-gray-700 mb-2"><%= job.contractType %></h4>
                                 </div>
+    
+                                <p class="text-sm font-semibold text-center text-gray-800 mb-2">
+                                
+                                    <% for (let i = 1; i <= 5; i++) { %>
+                                      <% if (i <= Math.round(job.createdBy.averageRating)) { %>
+                                        <i class="fas fa-star text-yellow-500"></i> <!-- Filled star for rating -->
+                                      <% } else { %>
+                                        <i class="far fa-star text-gray-400"></i> <!-- Outline star for remaining -->
+                                      <% } %>
+                                    <% } %>
+                                  </p>
                                 <h3 class="text-lg font-medium text-center text-blue-950 mb-2"><%= job.createdBy.addresses %></h3>
                                 <!-- Two Columns Layout -->
                                 <div class="grid grid-cols-2 gap-4">
@@ -133,6 +159,7 @@
                                 </div>
                             </div>
                         </div>
+                        <% } %>
                     <% }); %>
                 </div>
             <% } else { %>

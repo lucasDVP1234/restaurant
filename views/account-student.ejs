@@ -3,6 +3,8 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    
+
     <title>Votre compte étudiant</title>
     <!-- Include Montserrat Font and Tailwind CSS -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -31,8 +33,22 @@
             <img src="<%= user.profilePictureUrl %>" alt="Restaurant Logo" class="w-24 h-24 rounded-full shadow-sm mb-4">
             <% } %>
             <h1 class="text-4xl font-bold text-gray-800 mb-2">Bienvenue, <span class="text-orange-500"><%= user.firstName %> <%= user.lastName %></span></h1>
-            <h2 class="text-lg text-gray-600 mb-4">Compte : <%= user.email %></h2>
+            <p class="text-xl font-semibold text-gray-800">
+                Note moyenne:
+                <% for (let i = 1; i <= 5; i++) { %>
+                  <% if (i <= Math.round(averageRating)) { %>
+                    <i class="fas fa-star text-yellow-500"></i> <!-- Filled star for rating -->
+                  <% } else { %>
+                    <i class="far fa-star text-gray-400"></i> <!-- Outline star for remaining -->
+                  <% } %>
+                <% } %>
+              </p>
+              <h2 class="text-lg font-semibold text-blue-950">Avis(<%= user.ratings.length %>)</h2>
+            <h2 class="text-lg text-gray-600 mt-4">Compte : <%= user.email %></h2>
             <h2 class="text-lg text-gray-600">Étudiant</h2>
+            
+            
+            
             <div class="mb-4 mt-4">
                 <a href="/profile" class="inline-flex transform hover:scale-105 hover:rotate-3 items-center mr-2 px-6 py-2 text-sm hover:bg-orange-700 font-medium rounded-lg transition duration-200 shadow-sm bg-orange-500 text-white">
                     <img src="/images/plus.png" alt="Ajouter un Job" class="w-5 h-5 mr-2">
@@ -40,6 +56,7 @@
                 </a>
                 
             </div>
+            
 
             <!-- Jobs Applied For -->
             <div class="mb-16 mt-10">
@@ -54,7 +71,7 @@
                                     <th class="px-6 py-4 border-b text-left text-sm font-medium text-gray-500 uppercase">Addresse</th>
                                     <th class="px-6 py-4 border-b text-left text-sm font-medium text-gray-500 uppercase">Date</th>
                                     <th class="px-6 py-4 border-b text-left text-sm font-medium text-gray-500 uppercase">Heure</th>
-                                    
+                                    <th class="px-6 py-4 border-b text-left text-sm font-medium text-gray-500 uppercase">Noter le Restaurant</th>
                                     <th class="px-6 py-4 border-b text-left text-sm font-medium text-gray-500 uppercase">Statut</th>
                                     <th class="px-6 py-4 border-b text-left text-sm font-medium text-gray-500 uppercase">Numéro de téléphone</th>
                                 </tr>
@@ -75,6 +92,26 @@
                                           </td>
                                         <td class="px-6 py-4 border-b text-sm text-gray-700"><%= job.dateAndTime.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) %></td>
                                         <td class="px-6 py-4 border-b text-sm text-gray-700"><%= job.dateAndTime.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) %></td>
+
+                                        <td class="px-6 py-4 border-b text-sm text-gray-700">
+                                            <% const now = new Date(); %>
+                                            <% if (job.dateAndTime <= now && job.selectedApplicant && job.selectedApplicant.equals(user._id) && job.ratingByStudent == null) { %>
+                                              <form action="/jobs/<%= job._id %>/rate-restaurant" method="POST">
+                                                <label for="rating">Note:</label>
+                                                <select name="rating" id="rating" required>
+                                                  <% for(let i = 0; i <= 5; i++) { %>
+                                                    <option value="<%= i %>"><%= i %></option>
+                                                  <% } %>
+                                                </select>
+                                                <button type="submit">Envoyer</button>
+                                              </form>
+                                            <% } else if (job.ratingByStudent != null) { %>
+                                              Vous avez noté ce restaurant: <%= job.ratingByStudent %> étoiles
+                                            <% } else { %>
+                                              Notation non disponible
+                                            <% } %>
+                                        </td>
+
                                         
                                         <td class="px-6 py-4 border-b text-sm font-semibold text-green-700">
                                             <% if (job.selectedApplicant && job.selectedApplicant._id.toString() === user._id.toString()) { %>

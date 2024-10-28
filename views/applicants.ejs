@@ -28,6 +28,16 @@
 
               <!-- Applicant Name -->
               <h2 class="text-xl font-semibold text-blue-950 mb-2 text-center"><%= applicant.firstName %> <%= applicant.lastName %></h2>
+              <p class="text-sm font-semibold text-center text-gray-800 mb-2">
+                                
+                <% for (let i = 1; i <= 5; i++) { %>
+                  <% if (i <= Math.round(applicant.averageRating)) { %>
+                    <i class="fas fa-star text-yellow-500"></i> <!-- Filled star for rating -->
+                  <% } else { %>
+                    <i class="far fa-star text-gray-400"></i> <!-- Outline star for remaining -->
+                  <% } %>
+                <% } %>
+              </p>
 
               <!-- Columns for Applicant Details -->
               <div class="w-full flex flex-col sm:flex-row justify-between">

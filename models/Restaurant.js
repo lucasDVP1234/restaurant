@@ -12,6 +12,13 @@ const restaurantSchema = new mongoose.Schema({
   siren: String,
   restaurantPictureUrl: String,
   logoUrl: String,
+  ratings: [{ type: Number, min: 0, max: 5 }],
 });
+
+restaurantSchema.methods.calculateAverageRating = function () {
+  if (this.ratings.length === 0) return 0;
+  const sum = this.ratings.reduce((a, b) => a + b, 0);
+  return sum / this.ratings.length;
+};
 
 module.exports = mongoose.model('Restaurant', restaurantSchema);

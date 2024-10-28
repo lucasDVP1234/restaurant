@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Votre compte restaurant</title>
+    
     <!-- Include Montserrat Font and Tailwind CSS -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/tailwind.css">
@@ -31,6 +32,17 @@
             <img src="<%= user.logoUrl %>" alt="Restaurant Logo" class="w-24 h-24 rounded-full shadow-sm mb-4">
             <% } %>
             <h1 class="text-4xl font-bold text-gray-800 mb-2">Bienvenue, <span class="text-orange-500"><%= user.name %></span></h1>
+            <p class="text-xl font-semibold text-gray-800 mb-2">
+                Note moyenne:
+                <% for (let i = 1; i <= 5; i++) { %>
+                  <% if (i <= Math.round(averageRating)) { %>
+                    <i class="fas fa-star text-yellow-500"></i> <!-- Filled star for rating -->
+                  <% } else { %>
+                    <i class="far fa-star text-gray-400"></i> <!-- Outline star for remaining -->
+                  <% } %>
+                <% } %>
+              </p>
+            
             <h2 class="text-lg text-gray-600 mb-4">Compte : <%= user.email %></h2>
             <h2 class="text-2xl font-bold text-orange-500">Restaurant : <%= user.name %></h2>
 
@@ -66,6 +78,7 @@
                                     <th class="px-6 py-4 border-b text-left text-sm font-medium text-gray-500 uppercase">Nombre de candidatures</th>
                                     <th class="px-6 py-4 border-b text-left text-sm font-medium text-gray-500 uppercase">Voir les candidats</th>
                                     <th class="px-6 py-4 border-b text-left text-sm font-medium text-gray-500 uppercase">Actions</th>
+                                    <th class="px-6 py-4 border-b text-left text-sm font-medium text-gray-500 uppercase">Noter l'Étudiant</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -88,6 +101,24 @@
                                                 <button type="submit" class="text-red-500 hover:underline ml-4" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce job ?');">Supprimer</button>
                                             </form>
                                         </td>
+                                        <td class="px-6 py-4 border-b text-sm text-gray-700">
+                                            <% const now = new Date(); %>
+                                            <% if (job.dateAndTime <= now && job.selectedApplicant && job.ratingByRestaurant == null) { %>
+                                              <form action="/jobs/<%= job._id %>/rate-student" method="POST">
+                                                <label for="rating">Note:</label>
+                                                <select name="rating" id="rating" required>
+                                                  <% for(let i = 0; i <= 5; i++) { %>
+                                                    <option value="<%= i %>"><%= i %></option>
+                                                  <% } %>
+                                                </select>
+                                                <button type="submit">Envoyer</button>
+                                              </form>
+                                            <% } else if (job.ratingByRestaurant != null) { %>
+                                              Vous avez noté cet étudiant: <%= job.ratingByRestaurant %> étoiles
+                                            <% } else { %>
+                                              Notation non disponible
+                                            <% } %>
+                                          </td>
                                     </tr>
                                 <% }); %>
                             </tbody>

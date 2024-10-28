@@ -41,14 +41,23 @@ exports.getAccount = async (req, res) => {
     let jobs = [];
     if (user.userType === 'restaurant') {
       jobs = await Job.find({ createdBy: user._id })
-        .populate('applicants', 'firstName lastName email')
+        .populate('applicants', 'firstName lastName email ratings')
         .populate('selectedApplicant', '_id');
+      
+      const restaurant = await Restaurant.findById(user._id);
+      averageRating = restaurant.calculateAverageRating();
 
-      res.render('account-restaurant', { user, jobs });
+    
+      res.render('account-restaurant', { user, jobs, averageRating });
     } else if (user.userType === 'student') {
       jobs = await Job.find({ applicants: user._id })
-        .populate('createdBy', 'name addresses city emergencyPhone')
+        .populate('createdBy', 'name addresses city emergencyPhone ratings')
         .populate('selectedApplicant', '_id');
+      
+      const student = await Student.findById(user._id);
+      averageRating = student.calculateAverageRating();
+
+
 
       res.render('account-student', { user, jobs });
     } else {
@@ -90,6 +99,7 @@ exports.postProfile = async (req, res) => {
     student.currentSituation = req.body.currentSituation;
     student.pastExperience = req.body.pastExperience
     student.availability = req.body.availability
+    student.ratings = req.body.ratings
       
 
     // Handle uploaded files
@@ -136,7 +146,7 @@ exports.postProfileRestau = async (req, res) => {
     const restaurant = await Restaurant.findById(restaurantId);
 
     if (!restaurant) {
-      req.flash('error_msg', 'Restaurant non trouvé.');
+
       return res.redirect('/account');
     }
 
@@ -147,6 +157,7 @@ exports.postProfileRestau = async (req, res) => {
     restaurant.siren = req.body.siren;
     restaurant.city = req.body.city;
     restaurant.addresses = req.body.addresses
+    restaurant.ratings = req.body.ratings
       ? req.body.addresses.split('\n').map(s => s.trim()).filter(s => s)
       : [];
 
