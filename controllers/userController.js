@@ -47,7 +47,7 @@ exports.getAccount = async (req, res) => {
       res.render('account-restaurant', { user, jobs });
     } else if (user.userType === 'student') {
       jobs = await Job.find({ applicants: user._id })
-        .populate('createdBy', 'name addresses emergencyPhone')
+        .populate('createdBy', 'name addresses city emergencyPhone')
         .populate('selectedApplicant', '_id');
 
       res.render('account-student', { user, jobs });
@@ -145,6 +145,7 @@ exports.postProfileRestau = async (req, res) => {
     restaurant.managerName = req.body.managerName;
     restaurant.emergencyPhone = req.body.emergencyPhone;
     restaurant.siren = req.body.siren;
+    restaurant.city = req.body.city;
     restaurant.addresses = req.body.addresses
       ? req.body.addresses.split('\n').map(s => s.trim()).filter(s => s)
       : [];

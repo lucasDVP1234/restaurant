@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let selectedRemunerationMax = '';
     let selectedDateStart = '';
     let selectedDateEnd = '';
+    let selectedCities = [];
 
     // Function to update selected filters display
     function updateSelectedFiltersDisplay() {
@@ -31,6 +32,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Contract Types
         selectedContractTypes.forEach((type) => {
             const bubble = createFilterBubble(type.toUpperCase(), 'ContractType');
+            selectedFiltersContainer.appendChild(bubble);
+        });
+        selectedCities.forEach((city) => {
+            const bubble = createFilterBubble(city, 'City');
             selectedFiltersContainer.appendChild(bubble);
         });
 
@@ -101,6 +106,12 @@ document.addEventListener('DOMContentLoaded', () => {
             selectedContractTypes = selectedContractTypes.filter(item => item !== value.toLowerCase());
             const button = document.querySelector(`.filter-button[data-filter="${value.toLowerCase()}"][data-filter-type="ContractType"]`);
             if (button) button.click();
+        } else if (type === 'City') {
+            selectedCities = selectedCities.filter((item) => item !== value);
+            const button = document.querySelector(
+                `.filter-button[data-filter="${value}"][data-filter-type="City"]`
+            );
+            if (button) button.click();
         } else if (type === 'MinAge') {
             selectedMinAge = '';
             minAgeInput.value = '';
@@ -126,6 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('selected-mission-types').value = selectedMissionTypes.join(',');
         document.getElementById('selected-contract-types').value = selectedContractTypes.join(',');
         document.getElementById('selected-min-age').value = selectedMinAge;
+        document.getElementById('selected-cities').value = selectedCities.join(',');
         document.getElementById('selected-remuneration-min').value = selectedRemunerationMin;
         document.getElementById('selected-remuneration-max').value = selectedRemunerationMax;
         document.getElementById('selected-date-start').value = selectedDateStart;
@@ -161,12 +173,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (!selectedContractTypes.includes(filterValue)) {
                         selectedContractTypes.push(filterValue);
                     }
+                } else if (filterType === 'City') {
+                    if (!selectedCities.includes(filterValue)) {
+                        selectedCities.push(filterValue);
+                    }
                 }
             } else {
                 if (filterType === 'MissionType') {
                     selectedMissionTypes = selectedMissionTypes.filter(item => item !== filterValue);
                 } else if (filterType === 'ContractType') {
                     selectedContractTypes = selectedContractTypes.filter(item => item !== filterValue);
+                } else if (filterType === 'City') {
+                    selectedCities = selectedCities.filter((item) => item !== filterValue);
                 }
             }
 
@@ -226,6 +244,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (params.contractTypes) {
         selectedContractTypes = params.contractTypes.split(',').filter(Boolean);
+    } if (params.cities) {
+        selectedCities = params.cities.split(',').filter(Boolean);
     }
     if (params.minAge) {
         selectedMinAge = params.minAge;
@@ -254,6 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const filterType = button.getAttribute('data-filter-type');
 
         if ((filterType === 'MissionType' && selectedMissionTypes.includes(filterValue)) ||
+            (filterType === 'City' && selectedCities.includes(filterValue)) ||
             (filterType === 'ContractType' && selectedContractTypes.includes(filterValue))) {
             button.classList.remove('active', 'bg-white', 'text-blue-950');
             button.classList.add('active', 'bg-blue-950', 'text-white');

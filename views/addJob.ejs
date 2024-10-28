@@ -51,7 +51,7 @@
                 <!-- Mission -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Mission</label>
-                    <select name="mission" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+                    <select name="mission" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required>
                         <option value="ponctuel">Ponctuel</option>
                         <option value="récurrent">Récurrent</option>
                     </select>
@@ -66,23 +66,24 @@
                 <!-- Contract Type -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Type de Contrat</label>
-                    <select name="contractType" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+                    <select name="contractType" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required>
                         <option value="extra">Extra</option>
                         <option value="CDD">CDD</option>
                         <option value="CDI">CDI</option>
+                        <option value="autre">Autre</option>
                     </select>
                 </div>
 
                 <!-- Attire Required -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Tenue Requise</label>
-                    <input type="text" name="attireRequired" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+                    <input type="text" name="attireRequired" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required>
                 </div>
 
                 <!-- Minimum Age -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Âge Minimum</label>
-                    <input type="number" name="minAge" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+                    <input type="number" name="minAge" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required>
                 </div>
 
                 <!-- Profile Type -->

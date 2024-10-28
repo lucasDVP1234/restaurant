@@ -93,6 +93,10 @@
                 <strong>Statut :</strong>
                 <% if (job.selectedApplicant && job.selectedApplicant._id.toString() === applicant._id.toString()) { %>
                   <span class="text-green-500 font-semibold">Sélectionné</span>
+                  <p class="text-red-600 text-sm mb-2">
+                    <strong>Son numéro :</strong> <%= applicant.number %>
+                  </p>
+
                 <% } else { %>
                   <span class="text-orange-500 font-semibold">En attente</span>
                 <% } %>

@@ -8,6 +8,7 @@ const restaurantSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: String,
   addresses: [String],
+  city: String,
   siren: String,
   restaurantPictureUrl: String,
   logoUrl: String,

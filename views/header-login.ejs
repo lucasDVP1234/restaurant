@@ -39,16 +39,40 @@
               </a>
           <% } else if (user && user.userType === 'student') { %>
               
-              <a href="/jobs" class="flex transform hover:scale-105 hover:rotate-3 items-center px-4 py-2 text-sm font-medium rounded-lg transition duration-200 shadow-sm text-blue-950 bg-white hover:ring-2 hover:ring-orange-500">
+              <a href="/favorite-jobs" class="flex transform hover:scale-105 hover:rotate-3 items-center px-4 py-2 text-sm font-medium rounded-lg transition duration-200 shadow-sm text-blue-950 bg-white hover:ring-2 hover:ring-orange-500
+                <% if (currentUrl === '/favorite-jobs') { %>
+                    bg-white text-blue-950 ring-2 ring-orange-500
+                  <% } else { %>
+                    text-blue-950 bg-white hover:ring-2 hover:ring-blue-500
+                  <% } %>">
+                  <img src="/images/12.png" alt="Trouver un Job" class="w-6 h-6 mr-1">
+                  Mes Restaurants Favoris
+              </a>
+              <a href="/jobs" class="flex transform hover:scale-105 hover:rotate-3 items-center px-4 py-2 text-sm font-medium rounded-lg transition duration-200 shadow-sm text-blue-950 bg-white hover:ring-2 hover:ring-orange-500
+              <% if (currentUrl === '/jobs') { %>
+                bg-white text-blue-950 ring-2 ring-orange-500
+              <% } else { %>
+                text-blue-950 bg-white hover:ring-2 hover:ring-blue-500
+              <% } %>">
                   <img src="/images/loupe.png" alt="Trouver un Job" class="w-6 h-6 mr-1">
                   Trouver un Job
               </a>
               <!-- For Students -->
-              <a href="/my-applications" class="flex transform hover:scale-105 hover:rotate-3 items-center px-4 py-2 text-sm font-medium rounded-lg transition duration-200 shadow-sm text-blue-950 bg-white hover:ring-2 hover:ring-orange-500">
+              <a href="/my-applications" class="flex transform hover:scale-105 hover:rotate-3 items-center px-4 py-2 text-sm font-medium rounded-lg transition duration-200 shadow-sm text-blue-950 bg-white hover:ring-2 hover:ring-orange-500
+              <% if (currentUrl === '/my-applications') { %>
+                bg-white text-blue-950 ring-2 ring-orange-500
+              <% } else { %>
+                text-blue-950 bg-white hover:ring-2 hover:ring-blue-500
+              <% } %>">
                 <img src="/images/15.png" alt="Trouver un Job" class="w-6 h-6 mr-1">
                 Mes Applications
             </a>
-              <a href="/account" class="flex items-center transform hover:scale-105 hover:rotate-3 px-4 py-2 text-sm font-medium rounded-lg transition duration-200 shadow-sm text-blue-950 bg-white hover:ring-2 hover:ring-orange-500">
+              <a href="/account" class="flex items-center transform hover:scale-105 hover:rotate-3 px-4 py-2 text-sm font-medium rounded-lg transition duration-200 shadow-sm text-blue-950 bg-white hover:ring-2 hover:ring-orange-500
+                <% if (currentUrl === '/account') { %>
+                    bg-white text-blue-950 ring-2 ring-orange-500
+                  <% } else { %>
+                    text-blue-950 bg-white hover:ring-2 hover:ring-blue-500
+                  <% } %>">
                   <img src="/images/11.png" alt="Mon compte" class="w-6 h-6">
               </a>
           <% } %>

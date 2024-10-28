@@ -12,7 +12,7 @@
 
   <!-- Main Container -->
   <div class="container flex flex-col items-center justify-center mx-auto px-4 py-12">
-    <h1 class="text-3xl font-bold mb-8 text-center">Compléter le Profil du Restaurant</h1>
+    <h1 class="text-3xl text-blue-950 drop-shadow-lg font-bold mb-8 text-center">Compléter le Profil du Restaurant</h1>
     <div class="w-full max-w-lg bg-white shadow-xl rounded-2xl p-8">
       
 
@@ -54,11 +54,15 @@
 
         <!-- Addresses -->
         <div>
-          <label class="block text-sm font-medium text-gray-700">Adresses</label>
+          <label class="block text-sm font-medium text-gray-700">Adresse</label>
           <textarea name="addresses" rows="3" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm"><%= restaurant.addresses ? restaurant.addresses.join('\n') : '' %></textarea>
           <small class="text-gray-500">Séparez chaque adresse par une nouvelle ligne.</small>
         </div>
-
+        <!-- City (Read-only) -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Ville</label>
+          <input name="city" value="<%= restaurant.city %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+        </div>
         <!-- Email (Read-only) -->
         <div>
           <label class="block text-sm font-medium text-gray-700">Email</label>

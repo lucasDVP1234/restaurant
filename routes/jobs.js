@@ -40,4 +40,6 @@ router.get('/my-jobs', ensureAuthenticated, ensureRestaurant, jobController.getR
 
 router.get('/my-applications', ensureAuthenticated, ensureStudent, jobController.getAppliedJobs);
 
+router.get('/favorite-jobs', ensureAuthenticated, ensureStudent, jobController.getFavoriteRestaurantJobs);
+
 module.exports = router;

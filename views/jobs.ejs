@@ -25,6 +25,7 @@
                 <input type="hidden" name="remunerationMax" id="selected-remuneration-max" />
                 <input type="hidden" name="dateStart" id="selected-date-start" />
                 <input type="hidden" name="dateEnd" id="selected-date-end" />
+                <input type="hidden" name="cities" id="selected-cities" />
                 
                 <!-- Header with Rechercher and Filtrer button -->
                 <div class="flex items-center justify-between bg-white rounded shadow p-2 mb-6">
@@ -49,12 +50,22 @@
                             <% }); %>
                         </div>
                     </div>
+                    <div>
+                        <h3 class="font-semibold mb-2 text-blue-950">Ville</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <% cities.forEach(function(city) { %>
+                                <button type="button" class="filter-button shadow-md px-3 py-1 bg-white text-blue-950 rounded-full hover:text-white hover:bg-blue-950 text-sm focus:outline-none" data-filter="<%= city %>" data-filter-type="City">
+                                    <%= city %>
+                                </button>
+                            <% }); %>
+                        </div>
+                    </div>
 
                     <!-- Contract Type Filter -->
                     <div>
                         <h3 class="font-semibold mb-2 text-blue-950">Type de Contrat</h3>
                         <div class="flex flex-wrap gap-2">
-                            <% ['Extra', 'CDD', 'CDI'].forEach(function(type) { %>
+                            <% ['Extra', 'CDD', 'CDI', 'Autre'].forEach(function(type) { %>
                                 <button type="button" class="filter-button shadow-md px-3 py-1 bg-white text-blue-950 rounded-full hover:text-white hover:bg-blue-950 text-sm focus:outline-none" data-filter="<%= type.toLowerCase() %>" data-filter-type="ContractType">
                                     <%= type %>
                                 </button>
@@ -109,8 +120,14 @@
             </div>
             
             <% if (jobs.length > 0) { %>
+                
+                <% const now = new Date(); %>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-2 gap-6">
                     <% jobs.forEach(function(job) { %>
+                        <% const jobTime = new Date(job.dateAndTime); %>
+                        <% const timeDifference = jobTime - now; %>
+                        <% const isUrgent = timeDifference <= 48 * 60 * 60 * 1000 && timeDifference > 0; %>
+                        <% if (!job.selectedApplicant && timeDifference > 0) { %>
                         <div class="job-card bg-white rounded-lg shadow-md overflow-hidden transform hover:scale-102 hover:rotate-1">
                             <!-- Background Image -->
                             <% if (job.createdBy.restaurantPictureUrl) { %>
@@ -137,6 +154,15 @@
     
                             <!-- Job Info -->
                             <div class="pt-4 pb-6 px-6">
+                                <% if (isUrgent) { %>
+                                    <div class="flex justify-end">
+                                      <span class="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold">Moins de -48H</span>
+                                    </div>
+                                <% } else { %>
+                                    <div class="flex justify-end">
+                                        <span class="bg-green-500 text-white px-2 py-1 rounded-full text-xs font-bold">Disponible</span>
+                                      </div>
+                                <% } %>
                                 <!-- Restaurant Name -->
                                 <div class="grid grid-cols-2 gap-4">
                                 <h3 class="text-xl font-semibold text-center text-blue-950 mb-2"><%= job.createdBy.name %></h3>
@@ -189,26 +215,42 @@
                                 </div>
     
                                 <!-- Apply Button -->
-                                <div class="flex justify-center mt-2">
-                                    <% if (!job.selectedApplicant) { %>
-                                        <form action="/jobs/apply/<%= job._id %>" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir retirer votre candidature ?');">
-                                            <button type="submit" class="bg-blue-950 text-white px-6 py-2 rounded hover:bg-blue-800 transition-colors duration-200">
-                                                Postuler
-                                            </button>
+                                 <!-- Action Buttons -->
+                                <div class="flex justify-end mt-4">
+                                    <% if (!job.applicants.includes(studentId) && (!job.selectedApplicant || job.selectedApplicant.toString() !== studentId.toString())) { %>
+                                        <!-- Apply Button -->
+                                        <form action="/jobs/apply/<%= job._id %>" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir postuler ?');">
+                                            <button type="submit" class="bg-blue-950 hover:bg-blue-700 text-white px-2 py-1 rounded">Postuler</button>
                                         </form>
+                                    <% } else if (job.applicants.includes(studentId) && (!job.selectedApplicant || job.selectedApplicant.toString() !== studentId.toString())) { %>
+                                        <!-- Withdraw Application Button -->
+                                        <form action="/jobs/withdraw/<%= job._id %>" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir retirer votre candidature ?');">
+                                            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white px-2 py-1 rounded">Retirer Candidature</button>
+                                            
+                                        </form>
+                                    <% } else if (job.selectedApplicant && job.selectedApplicant.toString() === studentId.toString()) { %>
+                                        <!-- Contact Info -->
+                                        <p class="text-gray-600 text-sm mt-4 text-center">
+                                            <strong>En cas de problème :</strong>
+                                            <span class="text-red-500 font-semibold"><%= job.createdBy.emergencyPhone %></span>
+                                        </p>
+                                
                                     <% } else { %>
                                         <button class="bg-gray-400 text-white px-6 py-2 rounded cursor-not-allowed" disabled>Poste pourvu</button>
                                     <% } %>
                                 </div>
                             </div>
                         </div>
+                        <% } %>
+                        
                     <% }); %>
                 </div>
             <% } else { %>
                 <p class="text-center text-gray-600">Aucune offre d'emploi disponible pour le moment.</p>
-            <% } %>
+            
+            
         </div>
-
+        <% } %>
     <script src="/js/filters.js"></script>
 </body>
 </html>

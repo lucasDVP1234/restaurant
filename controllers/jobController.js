@@ -5,14 +5,25 @@ const Restaurant = require('../models/Restaurant');
 
 exports.getJobs = async (req, res) => {
   try {
-    const { missionTypes, contractTypes, minAge, remunerationMin, remunerationMax, dateStart, dateEnd } = req.query;
-
+    const { missionTypes, contractTypes, minAge, remunerationMin, remunerationMax, dateStart, dateEnd, cities } = req.query;
+    const studentId = req.user._id;
     let filter = {};
 
     // Mission Type Filter
     if (missionTypes) {
       const missionTypeArray = missionTypes.split(',');
       filter.mission = { $in: missionTypeArray };
+    }
+    // City Type Filter
+    if (cities) {
+      const cityArray = cities.split(',');
+      // Find restaurants in the selected cities
+      const restaurantsInCities = await Restaurant.find({ city: { $in: cityArray } }).select('_id');
+      const restaurantIds = restaurantsInCities.map((r) => r._id);
+      if (!filter.createdBy) {
+        filter.createdBy = {};
+      }
+      filter.createdBy.$in = restaurantIds;
     }
 
     // Contract Type Filter
@@ -48,9 +59,10 @@ exports.getJobs = async (req, res) => {
       }
     }
 
-    const jobs = await Job.find(filter).populate('createdBy','name logoUrl restaurantPictureUrl addresses emergencyPhone');
+    const jobs = await Job.find(filter).populate('createdBy','name logoUrl restaurantPictureUrl addresses city emergencyPhone');
+    const citiesList = await Restaurant.distinct('city');
 
-    res.render('jobs', { jobs });
+    res.render('jobs', { jobs, cities: citiesList, studentId });
   } catch (err) {
     console.error('Error fetching jobs:', err);
     res.status(500).send('Server Error');
@@ -147,6 +159,7 @@ exports.postEditJob = async (req, res) => {
       dateAndTime,
       jobDuration,
       description,
+      city,
       mission,
       remuneration,
       contractType,
@@ -159,6 +172,7 @@ exports.postEditJob = async (req, res) => {
       dateAndTime,
       jobDuration,
       description,
+      city,
       mission,
       remuneration,
       contractType,
@@ -398,5 +412,30 @@ exports.deselectApplicant = async (req, res) => {
   } catch (error) {
     console.error('Error deselecting applicant:', error.message);
     res.status(500).send('Error deselecting applicant.');
+  }
+};
+
+exports.getFavoriteRestaurantJobs = async (req, res) => {
+  try {
+    const studentId = req.user._id; // Assuming you have the student's ID from the session or JWT
+
+    // Step 1: Find all jobs where the student has been selected
+    const pastJobs = await Job.find({ selectedApplicant: studentId }).populate('createdBy');
+
+    // Step 2: Extract unique restaurant IDs
+    const favoriteRestaurantIds = [...new Set(pastJobs.map(job => job.createdBy._id.toString()))];
+
+    // Step 3: Find all upcoming jobs from these restaurants
+    const now = new Date();
+    const favoriteJobs = await Job.find({
+      createdBy: { $in: favoriteRestaurantIds },
+      dateAndTime: { $gte: now }, // Only upcoming jobs
+    }).populate('createdBy');
+
+    // Render the view with favoriteJobs
+    res.render('favorite-jobs', { jobs: favoriteJobs, studentId });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
   }
 };
