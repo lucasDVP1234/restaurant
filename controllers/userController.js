@@ -101,7 +101,6 @@ exports.postProfile = async (req, res) => {
     student.currentSituation = req.body.currentSituation;
     student.pastExperience = req.body.pastExperience
     student.availability = req.body.availability
-    student.ratings = req.body.ratings
       
 
     // Handle uploaded files
@@ -159,7 +158,6 @@ exports.postProfileRestau = async (req, res) => {
     restaurant.siren = req.body.siren;
     restaurant.city = req.body.city;
     restaurant.addresses = req.body.addresses
-    restaurant.ratings = req.body.ratings
       ? req.body.addresses.split('\n').map(s => s.trim()).filter(s => s)
       : [];
 
