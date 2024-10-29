@@ -46,6 +46,11 @@ app.use(session({
   },
 }));
 
+
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+
 // Passport Configuration
 require('./config/passport')(passport);
 app.use(passport.initialize());

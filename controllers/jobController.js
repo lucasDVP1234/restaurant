@@ -2,6 +2,8 @@
 const Job = require('../models/Job');
 const Student = require('../models/Student');
 const Restaurant = require('../models/Restaurant');
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 exports.getJobs = async (req, res) => {
   try {
@@ -159,6 +161,18 @@ exports.postAddJob = async (req, res) => {
     });
 
     await newJob.save();
+    const students = await Student.find({}, 'email');
+    const emails = students.map(student => student.email);
+
+    // Prepare the email message
+    const msg = {
+      to: emails,
+      from: 'lucasdavalpommier@scalevision.fr', // Replace with your verified sender
+      subject: '[JobSter] - Nouveau Job Posté',
+      text: `Un nouveau job a été posté: ${newJob.createdBy.name}`,
+      html: `<p>Un nouveau job a été posté: <strong>${newJob.createdBy.name}</strong></p>`,
+    };
+    await sgMail.sendMultiple(msg);
 
     res.redirect('/account');
   } catch (err) {
@@ -249,6 +263,15 @@ exports.applyToJob = async (req, res) => {
       return res.redirect('/my-applications');
     }
 
+    const msg = {
+      to: job.createdBy.email,
+      from: 'lucasdavalpommier@scalevision.fr',
+      subject: 'Un nouvel étudiant a postuler pour votre Job ! ',
+      text: `${req.user.firstName} ${req.user.lastName} a postulé pour votre job : ${job.description}`,
+      html: `<p>${req.user.firstName} ${req.user.lastName} a postulé pour votre job : <strong>${job.description}</strong></p>`,
+    };
+    await sgMail.send(msg);
+
     // Add the user to the applicants array
     job.applicants.push(userId);
     await job.save();
@@ -322,6 +345,22 @@ exports.selectApplicant = async (req, res) => {
     // Update the job's selectedApplicant field
     job.selectedApplicant = applicantId;
     await job.save();
+
+    // Fetch the student's email
+    const student = await Student.findById(applicantId);
+    const studentEmail = student.email;
+
+    // Prepare the email
+    const msg = {
+      to: studentEmail,
+      from: 'lucasdavalpommier@scalevision.fr',
+      subject: 'Vous avez été séléctionné pour le Job ! ',
+      text: `Félicitation ! Vous avez été séléctionné pour un job : ${job.description}`,
+      html: `<p>Félicitation ! Vous avez été séléctionné pour un job : <strong>${job.description}</strong></p>`,
+    };
+
+    // Send the email
+    await sgMail.send(msg);
 
     // Optional: Send notification to the applicant (not implemented here)
 
