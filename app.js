@@ -9,6 +9,7 @@ const indexRoutes = require('./routes/index');
 const app = express();
 const jobRoutes = require('./routes/jobs');
 const upload = require('./middlewares/upload');
+const flash = require('connect-flash'); // Add this line
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
@@ -45,6 +46,15 @@ app.use(session({
     httpOnly: true,
   },
 }));
+
+app.use(flash());
+
+// Middleware to make flash messages available in templates
+app.use(function (req, res, next) {
+  res.locals.success_messages = req.flash('success');
+  res.locals.error_messages = req.flash('error');
+  next();
+});
 
 
 const sgMail = require('@sendgrid/mail');

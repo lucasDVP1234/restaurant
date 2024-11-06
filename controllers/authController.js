@@ -14,22 +14,27 @@ exports.getLoginStudent = (req, res) => {
 exports.postLoginStudent = (req, res, next) => {
   passport.authenticate('student-local', (err, user, info) => {
     if (err) {
-      console.error('Authentication error:', err);
+      console.error('Erreur d\'authentification :', err);
+      req.flash('error', 'Une erreur est survenue lors de l\'authentification.');
       return next(err);
     }
     if (!user) {
-      console.log('Authentication failed:', info.message);
-      return res.send(`Login failed: ${info.message}`);
+      console.log('Échec de l\'authentification :', info.message);
+      req.flash('error', info.message || 'Adresse e-mail ou mot de passe incorrect.');
+      return res.redirect('/login/student');
     }
     req.logIn(user, (err) => {
       if (err) {
-        console.error('Login error:', err);
+        console.error('Erreur lors de la connexion :', err);
+        req.flash('error', 'Une erreur est survenue lors de la connexion.');
         return next(err);
       }
+      req.flash('success', 'Connexion réussie !');
       return res.redirect('/account');
     });
   })(req, res, next);
 };
+
 
 exports.getLoginRestaurant = (req, res) => {
   if (req.isAuthenticated()) {
@@ -45,14 +50,16 @@ exports.postLoginRestaurant = (req, res, next) => {
       return next(err);
     }
     if (!user) {
-      console.log('Authentication failed:', info.message);
-      return res.send(`Login failed: ${info.message}`);
+      req.flash('error', 'Email ou mot de passe incorrect.');
+      return res.redirect('/login/restaurant');
     }
     req.logIn(user, (err) => {
       if (err) {
-        console.error('Login error:', err);
+        console.error('Erreur lors de la connexion :', err);
+        req.flash('error', 'Une erreur est survenue lors de la connexion.');
         return next(err);
       }
+      req.flash('success', 'Connexion réussie !');
       return res.redirect('/account');
     });
   })(req, res, next);
@@ -70,10 +77,11 @@ exports.postSignupStudent = async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
     const emailLower = email.toLowerCase().trim();
 
-    // Check if email already exists
+    // Vérifier si l'e-mail existe déjà
     const existingStudent = await Student.findOne({ email: emailLower });
     if (existingStudent) {
-      return res.send('An account with this email already exists. Please log in or use a different email.');
+      req.flash('error', 'Un compte avec cet e-mail existe déjà. Veuillez vous connecter ou utiliser un autre e-mail.');
+      return res.redirect('/signup/student');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -86,17 +94,20 @@ exports.postSignupStudent = async (req, res) => {
 
     await newStudent.save();
 
-    // Authenticate the user after successful signup
+    // Authentifier l'utilisateur après une inscription réussie
     req.logIn({ id: newStudent._id, type: 'student' }, function (err) {
       if (err) {
         console.error(err);
+        req.flash('error', 'Une erreur est survenue lors de la connexion.');
         return res.redirect('/');
       }
+      req.flash('success', 'Inscription réussie !');
       return res.redirect('/account');
     });
   } catch (err) {
-    console.error('Error during signup:', err);
-    res.send('An error occurred during signup. Please try again.');
+    console.error('Erreur lors de l\'inscription :', err);
+    req.flash('error', 'Une erreur est survenue lors de l\'inscription. Veuillez réessayer.');
+    res.redirect('/signup/student');
   }
 };
 
@@ -115,7 +126,8 @@ exports.postSignupRestaurant = async (req, res) => {
     // Check if email already exists
     const existingRestaurant = await Restaurant.findOne({ email: emailLower });
     if (existingRestaurant) {
-      return res.send('An account with this email already exists. Please log in or use a different email.');
+      req.flash('error', 'Un compte avec cet e-mail existe déjà. Veuillez vous connecter ou utiliser un autre e-mail.');
+      return res.redirect('/signup/restaurant');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -130,14 +142,15 @@ exports.postSignupRestaurant = async (req, res) => {
     // Authenticate the user after successful signup
     req.logIn({ id: newRestaurant._id, type: 'restaurant' }, function (err) {
       if (err) {
-        console.error(err);
+        req.flash('error', 'Une erreur est survenue lors de la connexion.');
         return res.redirect('/');
       }
+      req.flash('success', 'Inscription réussie !');
       return res.redirect('/account');
     });
   } catch (err) {
-    console.error('Error during signup:', err);
-    res.send('An error occurred during signup. Please try again.');
+    req.flash('error', 'Une erreur est survenue lors de l\'inscription. Veuillez réessayer.');
+    res.redirect('/signup/restaurant');
   }
 };
 
