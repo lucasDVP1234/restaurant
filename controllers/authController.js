@@ -20,7 +20,7 @@ exports.postLoginStudent = (req, res, next) => {
     }
     if (!user) {
       console.log('Échec de l\'authentification :', info.message);
-      req.flash('error', info.message || 'Adresse e-mail ou mot de passe incorrect.');
+      req.flash('error','Adresse e-mail ou mot de passe incorrect.');
       return res.redirect('/login/student');
     }
     req.logIn(user, (err) => {
