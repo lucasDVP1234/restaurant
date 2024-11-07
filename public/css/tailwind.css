@@ -2095,6 +2095,10 @@ select {
     margin-top: 2rem;
   }
 
+  .sm\:mt-10 {
+    margin-top: 2.5rem;
+  }
+
   .sm\:block {
     display: block;
   }
