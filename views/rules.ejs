@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Job'ster - Choisissez votre rôle</title>
+    <!-- Include Montserrat Font and Tailwind CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/tailwind.css">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    
+</head>
+<body class="bg-gradient-to-r from-gray-50 to-blue-50 min-h-screen flex flex-col">
+    <!-- Header -->
+    <%- include('header-set-role') %>
+    <!-- Title -->
+    
+    
+    <div class="flex items-center justify-center py-6 px-4 sm:px-6 lg:px-8 mt-10">
+        <div class="max-w-lg w-full bg-white shadow-xl rounded-2xl p-4">
+
+            
+            <h1 class="text-3xl text-center font-bold mb-6 text-blue-950 mt-10">
+                Les règles
+            </h1>
+            <h1 class="text-l font-semibold text-blue-950 mt-5">
+                <u> 1. Vous venez de compléter votre profil, pour pouvoir postuler à un Job : </u>
+            </h1>
+            <h1 class="text-sm font-semibold text-gray-700 mt-2">
+                - Assurez-vous d'ajouter un CV (vous pouvez le faire sur la page de votre compte)
+            </h1>
+            <h1 class="text-sm font-semibold text-gray-700 mt-2">
+                - Assurez-vous d'ajouter une photo de profile (vous pouvez le faire sur la page de votre compte)
+            </h1>
+            <h1 class="text-l font-semibold text-blue-950 mt-5">
+                <u>2. Une fois que vous avez postulé : </u>
+            </h1>
+            <h1 class="text-sm font-semibold text-gray-700 mt-2">
+                <b>Option 1 :</b> Vous êtes séléctionnés (surveillez vos emails), le restaurateur prendra contact avec vous. Vous retrouverez toutes les informations sur votre compte
+            </h1>
+            <h1 class="text-sm font-semibold text-gray-700 mt-2">
+                <b>Option 2 :</b> Vous n'avez pas été séléctionnés, re-tentez votre chance
+            </h1>
+            <h1 class="text-l font-semibold text-blue-950 mt-5">
+                <u>3. Si vous ne venez pas au Job alors que vous avez postulé : </u>
+            </h1>
+            <h1 class="text-sm font-semibold text-gray-700 mt-2">
+                <b>Option 1 :</b> Vous avez prévenu en amont le restaurant, et ne serez donc pas pénalisé
+            </h1>
+            <h1 class="text-sm font-semibold text-gray-700 mt-2">
+                <b>Option 2 :</b> Vous n'avez pas prévenu le restaurant, vous aurez donc une note de 1 étoile qui vous pénalisera pour retrouver un job
+            </h1>
+            <h1 class="text-l font-semibold text-blue-950 mt-5">
+                <u>4. Si tout c'est bien passé : </u>
+            </h1>
+            <h1 class="text-sm font-semibold text-gray-700 mt-2">
+                <b>Bravo !</b> Vous recevrez une note par le restaurant
+            </h1>
+            <h1 class="text-sm font-semibold text-gray-700 mt-2">
+                <b>A vous :</b> Donnez une note au restaurant sur le déroulement du Job
+            </h1>
+            <h1 class="text-sm font-semibold text-gray-700 mt-2">
+                <b>Bonus :</b> Vous retrouverez tous les futurs Jobs de ce restaurant dans la rubrique "Restaurants Favoris"
+            </h1>
+
+            <!-- Buttons -->
+            <div class="flex justify-center space-x-4 mt-6 mb-16">
+                <a href="/jobs"
+                   class="transform hover:scale-105 hover:rotate-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-6 rounded-md shadow-lg transition duration-200 ease-in-out">
+                    J'ai compris
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</body>
+</html>

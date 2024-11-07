@@ -121,7 +121,7 @@ exports.postProfile = async (req, res) => {
     await student.save();
 
     
-    res.redirect('/jobs');
+    res.redirect('/rules');
   } catch (error) {
     console.error('Error updating student profile:', error);
     

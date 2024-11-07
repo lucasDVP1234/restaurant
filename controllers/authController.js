@@ -102,7 +102,7 @@ exports.postSignupStudent = async (req, res) => {
         return res.redirect('/');
       }
       req.flash('success', 'Inscription réussie !');
-      return res.redirect('/account');
+      return res.redirect('/profile');
     });
   } catch (err) {
     console.error('Erreur lors de l\'inscription :', err);

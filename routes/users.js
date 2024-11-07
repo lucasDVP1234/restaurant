@@ -28,4 +28,8 @@ router.post('/profilerestau', ensureAuthenticated, ensureRestaurant, upload.fiel
   { name: 'logo', maxCount: 1 }
 ]), userController.postProfileRestau);
 
+router.get('/rules', (req, res) => {
+  res.render('rules');
+});
+
 module.exports = router;

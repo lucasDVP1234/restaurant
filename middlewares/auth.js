@@ -17,7 +17,7 @@ function ensureStudent(req, res, next) {
 }
 function profileCompleteStudent(req, res, next) {
   
-  if (req.user && req.user.number) {
+  if (req.user && req.user.number && req.user.cvUrl) {
     return next();
   } else {
     res.redirect('/profile');
