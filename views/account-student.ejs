@@ -102,7 +102,7 @@
                                               <form action="/jobs/<%= job._id %>/rate-restaurant" method="POST">
                                                 <label for="rating">Note:</label>
                                                 <select name="rating" id="rating" required>
-                                                  <% for(let i = 0; i <= 5; i++) { %>
+                                                  <% for(let i = 1; i <= 5; i++) { %>
                                                     <option value="<%= i %>"><%= i %></option>
                                                   <% } %>
                                                 </select>
