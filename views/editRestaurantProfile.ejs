@@ -19,14 +19,14 @@
       <form action="/profilerestau" method="POST" enctype="multipart/form-data" class="space-y-6">
         <!-- Restaurant Name -->
         <div>
-          <label class="block text-sm font-medium text-gray-700">Nom du Restaurant</label>
+          <label class="block text-sm font-medium text-gray-700">Nom du Restaurant *</label>
           <input type="text" name="name" value="<%= restaurant.name %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required>
         </div>
 
         <!-- Manager Name -->
         <div>
-          <label class="block text-sm font-medium text-gray-700">Nom du Gérant</label>
-          <input type="text" name="managerName" value="<%= restaurant.managerName %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+          <label class="block text-sm font-medium text-gray-700">Nom du Gérant *</label>
+          <input type="text" name="managerName" value="<%= restaurant.managerName %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required>
         </div>
 
         <!-- Emergency Phone -->
@@ -48,20 +48,20 @@
 
         <!-- SIREN -->
         <div>
-          <label class="block text-sm font-medium text-gray-700">SIREN</label>
-          <input type="text" name="siren" value="<%= restaurant.siren %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+          <label class="block text-sm font-medium text-gray-700">SIREN *</label>
+          <input type="text" name="siren" value="<%= restaurant.siren %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required>
         </div>
 
         <!-- Addresses -->
         <div>
-          <label class="block text-sm font-medium text-gray-700">Adresse</label>
-          <textarea name="addresses" rows="3" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm"><%= restaurant.addresses ? restaurant.addresses.join('\n') : '' %></textarea>
+          <label class="block text-sm font-medium text-gray-700">Adresse *</label>
+          <textarea name="addresses" rows="3" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required><%= restaurant.addresses ? restaurant.addresses.join('\n') : '' %></textarea>
           <small class="text-gray-500">Séparez chaque adresse par une nouvelle ligne.</small>
         </div>
         <!-- City (Read-only) -->
         <div>
-          <label class="block text-sm font-medium text-gray-700">Ville</label>
-          <input name="city" value="<%= restaurant.city %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+          <label class="block text-sm font-medium text-gray-700">Ville *</label>
+          <input name="city" value="<%= restaurant.city %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required>
         </div>
         <!-- Email (Read-only) -->
         <div>
@@ -71,8 +71,8 @@
 
         <!-- Restaurant Picture -->
         <div>
-          <label class="block text-sm font-medium text-gray-700">Photo du Restaurant</label>
-          <input type="file" name="restaurantPicture" accept="image/*" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+          <label class="block text-sm font-medium text-gray-700">Photo du Restaurant *</label>
+          <input type="file" name="restaurantPicture" accept="image/*" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required>
           <% if (restaurant.restaurantPictureUrl) { %>
             <img src="<%= restaurant.restaurantPictureUrl %>" alt="Photo du Restaurant" class="mt-4 h-32 w-32 object-cover rounded-md">
           <% } %>
@@ -80,8 +80,8 @@
 
         <!-- Logo Upload -->
         <div>
-          <label class="block text-sm font-medium text-gray-700">Logo (Image)</label>
-          <input type="file" name="logo" accept="image/*" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+          <label class="block text-sm font-medium text-gray-700">Logo (Image) *</label>
+          <input type="file" name="logo" accept="image/*" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required>
           <% if (restaurant.logoUrl) { %>
             <img src="<%= restaurant.logoUrl %>" alt="Logo" class="mt-4 h-32 w-32 object-cover rounded-md">
           <% } %>

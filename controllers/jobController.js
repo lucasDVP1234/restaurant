@@ -159,20 +159,29 @@ exports.postAddJob = async (req, res) => {
       profileType,
       createdBy: req.user._id, // Should be a Restaurant
     });
+    
 
     await newJob.save();
+
+
+    // Populate after saving, if necessary
+    await newJob.populate(
+      'createdBy',
+      'name logoUrl restaurantPictureUrl addresses city email emergencyPhone ratings'
+    );
+
     const students = await Student.find({}, 'email');
     const emails = students.map(student => student.email);
 
-    // Prepare the email message
-    const msg = {
-      to: emails,
-      from: 'lucasdavalpommier@scalevision.fr', // Replace with your verified sender
-      subject: '[JobSter] - Nouveau Job Posté',
-      text: `Un nouveau job a été posté: ${newJob.createdBy.name}`,
-      html: `<p>Un nouveau job a été posté: <strong>${newJob.createdBy.name}</strong></p>`,
-    };
-    await sgMail.sendMultiple(msg);
+    // // Prepare the email message
+    // const msg = {
+    //   to: emails,
+    //   from: 'lucasdavalpommier@scalevision.fr', // Replace with your verified sender
+    //   subject: '[JobSter] - Nouveau Job Posté',
+    //   text: `Un nouveau job a été posté: ${newJob.createdBy.name}`,
+    //   html: `<p>Un nouveau job a été posté: <strong>${newJob.createdBy.name}</strong></p>`,
+    // };
+    // await sgMail.sendMultiple(msg);
 
     res.redirect('/account');
   } catch (err) {
