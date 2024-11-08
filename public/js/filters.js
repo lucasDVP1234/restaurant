@@ -1,14 +1,12 @@
-// public/js/filters.js
-
 document.addEventListener('DOMContentLoaded', () => {
     const filterButtons = document.querySelectorAll('.filter-button');
-    const minAgeInput = document.getElementById('min-age-input');
-    const remunerationMinInput = document.getElementById('remuneration-min-input');
-    const remunerationMaxInput = document.getElementById('remuneration-max-input');
-    const dateStartInput = document.getElementById('date-start-input');
-    const dateEndInput = document.getElementById('date-end-input');
+    const minAgeInputs = document.querySelectorAll('.min-age-input');
+    const remunerationMinInputs = document.querySelectorAll('.remuneration-min-input');
+    const remunerationMaxInputs = document.querySelectorAll('.remuneration-max-input');
+    const dateStartInputs = document.querySelectorAll('.date-start-input');
+    const dateEndInputs = document.querySelectorAll('.date-end-input');
     const selectedFiltersContainer = document.getElementById('selected-filters-container');
-    const filterForm = document.querySelector('form[action="/jobs"]');
+    const filterForms = document.querySelectorAll('form[action="/jobs"]');
 
     let selectedMissionTypes = [];
     let selectedContractTypes = [];
@@ -34,6 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const bubble = createFilterBubble(type.toUpperCase(), 'ContractType');
             selectedFiltersContainer.appendChild(bubble);
         });
+
+        // Cities
         selectedCities.forEach((city) => {
             const bubble = createFilterBubble(city, 'City');
             selectedFiltersContainer.appendChild(bubble);
@@ -114,34 +114,37 @@ document.addEventListener('DOMContentLoaded', () => {
             if (button) button.click();
         } else if (type === 'MinAge') {
             selectedMinAge = '';
-            minAgeInput.value = '';
+            minAgeInputs.forEach(input => input.value = '');
         } else if (type === 'Remuneration') {
             selectedRemunerationMin = '';
             selectedRemunerationMax = '';
-            remunerationMinInput.value = '';
-            remunerationMaxInput.value = '';
+            remunerationMinInputs.forEach(input => input.value = '');
+            remunerationMaxInputs.forEach(input => input.value = '');
         } else if (type === 'Date') {
             selectedDateStart = '';
             selectedDateEnd = '';
-            dateStartInput.value = '';
-            dateEndInput.value = '';
+            dateStartInputs.forEach(input => input.value = '');
+            dateEndInputs.forEach(input => input.value = '');
         }
 
         updateSelectedFiltersDisplay();
         updateHiddenInputs();
-        filterForm.submit();
+        filterForms[0].submit(); // Submitting the first form as an example
     }
 
     // Function to update hidden inputs
     function updateHiddenInputs() {
-        document.getElementById('selected-mission-types').value = selectedMissionTypes.join(',');
-        document.getElementById('selected-contract-types').value = selectedContractTypes.join(',');
-        document.getElementById('selected-min-age').value = selectedMinAge;
-        document.getElementById('selected-cities').value = selectedCities.join(',');
-        document.getElementById('selected-remuneration-min').value = selectedRemunerationMin;
-        document.getElementById('selected-remuneration-max').value = selectedRemunerationMax;
-        document.getElementById('selected-date-start').value = selectedDateStart;
-        document.getElementById('selected-date-end').value = selectedDateEnd;
+        // Update all forms
+        filterForms.forEach((form) => {
+            form.querySelectorAll('.selected-mission-types').forEach(input => input.value = selectedMissionTypes.join(','));
+            form.querySelectorAll('.selected-contract-types').forEach(input => input.value = selectedContractTypes.join(','));
+            form.querySelectorAll('.selected-min-age').forEach(input => input.value = selectedMinAge);
+            form.querySelectorAll('.selected-cities').forEach(input => input.value = selectedCities.join(','));
+            form.querySelectorAll('.selected-remuneration-min').forEach(input => input.value = selectedRemunerationMin);
+            form.querySelectorAll('.selected-remuneration-max').forEach(input => input.value = selectedRemunerationMax);
+            form.querySelectorAll('.selected-date-start').forEach(input => input.value = selectedDateStart);
+            form.querySelectorAll('.selected-date-end').forEach(input => input.value = selectedDateEnd);
+        });
     }
 
     // Event listener for filter buttons
@@ -193,34 +196,48 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Event listeners for inputs
-    minAgeInput.addEventListener('change', () => {
-        selectedMinAge = minAgeInput.value;
-        updateSelectedFiltersDisplay();
+    function addInputListeners(inputs, updateSelectedValue) {
+        inputs.forEach((input) => {
+            input.addEventListener('change', () => {
+                // Update the selected value based on the input that was changed
+                updateSelectedValue(input.value);
+
+                // Synchronize the value across all inputs of the same type
+                inputs.forEach(i => {
+                    if (i !== input) i.value = input.value;
+                });
+
+                updateSelectedFiltersDisplay();
+            });
+        });
+    }
+
+    // Add input listeners for each filter type
+    addInputListeners(minAgeInputs, (value) => {
+        selectedMinAge = value;
     });
 
-    remunerationMinInput.addEventListener('change', () => {
-        selectedRemunerationMin = remunerationMinInput.value;
-        updateSelectedFiltersDisplay();
+    addInputListeners(remunerationMinInputs, (value) => {
+        selectedRemunerationMin = value;
     });
 
-    remunerationMaxInput.addEventListener('change', () => {
-        selectedRemunerationMax = remunerationMaxInput.value;
-        updateSelectedFiltersDisplay();
+    addInputListeners(remunerationMaxInputs, (value) => {
+        selectedRemunerationMax = value;
     });
 
-    dateStartInput.addEventListener('change', () => {
-        selectedDateStart = dateStartInput.value;
-        updateSelectedFiltersDisplay();
+    addInputListeners(dateStartInputs, (value) => {
+        selectedDateStart = value;
     });
 
-    dateEndInput.addEventListener('change', () => {
-        selectedDateEnd = dateEndInput.value;
-        updateSelectedFiltersDisplay();
+    addInputListeners(dateEndInputs, (value) => {
+        selectedDateEnd = value;
     });
 
     // Before form submission, populate hidden inputs
-    filterForm.addEventListener('submit', () => {
-        updateHiddenInputs();
+    filterForms.forEach((form) => {
+        form.addEventListener('submit', () => {
+            updateHiddenInputs();
+        });
     });
 
     // Initialize selected filters if any (from URL parameters)
@@ -244,28 +261,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (params.contractTypes) {
         selectedContractTypes = params.contractTypes.split(',').filter(Boolean);
-    } if (params.cities) {
+    }
+    if (params.cities) {
         selectedCities = params.cities.split(',').filter(Boolean);
     }
     if (params.minAge) {
         selectedMinAge = params.minAge;
-        minAgeInput.value = selectedMinAge;
+        minAgeInputs.forEach(input => input.value = selectedMinAge);
     }
     if (params.remunerationMin) {
         selectedRemunerationMin = params.remunerationMin;
-        remunerationMinInput.value = selectedRemunerationMin;
+        remunerationMinInputs.forEach(input => input.value = selectedRemunerationMin);
     }
     if (params.remunerationMax) {
         selectedRemunerationMax = params.remunerationMax;
-        remunerationMaxInput.value = selectedRemunerationMax;
+        remunerationMaxInputs.forEach(input => input.value = selectedRemunerationMax);
     }
     if (params.dateStart) {
         selectedDateStart = params.dateStart;
-        dateStartInput.value = selectedDateStart;
+        dateStartInputs.forEach(input => input.value = selectedDateStart);
     }
     if (params.dateEnd) {
         selectedDateEnd = params.dateEnd;
-        dateEndInput.value = selectedDateEnd;
+        dateEndInputs.forEach(input => input.value = selectedDateEnd);
     }
 
     // Update button states based on selected filters
@@ -276,8 +294,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if ((filterType === 'MissionType' && selectedMissionTypes.includes(filterValue)) ||
             (filterType === 'City' && selectedCities.includes(filterValue)) ||
             (filterType === 'ContractType' && selectedContractTypes.includes(filterValue))) {
-            button.classList.remove('active', 'bg-white', 'text-blue-950');
             button.classList.add('active', 'bg-blue-950', 'text-white');
+            button.classList.remove('bg-white', 'text-blue-950');
         }
     });
 

@@ -1,0 +1,88 @@
+<!-- Sidebar Content Partial -->
+
+<!-- Filter Form -->
+<form action="/jobs" method="GET">
+    <!-- Hidden Inputs for Selected Filters -->
+    <input type="hidden" name="missionTypes" class="selected-mission-types" />
+    <input type="hidden" name="contractTypes" class="selected-contract-types" />
+    <input type="hidden" name="minAge" class="selected-min-age" />
+    <input type="hidden" name="remunerationMin" class="selected-remuneration-min" />
+    <input type="hidden" name="remunerationMax" class="selected-remuneration-max" />
+    <input type="hidden" name="dateStart" class="selected-date-start" />
+    <input type="hidden" name="dateEnd" class="selected-date-end" />
+    <input type="hidden" name="cities" class="selected-cities" />
+    
+    <!-- Header with Rechercher and Filtrer button -->
+    <div class="flex items-center justify-between bg-white rounded shadow p-2 mb-6">
+        <h2 class="text-lg font-semibold text-blue-950">
+            Rechercher
+        </h2>
+        <button type="submit" class="shadow bg-blue-950 hover:bg-blue-800 text-white font-semibold px-4 py-1 rounded">
+            Filtrer
+        </button>
+    </div>
+
+    <!-- Filter Options -->
+    <div id="filters" class="space-y-6">
+        <!-- Mission Type Filter -->
+        <div>
+            <h3 class="font-semibold mb-2 text-blue-950">Type de Mission</h3>
+            <div class="flex flex-wrap gap-2">
+                <% ['Ponctuel', 'Récurrent'].forEach(function(type) { %>
+                    <button type="button" class="filter-button shadow-md px-3 py-1 bg-white text-blue-950 rounded-full hover:text-white hover:bg-blue-950 text-sm focus:outline-none" data-filter="<%= type.toLowerCase() %>" data-filter-type="MissionType">
+                        <%= type %>
+                    </button>
+                <% }); %>
+            </div>
+        </div>
+        <div>
+            <h3 class="font-semibold mb-2 text-blue-950">Ville</h3>
+            <div class="flex flex-wrap gap-2">
+                <% cities.forEach(function(city) { %>
+                    <button type="button" class="filter-button shadow-md px-3 py-1 bg-white text-blue-950 rounded-full hover:text-white hover:bg-blue-950 text-sm focus:outline-none" data-filter="<%= city %>" data-filter-type="City">
+                        <%= city %>
+                    </button>
+                <% }); %>
+            </div>
+        </div>
+
+        <!-- Contract Type Filter -->
+        <div>
+            <h3 class="font-semibold mb-2 text-blue-950">Type de Contrat</h3>
+            <div class="flex flex-wrap gap-2">
+                <% ['Extra', 'CDD', 'CDI', 'Autre'].forEach(function(type) { %>
+                    <button type="button" class="filter-button shadow-md px-3 py-1 bg-white text-blue-950 rounded-full hover:text-white hover:bg-blue-950 text-sm focus:outline-none" data-filter="<%= type.toLowerCase() %>" data-filter-type="ContractType">
+                        <%= type %>
+                    </button>
+                <% }); %>
+            </div>
+        </div>
+
+        <!-- Minimum Age Filter -->
+                <!-- Minimum Age Filter -->
+        <div>
+            <h3 class="font-semibold mb-2 text-blue-950">Âge Minimum</h3>
+            <input type="number" name="minAgeInput" class="min-age-input w-full px-2 py-1 border rounded" placeholder="Âge minimum" min="16" max="99" />
+        </div>
+
+        <!-- Remuneration Range Filter -->
+        <div>
+            <h3 class="font-semibold mb-2 text-blue-950">Rémunération (€)</h3>
+            <div class="flex items-center space-x-2">
+                <input type="number" name="remunerationMinInput" class="remuneration-min-input w-20 px-2 py-1 border rounded" placeholder="Min" min="0" />
+                <span>-</span>
+                <input type="number" name="remunerationMaxInput" class="remuneration-max-input w-20 px-2 py-1 border rounded" placeholder="Max" min="0" />
+            </div>
+        </div>
+
+        <!-- Date Range Filter -->
+        <div>
+            <h3 class="font-semibold mb-2 text-blue-950">Date de la Mission</h3>
+            <div class="flex items-center space-x-2">
+                <input type="date" name="dateStartInput" class="date-start-input w-full px-2 py-1 border rounded" />
+                <span>-</span>
+                <input type="date" name="dateEndInput" class="date-end-input w-full px-2 py-1 border rounded" />
+            </div>
+        </div>
+    </div>
+</form>

@@ -13,97 +13,34 @@
     <!-- Main Container -->
     <div class="flex min-h-screen">
         
-        <!-- Sidebar -->
+        <!-- Sidebar for Desktop -->
         <aside class="sm:w-1/5 p-4 bg-white border-r border-gray-300 sticky top-[4rem] h-screen overflow-y-auto hidden sm:block">
-            <!-- Filter Form -->
-            <form action="/jobs" method="GET">
-                <!-- Hidden Inputs for Selected Filters -->
-                <input type="hidden" name="missionTypes" id="selected-mission-types" />
-                <input type="hidden" name="contractTypes" id="selected-contract-types" />
-                <input type="hidden" name="minAge" id="selected-min-age" />
-                <input type="hidden" name="remunerationMin" id="selected-remuneration-min" />
-                <input type="hidden" name="remunerationMax" id="selected-remuneration-max" />
-                <input type="hidden" name="dateStart" id="selected-date-start" />
-                <input type="hidden" name="dateEnd" id="selected-date-end" />
-                <input type="hidden" name="cities" id="selected-cities" />
-                
-                <!-- Header with Rechercher and Filtrer button -->
-                <div class="flex items-center justify-between bg-white rounded shadow p-2 mb-6">
-                    <h2 class="text-lg font-semibold text-blue-950">
-                        Rechercher
-                    </h2>
-                    <button type="submit" class="shadow bg-blue-950 hover:bg-blue-800 text-white font-semibold px-4 py-1 rounded">
-                        Filtrer
-                    </button>
-                </div>
-
-                <!-- Filter Options -->
-                <div id="filters" class="space-y-6">
-                    <!-- Mission Type Filter -->
-                    <div>
-                        <h3 class="font-semibold mb-2 text-blue-950">Type de Mission</h3>
-                        <div class="flex flex-wrap gap-2">
-                            <% ['Ponctuel', 'Récurrent'].forEach(function(type) { %>
-                                <button type="button" class="filter-button shadow-md px-3 py-1 bg-white text-blue-950 rounded-full hover:text-white hover:bg-blue-950 text-sm focus:outline-none" data-filter="<%= type.toLowerCase() %>" data-filter-type="MissionType">
-                                    <%= type %>
-                                </button>
-                            <% }); %>
-                        </div>
-                    </div>
-                    <div>
-                        <h3 class="font-semibold mb-2 text-blue-950">Ville</h3>
-                        <div class="flex flex-wrap gap-2">
-                            <% cities.forEach(function(city) { %>
-                                <button type="button" class="filter-button shadow-md px-3 py-1 bg-white text-blue-950 rounded-full hover:text-white hover:bg-blue-950 text-sm focus:outline-none" data-filter="<%= city %>" data-filter-type="City">
-                                    <%= city %>
-                                </button>
-                            <% }); %>
-                        </div>
-                    </div>
-
-                    <!-- Contract Type Filter -->
-                    <div>
-                        <h3 class="font-semibold mb-2 text-blue-950">Type de Contrat</h3>
-                        <div class="flex flex-wrap gap-2">
-                            <% ['Extra', 'CDD', 'CDI', 'Autre'].forEach(function(type) { %>
-                                <button type="button" class="filter-button shadow-md px-3 py-1 bg-white text-blue-950 rounded-full hover:text-white hover:bg-blue-950 text-sm focus:outline-none" data-filter="<%= type.toLowerCase() %>" data-filter-type="ContractType">
-                                    <%= type %>
-                                </button>
-                            <% }); %>
-                        </div>
-                    </div>
-
-                    <!-- Minimum Age Filter -->
-                    <div>
-                        <h3 class="font-semibold mb-2 text-blue-950">Âge Minimum</h3>
-                        <input type="number" name="minAgeInput" id="min-age-input" class="w-full px-2 py-1 border rounded" placeholder="Âge minimum" min="16" max="99" />
-                    </div>
-
-                    <!-- Remuneration Range Filter -->
-                    <div>
-                        <h3 class="font-semibold mb-2 text-blue-950">Rémunération (€)</h3>
-                        <div class="flex items-center space-x-2">
-                            <input type="number" name="remunerationMinInput" id="remuneration-min-input" class="w-20 px-2 py-1 border rounded" placeholder="Min" min="0" />
-                            <span>-</span>
-                            <input type="number" name="remunerationMaxInput" id="remuneration-max-input" class="w-20 px-2 py-1 border rounded" placeholder="Max" min="0" />
-                        </div>
-                    </div>
-
-                    <!-- Date Range Filter -->
-                    <div>
-                        <h3 class="font-semibold mb-2 text-blue-950">Date de la Mission</h3>
-                        <div class="flex items-center space-x-2">
-                            <input type="date" name="dateStartInput" id="date-start-input" class="w-full px-2 py-1 border rounded" />
-                            <span>-</span>
-                            <input type="date" name="dateEndInput" id="date-end-input" class="w-full px-2 py-1 border rounded" />
-                        </div>
-                    </div>
-                </div>
-            </form>
+            <%- include('sidebar-content') %>
         </aside>
 
         <!-- Main Content -->
         <main class="sm:w-4/5 w-full">
+            <!-- Mobile Filters Toggle -->
+            <div class="sm:hidden p-4 bg-white border-b border-gray-300 w-full">
+                <button id="mobile-filters-toggle" class="w-full text-blue-950 focus:outline-none flex justify-between items-center">
+                    <span class="font-semibold">Filtres</span>
+                    <!-- Plus/Minus Icon -->
+                    <svg id="mobile-filters-icon" class="w-6 h-6 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <!-- Plus Icon -->
+                        <path id="icon-plus" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M12 4v16m8-8H4"></path>
+                        <!-- Minus Icon (hidden by default) -->
+                        <path id="icon-minus" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M20 12H4"></path>
+                    </svg>
+                </button>
+                <!-- Mobile Filters Content -->
+                <div id="mobile-filters-content" class="hidden">
+                    <div class="p-4 bg-white border-t border-gray-300">
+                        <%- include('sidebar-content') %>
+                    </div>
+                </div>
+            </div>
             <div class="sticky top-[4rem] z-20 bg-white p-3 border-b border-gray-300">
                 <div id="selected-filters-container" class="flex flex-wrap space-x-2">
                     <!-- Selected filters will be displayed here as bubbles -->
@@ -258,6 +195,17 @@
             
         </div>
         <% } %>
+    <script>
+        document.getElementById('mobile-filters-toggle').addEventListener('click', function() {
+            var filtersContent = document.getElementById('mobile-filters-content');
+            var iconPlus = document.getElementById('icon-plus');
+            var iconMinus = document.getElementById('icon-minus');
+
+            filtersContent.classList.toggle('hidden');
+            iconPlus.classList.toggle('hidden');
+            iconMinus.classList.toggle('hidden');
+        });
+    </script>
     <script src="/js/filters.js"></script>
 </body>
 </html>
