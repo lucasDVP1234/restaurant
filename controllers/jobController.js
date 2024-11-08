@@ -281,14 +281,14 @@ exports.applyToJob = async (req, res) => {
     console.log('5');
     console.log(job.createdBy.email);
 
-    const msg = {
-      to: job.createdBy.email,
-      from: 'lucasdavalpommier@scalevision.fr',
-      subject: 'Un nouvel étudiant a postuler pour votre Job ! ',
-      text: `${req.user.firstName} ${req.user.lastName} a postulé pour votre job : ${job.description}`,
-      html: `<p>${req.user.firstName} ${req.user.lastName} a postulé pour votre job : <strong>${job.description}</strong></p>`,
-    };
-    await sgMail.send(msg);
+    // const msg = {
+    //   to: job.createdBy.email,
+    //   from: 'lucasdavalpommier@scalevision.fr',
+    //   subject: 'Un nouvel étudiant a postuler pour votre Job ! ',
+    //   text: `${req.user.firstName} ${req.user.lastName} a postulé pour votre job : ${job.description}`,
+    //   html: `<p>${req.user.firstName} ${req.user.lastName} a postulé pour votre job : <strong>${job.description}</strong></p>`,
+    // };
+    // await sgMail.send(msg);
     console.log('6');
 
     // Add the user to the applicants array
