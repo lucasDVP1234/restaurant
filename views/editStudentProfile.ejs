@@ -26,6 +26,22 @@
         <label class="block text-sm font-medium text-gray-700">Nom *</label>
         <input type="text" name="lastName" value="<%= student.lastName %>" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required>
       </div>
+      <!-- City -->
+      
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Ville Actuelle *</label>
+        
+        <select name="city" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+            <option value="Paris" <%= student.city === 'Paris' ? 'selected' : '' %>>Paris</option>
+            <option value="Lyon" <%= student.city === 'Lyon' ? 'selected' : '' %>>Lyon</option>
+            <option value="Bordeaux" <%= student.city === 'Bordeaux' ? 'selected' : '' %>>Bordeaux</option>
+            <option value="Toulouse" <%= student.city === 'Toulouse' ? 'selected' : '' %>>Toulouse</option>
+            <option value="Marseille" <%= student.city === 'Marseille' ? 'selected' : '' %>>Marseille</option>
+            <option value="Lille" <%= student.city === 'Lille' ? 'selected' : '' %>>Lille</option>
+            <option value="Autre" <%= student.city === 'Autre' ? 'selected' : '' %>>Autre</option>
+        </select>
+    </div>
       <!-- Numéro de Téléphone -->
       <div>
         <label for="phoneNumber" class="block text-sm font-medium text-gray-700">Numéro de Téléphone *</label>

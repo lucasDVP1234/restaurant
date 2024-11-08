@@ -101,6 +101,7 @@ exports.postProfile = async (req, res) => {
     student.currentSituation = req.body.currentSituation;
     student.pastExperience = req.body.pastExperience
     student.availability = req.body.availability
+    student.city = req.body.city
       
 
     // Handle uploaded files

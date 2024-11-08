@@ -11,6 +11,7 @@ const studentSchema = new mongoose.Schema({
   pastExperience: String,
   currentSituation: String,
   availability: String,
+  city: String,
   email: { type: String, required: true, unique: true },
   password: String,
   ratings: [{ type: Number, min: 0, max: 5 }],
