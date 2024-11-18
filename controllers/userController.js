@@ -6,6 +6,7 @@ const Job = require('../models/Job');
 const path = require('path');
 const fs = require('fs');
 
+
 exports.setPassword = async (req, res) => {
   try {
     const { password, confirmPassword } = req.body;

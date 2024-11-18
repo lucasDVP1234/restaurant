@@ -3,6 +3,8 @@ const passport = require('passport');
 const bcrypt = require('bcrypt');
 const Student = require('../models/Student');
 const Restaurant = require('../models/Restaurant');
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 exports.getLoginStudent = (req, res) => {
   if (req.isAuthenticated()) {
@@ -93,6 +95,19 @@ exports.postSignupStudent = async (req, res) => {
     });
 
     await newStudent.save();
+    try {
+      const msg = {
+        to: emailLower,
+        from: 'contact@jobster-student.fr',
+        templateId: 'd-75b1c813cc55423bacac1bc9041fe0cd',
+        
+      };
+      await sgMail.send(msg);
+      console.log('Email sent');
+    } catch (err) {
+      console.error('Erreur lors de l\'envoi de l\'email :', err);
+      req.flash('error', 'Une erreur est survenue lors de l\'envoi de l\'email. Veuillez réessayer.');
+    }
 
     // Authentifier l'utilisateur après une inscription réussie
     req.logIn({ id: newStudent._id, type: 'student' }, function (err) {
@@ -101,7 +116,9 @@ exports.postSignupStudent = async (req, res) => {
         req.flash('error', 'Une erreur est survenue lors de la connexion.');
         return res.redirect('/');
       }
-      req.flash('success', 'Inscription réussie !');
+      req.flash('success', 'Inscription réussie !');      
+
+
       return res.redirect('/profile');
     });
   } catch (err) {

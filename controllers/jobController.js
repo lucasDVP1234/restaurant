@@ -255,13 +255,13 @@ exports.applyToJob = async (req, res) => {
   try {
     const jobId = req.params.id;
     const userId = req.user._id;
-    console.log('1');
+    
 
     // Ensure only students can apply
     if (req.user.userType !== 'student') {
       return res.status(403).send('Only students can apply to jobs.');
     }
-    console.log('2');
+    
 
     const job = await Job.findById(jobId)
     .populate('createdBy', 'name email');
@@ -270,7 +270,7 @@ exports.applyToJob = async (req, res) => {
     if (!job) {
       return res.status(404).send('Job not found.');
     }
-    console.log('4');
+    
 
     // Check if the user has already applied
     if (job.applicants.includes(userId)) {
@@ -278,7 +278,7 @@ exports.applyToJob = async (req, res) => {
     }
     
 
-    console.log('5');
+    
     console.log(job.createdBy.email);
 
     const msg = {
@@ -289,12 +289,12 @@ exports.applyToJob = async (req, res) => {
       html: `<p>${req.user.firstName} ${req.user.lastName} a postulé pour votre job : <strong>${job.description}</strong></p>`,
     };
     await sgMail.send(msg);
-    console.log('6');
+    
 
     // Add the user to the applicants array
     job.applicants.push(userId);
     await job.save();
-    console.log('7');
+    
 
     res.redirect('/jobs');
   } catch (error) {
