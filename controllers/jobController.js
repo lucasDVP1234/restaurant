@@ -176,7 +176,7 @@ exports.postAddJob = async (req, res) => {
     // // Prepare the email message
     // const msg = {
     //   to: emails,
-    //   from: 'lucasdavalpommier@scalevision.fr', // Replace with your verified sender
+    //   from: 'contact@jobster-student.fr', // Replace with your verified sender
     //   subject: '[JobSter] - Nouveau Job Posté',
     //   text: `Un nouveau job a été posté: ${newJob.createdBy.name}`,
     //   html: `<p>Un nouveau job a été posté: <strong>${newJob.createdBy.name}</strong></p>`,
@@ -281,14 +281,14 @@ exports.applyToJob = async (req, res) => {
     console.log('5');
     console.log(job.createdBy.email);
 
-    // const msg = {
-    //   to: job.createdBy.email,
-    //   from: 'lucasdavalpommier@scalevision.fr',
-    //   subject: 'Un nouvel étudiant a postuler pour votre Job ! ',
-    //   text: `${req.user.firstName} ${req.user.lastName} a postulé pour votre job : ${job.description}`,
-    //   html: `<p>${req.user.firstName} ${req.user.lastName} a postulé pour votre job : <strong>${job.description}</strong></p>`,
-    // };
-    // await sgMail.send(msg);
+    const msg = {
+      to: job.createdBy.email,
+      from: 'contact@jobster-student.fr',
+      subject: 'Un nouvel étudiant a postuler pour votre Job ! ',
+      text: `${req.user.firstName} ${req.user.lastName} a postulé pour votre job : ${job.description}`,
+      html: `<p>${req.user.firstName} ${req.user.lastName} a postulé pour votre job : <strong>${job.description}</strong></p>`,
+    };
+    await sgMail.send(msg);
     console.log('6');
 
     // Add the user to the applicants array
@@ -373,7 +373,7 @@ exports.selectApplicant = async (req, res) => {
     // Prepare the email
     const msg = {
       to: studentEmail,
-      from: 'lucasdavalpommier@scalevision.fr',
+      from: 'contact@jobster-student.fr',
       subject: 'Vous avez été séléctionné pour le Job ! ',
       text: `Félicitation ! Vous avez été séléctionné pour un job : ${job.description}`,
       html: `<p>Félicitation ! Vous avez été séléctionné pour un job : <strong>${job.description}</strong></p>`,
