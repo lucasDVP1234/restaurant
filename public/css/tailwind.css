@@ -2116,6 +2116,10 @@ select {
     margin-top: 2rem;
   }
 
+  .sm\:mb-2 {
+    margin-bottom: 0.5rem;
+  }
+
   .sm\:block {
     display: block;
   }
