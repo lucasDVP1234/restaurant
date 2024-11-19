@@ -807,6 +807,11 @@ select {
   inset: 0px;
 }
 
+.inset-y-0 {
+  top: 0px;
+  bottom: 0px;
+}
+
 .-bottom-8 {
   bottom: -2rem;
 }
@@ -853,6 +858,10 @@ select {
 
 .top-\[4rem\] {
   top: 4rem;
+}
+
+.right-0 {
+  right: 0px;
 }
 
 .z-0 {
@@ -1564,6 +1573,10 @@ select {
   padding-top: 1rem;
 }
 
+.pr-3 {
+  padding-right: 0.75rem;
+}
+
 .text-left {
   text-align: left;
 }
@@ -1633,6 +1646,10 @@ select {
 
 .italic {
   font-style: italic;
+}
+
+.leading-5 {
+  line-height: 1.25rem;
 }
 
 .tracking-wider {
