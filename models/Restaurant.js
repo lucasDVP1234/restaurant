@@ -13,6 +13,8 @@ const restaurantSchema = new mongoose.Schema({
   restaurantPictureUrl: String,
   logoUrl: String,
   ratings: [{ type: Number, min: 0, max: 5 }],
+  passwordResetToken: String,
+  passwordResetExpires: Date,
 });
 
 restaurantSchema.methods.calculateAverageRating = function () {

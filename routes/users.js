@@ -32,4 +32,11 @@ router.get('/rules', (req, res) => {
   res.render('rules');
 });
 
+router.get('/forgot-password', userController.renderForgotPassword);
+router.post('/forgot-password', userController.handleForgotPassword);
+
+router.get('/reset-password/:token', userController.renderResetPassword);
+router.post('/reset-password/:token', userController.handleResetPassword);
+
 module.exports = router;
+

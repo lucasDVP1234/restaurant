@@ -5,6 +5,8 @@ const Restaurant = require('../models/Restaurant');
 const Job = require('../models/Job');
 const path = require('path');
 const fs = require('fs');
+const crypto = require('crypto');
+const sgMail = require('@sendgrid/mail');
 
 
 exports.setPassword = async (req, res) => {
@@ -186,5 +188,132 @@ exports.postProfileRestau = async (req, res) => {
     console.error('Error updating restaurant profile:', error);
     
     res.redirect('/profilerestau');
+  }
+};
+
+exports.renderForgotPassword = (req, res) => {
+  res.render('forgot-password');
+};
+
+exports.handleForgotPassword = async (req, res) => {
+  const { email } = req.body;
+  try {
+      // Find user by email
+      let user = await Student.findOne({ email });
+      let userType = 'student';
+
+      if (!user) {
+          user = await Restaurant.findOne({ email });
+          userType = 'restaurant';
+      }
+
+      if (!user) {
+          // No user found with that email
+          req.flash('error_messages', 'Aucun compte associé à cet email.');
+          return res.redirect('/forgot-password');
+      }
+
+      // Generate a reset token
+      const token = crypto.randomBytes(20).toString('hex');
+
+      // Set token and expiration on user
+      user.passwordResetToken = token;
+      user.passwordResetExpires = Date.now() + 3600000; // 1 hour
+
+      await user.save();
+
+      // Send email via SendGrid
+      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+      const resetUrl = `https://jobster-student.fr/reset-password/${token}`;
+      console.log(user.email)
+      const msg = {
+          to: user.email,
+          from: 'contact@jobster-student.fr',
+          subject: '[JobSter] - Réinitialisation du mot de passe',
+          text: `Vous recevez cet email parce que vous (ou quelqu'un d'autre) avez demandé la réinitialisation du mot de passe de votre compte.\n\n
+          Veuillez cliquer sur le lien suivant, ou copiez-le dans votre navigateur pour compléter le processus dans l'heure qui suit:\n\n
+          ${resetUrl}\n\n
+          Si vous n'avez pas demandé ceci, veuillez ignorer cet email et votre mot de passe restera inchangé.\n`
+      };
+
+      await sgMail.send(msg);
+
+      req.flash('success', 'Un email a été envoyé à ' + user.email + ' avec les instructions pour réinitialiser votre mot de passe.');
+      
+      res.redirect('/login/student');
+  } catch (err) {
+      console.error('Error in handleForgotPassword:', err);
+      req.flash('error', 'Une erreur est survenue lors de la demande de réinitialisation du mot de passe.');
+      res.redirect('/forgot-password');
+  }
+};
+
+exports.renderResetPassword = async (req, res) => {
+  const { token } = req.params;
+  try {
+      // Find user with the token and not expired
+      let user = await Student.findOne({ passwordResetToken: token, passwordResetExpires: { $gt: Date.now() } });
+
+      if (!user) {
+          user = await Restaurant.findOne({ passwordResetToken: token, passwordResetExpires: { $gt: Date.now() } });
+      }
+
+      if (!user) {
+          req.flash('error', 'Le lien de réinitialisation du mot de passe est invalide ou a expiré.');
+          return res.redirect('/forgot-password');
+      }
+
+      // Render the reset password form
+      res.render('reset-password', { token });
+  } catch (err) {
+      console.error('Error in renderResetPassword:', err);
+      req.flash('error', 'Une erreur est survenue.');
+      res.redirect('/forgot-password');
+  }
+};
+
+exports.handleResetPassword = async (req, res) => {
+  const { token } = req.params;
+  const { password, confirmPassword } = req.body;
+
+  try {
+      // Find user with the token and not expired
+      let user = await Student.findOne({ passwordResetToken: token, passwordResetExpires: { $gt: Date.now() } });
+      let userType = 'student';
+
+      if (!user) {
+          user = await Restaurant.findOne({ passwordResetToken: token, passwordResetExpires: { $gt: Date.now() } });
+          userType = 'restaurant';
+      }
+
+      if (!user) {
+          req.flash('error', 'Le lien de réinitialisation du mot de passe est invalide ou a expiré.');
+          return res.redirect('/forgot-password');
+      }
+
+      // Check if passwords match
+      if (password !== confirmPassword) {
+          req.flash('error', 'Les mots de passe ne correspondent pas.');
+          return res.redirect('back');
+      }
+
+      // Hash the new password
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      // Update password and clear reset token fields
+      user.password = hashedPassword;
+      user.passwordResetToken = undefined;
+      user.passwordResetExpires = undefined;
+
+      await user.save();
+
+      // Optionally, automatically log the user in
+      req.flash('success', 'Votre mot de passe a été mis à jour. Vous pouvez vous connecter.');
+      res.redirect('/login/student');
+  } catch (err) {
+      console.error('Error in handleResetPassword:', err);
+      req.flash('error_messages', 'Une erreur est survenue lors de la réinitialisation du mot de passe.');
+      res.redirect('/forgot-password');
   }
 };

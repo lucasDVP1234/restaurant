@@ -15,6 +15,8 @@ const studentSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: String,
   ratings: [{ type: Number, min: 0, max: 5 }],
+  passwordResetToken: String,
+  passwordResetExpires: Date,
 });
 
 studentSchema.methods.calculateAverageRating = function () {
