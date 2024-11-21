@@ -155,6 +155,19 @@ exports.postSignupRestaurant = async (req, res) => {
     });
 
     await newRestaurant.save();
+    try {
+      const msg = {
+        to: emailLower,
+        from: 'contact@jobster-student.fr',
+        templateId: 'd-a852d9b1d1294c3183a0b1426ba7e5e1',
+        
+      };
+      await sgMail.send(msg);
+      console.log('Email sent');
+    } catch (err) {
+      console.error('Erreur lors de l\'envoi de l\'email :', err);
+      req.flash('error', 'Une erreur est survenue lors de l\'envoi de l\'email. Veuillez réessayer.');
+    }
 
     // Authenticate the user after successful signup
     req.logIn({ id: newRestaurant._id, type: 'restaurant' }, function (err) {
