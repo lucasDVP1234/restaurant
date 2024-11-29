@@ -173,15 +173,15 @@ exports.postAddJob = async (req, res) => {
     const students = await Student.find({}, 'email');
     const emails = students.map(student => student.email);
 
-    // // Prepare the email message
-    // const msg = {
-    //   to: emails,
-    //   from: 'contact@jobster-student.fr', // Replace with your verified sender
-    //   subject: '[JobSter] - Nouveau Job Posté',
-    //   text: `Un nouveau job a été posté: ${newJob.createdBy.name}`,
-    //   html: `<p>Un nouveau job a été posté: <strong>${newJob.createdBy.name}</strong></p>`,
-    // };
-    // await sgMail.sendMultiple(msg);
+    // Prepare the email message
+    const msg = {
+      to: emails,
+      from: 'contact@jobster-student.fr', // Replace with your verified sender
+      subject: '[JobSter] - Nouveau Job Posté',
+      text: `Un nouveau job a été posté: ${newJob.createdBy.name}`,
+      html: `<p>Un nouveau job a été posté: <strong>${newJob.createdBy.name}</strong></p>`,
+    };
+    await sgMail.sendMultiple(msg);
 
     res.redirect('/account');
   } catch (err) {
