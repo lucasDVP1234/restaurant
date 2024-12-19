@@ -82,6 +82,18 @@
             <option value="Autre" <%= student.currentSituation === 'Autre' ? 'selected' : '' %>>Autre</option>
         </select>
     </div>
+      <!-- Contrat Recherché -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Type de Contrat Recherché *</label>
+        
+        <select name="contractWanted" required class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+          <option value="" disabled <%= !student.contractWanted ? 'selected' : '' %>>Veuillez sélectionner une option</option>
+            <option value="CDI" <%= student.contractWanted === 'CDI' ? 'selected' : '' %>>CDI (+ de 6 mois)</option>
+            <option value="CDD (- de 6 mois)" <%= student.contractWanted === 'CDD (- de 6 mois)' ? 'selected' : '' %>>CDD (- de 6 mois)</option>
+            <option value="CDD" <%= student.contractWanted === 'CDD' ? 'selected' : '' %>>CDD (entre 0 et 3 mois)</option>
+            <option value="Extra" <%= student.contractWanted === 'Extra' ? 'selected' : '' %>>Extra (mission ponctuel)</option>
+        </select>
+    </div>
 
       
       <!-- Past Experience -->
@@ -103,11 +115,12 @@
         
         <select id="availability" name="availability" required class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
           <option value="" disabled <%= !student.availability ? 'selected' : '' %>>Veuillez sélectionner une option</option>
-          <option value="Le week-end" <%= student.availability === 'Le week-end' ? 'selected' : '' %>>Le week-end</option>
-          <option value="La semaine" <%= student.availability === 'La semaine' ? 'selected' : '' %>>La semaine</option>
-          <option value="Le soir" <%= student.availability === 'Le soir' ? 'selected' : '' %>>Le soir</option>
-          <option value="La journée" <%= student.availability === 'La journée' ? 'selected' : '' %>>La journée</option>
-          <option value="Un peu tout le temps" <%= student.availability === 'Un peu tout le temps' ? 'selected' : '' %>>Un peu tout le temps</option>
+          <option value="Le week-end" <%= student.availability === 'Le week-end' ? 'selected' : '' %>>Le week-end (journée et soirée)</option>
+          <option value="Le soir en semaine" <%= student.availability === 'Le soir en semaine' ? 'selected' : '' %>>Le soir en semaine</option>
+          <option value="La journée en semaine" <%= student.availability === 'La journée en semaine' ? 'selected' : '' %>>La journée en semaine</option>
+          
+          
+          <option value="La semaine et/ou le Week-end" <%= student.availability === 'La semaine et/ou le Week-end' ? 'selected' : '' %>>La semaine et/ou le Week-end</option>
           <option value="Planning précis" <%= student.availability === 'Planning précis' ? 'selected' : '' %>>Planning précis</option>
         </select>
         

@@ -10,6 +10,7 @@ const studentSchema = new mongoose.Schema({
   profilePictureUrl: String,
   pastExperience: String,
   currentSituation: String,
+  contractWanted: String,
   availability: String,
   city: String,
   email: { type: String, required: true, unique: true },

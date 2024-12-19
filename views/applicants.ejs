@@ -60,6 +60,11 @@
                       <strong>Situation actuelle :</strong> <%= applicant.currentSituation %>
                     </p>
                   <% } %>
+                  <% if (applicant.contractWanted) { %>
+                    <p class="text-gray-600 text-sm mb-2">
+                      <strong>Contract recherché :</strong> <%= applicant.contractWanted %>
+                    </p>
+                  <% } %>
 
                       <!-- CV URL -->
                   <% if (applicant.cvUrl) { %>

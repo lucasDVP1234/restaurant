@@ -314,7 +314,7 @@ exports.getApplicantsForJob = async (req, res) => {
     }
 
     const job = await Job.findOne({ _id: jobId, createdBy: userId })
-      .populate('applicants', 'firstName lastName number age description cvUrl pastExperience currentSituation availability email profilePictureUrl ratings')
+      .populate('applicants', 'firstName lastName number age description cvUrl pastExperience currentSituation contractWanted availability email profilePictureUrl ratings')
       .populate('selectedApplicant', '_id');
 
     if (!job) {

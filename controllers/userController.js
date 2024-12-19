@@ -102,6 +102,7 @@ exports.postProfile = async (req, res) => {
     student.age = req.body.age;
     student.description = req.body.description;
     student.currentSituation = req.body.currentSituation;
+    student.contractWanted = req.body.contractWanted;
     student.pastExperience = req.body.pastExperience
     student.availability = req.body.availability
     student.city = req.body.city
