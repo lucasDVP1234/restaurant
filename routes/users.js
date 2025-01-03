@@ -31,6 +31,9 @@ router.post('/profilerestau', ensureAuthenticated, ensureRestaurant, upload.fiel
 router.get('/rules', (req, res) => {
   res.render('rules');
 });
+router.get('/regles', (req, res) => {
+  res.render('regles');
+});
 
 router.get('/forgot-password', userController.renderForgotPassword);
 router.post('/forgot-password', userController.handleForgotPassword);

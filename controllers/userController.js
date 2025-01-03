@@ -184,7 +184,7 @@ exports.postProfileRestau = async (req, res) => {
     await restaurant.save();
 
     
-    res.redirect('/account');
+    res.redirect('/regles');
   } catch (error) {
     console.error('Error updating restaurant profile:', error);
     

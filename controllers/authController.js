@@ -168,6 +168,19 @@ exports.postSignupRestaurant = async (req, res) => {
       console.error('Erreur lors de l\'envoi de l\'email :', err);
       req.flash('error', 'Une erreur est survenue lors de l\'envoi de l\'email. Veuillez réessayer.');
     }
+    try {
+      const msg = {
+        to: emailLower,
+        from: 'contact@jobster-student.fr',
+        templateId: 'd-87dea204f6d146d48324e4c2a350ec22',
+        
+      };
+      await sgMail.send(msg);
+      console.log('Email sent');
+    } catch (err) {
+      console.error('Erreur lors de l\'envoi de l\'email 2 :', err);
+      req.flash('error', 'Une erreur est survenue lors de l\'envoi de l\'email 2. Veuillez réessayer.');
+    }
 
     // Authenticate the user after successful signup
     req.logIn({ id: newRestaurant._id, type: 'restaurant' }, function (err) {
@@ -176,7 +189,7 @@ exports.postSignupRestaurant = async (req, res) => {
         return res.redirect('/');
       }
       req.flash('success', 'Inscription réussie !');
-      return res.redirect('/account');
+      return res.redirect('/profilerestau');
     });
   } catch (err) {
     req.flash('error', 'Une erreur est survenue lors de l\'inscription. Veuillez réessayer.');
