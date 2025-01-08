@@ -4,6 +4,7 @@ const userController = require('../controllers/userController');
 const { ensureAuthenticated, ensureStudent, ensureRestaurant } = require('../middlewares/auth');
 const router = express.Router();
 const upload = require('../middlewares/upload');
+const handleFileUpload = require('../middlewares/handleFileUpload');
 
 // Set Password Route
 router.post('/set-password', ensureAuthenticated, userController.setPassword);
@@ -15,18 +16,18 @@ router.get('/account', ensureAuthenticated, userController.getAccount);
 router.get('/profile', ensureAuthenticated, ensureStudent, userController.getProfile);
 
 // POST profile updates with file uploads
-router.post('/profile', ensureAuthenticated, ensureStudent, upload.fields([
+router.post('/profile', ensureAuthenticated, ensureStudent, handleFileUpload([
   { name: 'profilePicture', maxCount: 1 },
   { name: 'cv', maxCount: 1 }
-]), userController.postProfile);
+],'/profile'), userController.postProfile);
 
 router.get('/profilerestau', ensureAuthenticated, ensureRestaurant, userController.getProfileRestau);
 
 // POST profile updates with file uploads
-router.post('/profilerestau', ensureAuthenticated, ensureRestaurant, upload.fields([
+router.post('/profilerestau', ensureAuthenticated, ensureRestaurant, handleFileUpload([
   { name: 'restaurantPicture', maxCount: 1 },
   { name: 'logo', maxCount: 1 }
-]), userController.postProfileRestau);
+],'/profilerestau'), userController.postProfileRestau);
 
 router.get('/rules', (req, res) => {
   res.render('rules');

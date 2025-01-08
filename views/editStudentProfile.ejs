@@ -13,6 +13,22 @@
   <!-- Main Container -->
   <div class="container flex flex-col items-center justify-center mx-auto px-4 py-12">
     <h1 class="text-3xl font-bold mb-8 text-blue-950 drop-shadow-lg text-center">Compléter votre Profil</h1>
+    <div class="container mx-auto px-4">
+      <% if (success_messages && success_messages.length > 0) { %>
+          <% success_messages.forEach(function(message){ %>
+              <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded my-2">
+                  <span><%= message %></span>
+              </div>
+          <% }) %>
+      <% } %>
+      <% if (error_messages && error_messages.length > 0) { %>
+          <% error_messages.forEach(function(message){ %>
+              <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded my-2">
+                  <span><%= message %></span>
+              </div>
+          <% }) %>
+      <% } %>
+  </div>
     <div class="w-full max-w-lg bg-white shadow-xl rounded-2xl p-8">
     <form action="/profile" method="POST" enctype="multipart/form-data" class="space-y-6">
       <!-- First Name -->
@@ -143,7 +159,7 @@
           <input type="file" name="profilePicture" accept="image/*" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" >
           <img src="<%= student.profilePictureUrl %>" alt="Profile Picture" class="mt-4 h-32 w-32 object-cover rounded-full">
         <% } else { %>
-          <input type="file" name="profilePicture" accept="image/*" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+          <input type="file" name="profilePicture" accept="image/*" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required>
           <% } %>
       </div>
       
@@ -156,7 +172,7 @@
           <input type="file" name="cv" accept="application/pdf" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
           <a href="<%= student.cvUrl %>" target="_blank" class="text-blue-500 hover:underline mt-2 block">Voir le CV actuel</a>
           <% } else { %>
-          <input type="file" name="cv" accept="application/pdf" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm">
+          <input type="file" name="cv" accept="application/pdf" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm" required>
         <% } %>
       </div>
 

@@ -169,17 +169,21 @@ exports.postProfileRestau = async (req, res) => {
     // Handle uploaded files
     if (req.files) {
       // Restaurant Picture
+      
       if (req.files.restaurantPicture) {
         // Save new restaurant picture URL
+        
         restaurant.restaurantPictureUrl = req.files.restaurantPicture[0].location; // S3 file URL
-      }
+      
+    }
 
       // Logo
       if (req.files.logo) {
         // Save new logo URL
         restaurant.logoUrl = req.files.logo[0].location; // S3 file URL
       }
-    }
+    } 
+    
 
     await restaurant.save();
 
