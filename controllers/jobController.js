@@ -174,14 +174,20 @@ exports.postAddJob = async (req, res) => {
     const emails = students.map(student => student.email);
 
     // Prepare the email message
-    const msg = {
-      to: emails,
-      from: 'contact@jobster-student.fr', // Replace with your verified sender
-      subject: '[JobSter] - Nouveau Job Posté',
-      text: `Un nouveau job a été posté: ${newJob.createdBy.name}`,
-      html: `<p>Un nouveau job a été posté: <strong>${newJob.createdBy.name}</strong></p>`,
-    };
-    await sgMail.sendMultiple(msg);
+    try {
+      const msg = {
+        to: emails,
+        from: 'contact@jobster-student.fr', // Replace with your verified sender
+        subject: '[JobSter] - Nouveau Job Posté',
+        text: `Un nouveau job a été posté: ${newJob.createdBy.name}`,
+        html: `<p>Un nouveau job a été posté: <strong>${newJob.createdBy.name}</strong></p>`,
+      };
+      await sgMail.sendMultiple(msg);
+      console.log('Emails sent');
+    } catch (err) {
+      console.error('Erreur lors de l\'envoi de l\'email :', err);
+      req.flash('error', 'Une erreur est survenue lors de l\'envoi de l\'email. Veuillez réessayer.');
+    }
 
     res.redirect('/account');
   } catch (err) {
@@ -276,24 +282,30 @@ exports.applyToJob = async (req, res) => {
     if (job.applicants.includes(userId)) {
       return res.redirect('/my-applications');
     }
-    
 
-    
-    console.log(job.createdBy.email);
-
-    const msg = {
-      to: job.createdBy.email,
-      from: 'contact@jobster-student.fr',
-      subject: 'Un nouvel étudiant a postuler pour votre Job ! ',
-      text: `${req.user.firstName} ${req.user.lastName} a postulé pour votre job : ${job.description}`,
-      html: `<p>${req.user.firstName} ${req.user.lastName} a postulé pour votre job : <strong>${job.description}</strong></p>`,
-    };
-    await sgMail.send(msg);
-    
 
     // Add the user to the applicants array
     job.applicants.push(userId);
     await job.save();
+    
+
+    
+    console.log(job.createdBy.email);
+    try {
+      const msg = {
+        to: job.createdBy.email,
+        from: 'contact@jobster-student.fr',
+        subject: 'Un nouvel étudiant a postulé pour votre Job ! ',
+        text: `${req.user.firstName} ${req.user.lastName} a postulé pour votre job : ${job.description}`,
+        html: `<p>${req.user.firstName} ${req.user.lastName} a postulé pour votre job : <strong>${job.description}</strong></p>`,
+      };
+      await sgMail.send(msg);
+      console.log('Email sent');
+    } catch (err) {
+      console.error('Erreur lors de l\'envoi de l\'email :', err);
+      req.flash('error', 'Une erreur est survenue lors de l\'envoi de l\'email. Veuillez réessayer.');
+    }
+    
     
 
     res.redirect('/jobs');
@@ -371,16 +383,21 @@ exports.selectApplicant = async (req, res) => {
     const studentEmail = student.email;
 
     // Prepare the email
-    const msg = {
-      to: studentEmail,
-      from: 'contact@jobster-student.fr',
-      subject: 'Vous avez été séléctionné pour le Job ! ',
-      text: `Félicitation ! Vous avez été séléctionné pour un job : ${job.description}`,
-      html: `<p>Félicitation ! Vous avez été séléctionné pour un job : <strong>${job.description}</strong></p>`,
-    };
+    try {
+      const msg = {
+        to: studentEmail,
+        from: 'contact@jobster-student.fr',
+        subject: 'Vous avez été séléctionné pour le Job ! ',
+        text: `Félicitation ! Vous avez été sélectionné pour un job : ${job.description}`,
+        html: `<p>Félicitation ! Vous avez été sélectionné pour un job : <strong>${job.description}</strong></p>`,
+      };
 
-    // Send the email
-    await sgMail.send(msg);
+      await sgMail.send(msg);
+      console.log('Email sent');
+    } catch (err) {
+      console.error('Erreur lors de l\'envoi de l\'email :', err);
+      req.flash('error', 'Une erreur est survenue lors de l\'envoi de l\'email. Veuillez réessayer.');
+    }
 
     // Optional: Send notification to the applicant (not implemented here)
 
