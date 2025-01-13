@@ -176,14 +176,14 @@ exports.postAddJob = async (req, res) => {
     // Prepare the email message
     try {
       const msg = {
-        to: emails,
+        to: 'lucasdavalpommier@scalevision.fr',
         from: 'contact@jobster-student.fr', // Replace with your verified sender
         subject: '[JobSter] - Nouveau Job Posté',
-        text: `Un nouveau job a été posté: ${newJob.createdBy.name}`,
-        html: `<p>Un nouveau job a été posté: <strong>${newJob.createdBy.name}</strong></p>`,
+        text: `Un nouveau job a été posté !`,
+        html: `<p>Un nouveau job a été posté !`,
       };
-      await sgMail.sendMultiple(msg);
-      console.log('Emails sent');
+      await sgMail.send(msg);
+      console.log('Email to Lucas sent');
     } catch (err) {
       console.error('Erreur lors de l\'envoi de l\'email :', err);
       req.flash('error', 'Une erreur est survenue lors de l\'envoi de l\'email. Veuillez réessayer.');
